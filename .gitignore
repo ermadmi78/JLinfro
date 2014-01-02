@@ -1,8 +1,8 @@
 # Maven output directories
-target/
+**/target
 
 # Idea files
-*.ipr
-*.iml
-*.ims
+**/*.ipr
+**/*.iml
+**/*.ims
 
