@@ -1,4 +1,5 @@
 # Maven output directories
+/target
 /jlinfro/target
 /jlinfro-sample/target
 
