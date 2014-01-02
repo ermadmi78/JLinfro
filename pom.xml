@@ -37,6 +37,7 @@
 	        <connection>scm:git:git://github.com/linfro/JLinfro.git</connection>
 		<developerConnection>scm:git:ssh://git@github.com/linfro/JLinfro.git</developerConnection>
 	        <url>https://github.com/linfro/JLinfro</url>
+	        <tag>HEAD</tag>
         </scm>
 	
 	<properties>
