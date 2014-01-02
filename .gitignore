@@ -1,5 +1,6 @@
 # Maven output directories
-**/target
+/jlinfro/target
+/jlinfro-sample/target
 
 # Idea files
 **/*.ipr
