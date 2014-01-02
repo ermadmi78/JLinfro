@@ -2,14 +2,14 @@
     <parent>
         <groupId>com.github.linfro</groupId>
         <artifactId>jlinfro-parent</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>0.0.1</version>
     </parent>
 
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.github.linfro</groupId>
 	<artifactId>jlinfro-sample</artifactId>
 	<packaging>jar</packaging>
-	<version>0.0.1-SNAPSHOT</version>		
+	<version>0.0.1</version>		
 	
 	<name>JLinfro samples</name>
 	<description>Set of samples for JLinfro framework</description>

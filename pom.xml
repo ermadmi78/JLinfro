@@ -3,7 +3,7 @@
 	<groupId>com.github.linfro</groupId>
 	<artifactId>jlinfro-parent</artifactId>
 	<packaging>pom</packaging>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.1</version>
 	
 	<name>JLinfro framework</name>
 	<description>Swing based binding and validation framework</description>
@@ -37,7 +37,7 @@
 	        <connection>scm:git:git://github.com/linfro/JLinfro.git</connection>
 		<developerConnection>scm:git:ssh://git@github.com/linfro/JLinfro.git</developerConnection>
 	        <url>https://github.com/linfro/JLinfro</url>
-	        <tag>HEAD</tag>
+	        <tag>jlinfro-parent-0.0.1</tag>
         </scm>
 	
 	<properties>
