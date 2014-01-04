@@ -3,7 +3,7 @@
 	<groupId>com.github.linfro</groupId>
 	<artifactId>jlinfro-parent</artifactId>
 	<packaging>pom</packaging>
-	<version>0.0.3</version>
+	<version>0.0.4-SNAPSHOT</version>
 	
 	<name>JLinfro Parent</name>
 	<description>Parent module for JLinfro project</description>
@@ -43,7 +43,7 @@
 	        <connection>scm:git:https://github.com/linfro/JLinfro</connection>
 		<developerConnection>scm:git:https://github.com/linfro/JLinfro</developerConnection>
 	        <url>https://github.com/linfro/JLinfro</url>
-	        <tag>jlinfro-parent-0.0.3</tag>
+	        <tag>HEAD</tag>
         </scm>
 	
 	<properties>
