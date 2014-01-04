@@ -1,54 +1,55 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <parent>
         <groupId>com.github.linfro</groupId>
         <artifactId>jlinfro-parent</artifactId>
         <version>0.0.5-SNAPSHOT</version>
     </parent>
 
-	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.github.linfro</groupId>
-	<artifactId>jlinfro</artifactId>
-	<packaging>jar</packaging>
-	<version>0.0.5-SNAPSHOT</version>		
-	
-	<name>JLinfro Framework</name>
-	<description>Swing based binding and validation framework</description>
-	<url>https://github.com/linfro/JLinfro</url>
-	<inceptionYear>2014</inceptionYear>
-	
-	<licenses>
-		<license>
-			<name>The Apache Software License, Version 2.0</name>
-			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
-			<distribution>repo</distribution>
-			<comments>A business-friendly OSS license</comments>
-		</license>
-	</licenses>
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.github.linfro</groupId>
+    <artifactId>jlinfro</artifactId>
+    <packaging>jar</packaging>
+    <version>0.0.5-SNAPSHOT</version>
 
-	<developers>
-		<developer>
-			<id>linfro</id>
-			<name>Dmitry Ermakov</name>
-			<email>ermadmi78@gmail.com</email>
-			<url>http://www.linkedin.com/pub/dmitry-ermakov/2/854/785</url>
-			<roles>
-			        <role>owner</role>
-				<role>architect</role>
-				<role>developer</role>
-			</roles>
-			<timezone>UTC+4</timezone>			
-		</developer>
-	</developers>	
+    <name>JLinfro Framework</name>
+    <description>Swing based binding and validation framework</description>
+    <url>https://github.com/linfro/JLinfro</url>
+    <inceptionYear>2014</inceptionYear>
+
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+            <comments>A business-friendly OSS license</comments>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <id>linfro</id>
+            <name>Dmitry Ermakov</name>
+            <email>ermadmi78@gmail.com</email>
+            <url>http://www.linkedin.com/pub/dmitry-ermakov/2/854/785</url>
+            <roles>
+                <role>owner</role>
+                <role>architect</role>
+                <role>developer</role>
+            </roles>
+            <timezone>UTC+4</timezone>
+        </developer>
+    </developers>
 
     <dependencies>
-                <dependency>
-	                <groupId>org.slf4j</groupId>
-	                <artifactId>slf4j-api</artifactId>
-                </dependency>                
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<scope>test</scope>
-		</dependency>    
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 </project>
