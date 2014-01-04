@@ -2,14 +2,14 @@
     <parent>
         <groupId>com.github.linfro</groupId>
         <artifactId>jlinfro-parent</artifactId>
-        <version>0.0.2-SNAPSHOT</version>
+        <version>0.0.2</version>
     </parent>
 
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.github.linfro</groupId>
 	<artifactId>jlinfro</artifactId>
 	<packaging>jar</packaging>
-	<version>0.0.2-SNAPSHOT</version>		
+	<version>0.0.2</version>		
 	
 	<name>JLinfro Framework</name>
 	<description>Swing based binding and validation framework</description>
