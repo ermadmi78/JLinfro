@@ -11,7 +11,7 @@
 	<packaging>jar</packaging>
 	<version>0.0.2-SNAPSHOT</version>		
 	
-	<name>JLinfro samples</name>
+	<name>JLinfro Samples</name>
 	<description>Set of samples for JLinfro framework</description>
 	<url>https://github.com/linfro/JLinfro</url>
 	<inceptionYear>2014</inceptionYear>
@@ -27,10 +27,16 @@
 
 	<developers>
 		<developer>
-			<id>owner</id>
+			<id>linfro</id>
 			<name>Dmitry Ermakov</name>
 			<email>ermadmi78@gmail.com</email>
-			<timezone>UTC+4</timezone>
+			<url>http://www.linkedin.com/pub/dmitry-ermakov/2/854/785</url>
+			<roles>
+			        <role>owner</role>
+				<role>architect</role>
+				<role>developer</role>
+			</roles>
+			<timezone>UTC+4</timezone>			
 		</developer>
 	</developers>	
 
