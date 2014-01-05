@@ -2,7 +2,8 @@ package com.github.linfro.core.value;
 
 /**
  * @author Dmitry Ermakov
- *         04.01.2014
+ * @version 2014-01-04
+ * @since 1.0.0
  */
 public interface GetValue<T> extends Getter<T> {
     @Override

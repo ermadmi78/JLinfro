@@ -2,7 +2,8 @@ package com.github.linfro.core.common;
 
 /**
  * @author Dmitry Ermakov
- *         04.01.2014
+ * @version 2014-01-04
+ * @since 1.0.0
  */
 public interface Equality {
     public boolean areEquals(Object obj1, Object obj2);

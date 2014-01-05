@@ -6,7 +6,8 @@ import java.util.Comparator;
 
 /**
  * @author Dmitry Ermakov
- *         04.01.2014
+ * @version 2014-01-04
+ * @since 1.0.0
  */
 public final class ObjectUtil {
     public static final float DEFAULT_FLOAT_TOLERANCE = 1e-7F;
