@@ -8,12 +8,12 @@
 
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.github.linfro</groupId>
-    <artifactId>jlinfro-sample</artifactId>
+    <artifactId>jlinfro-core</artifactId>
     <packaging>jar</packaging>
     <version>0.0.5-SNAPSHOT</version>
 
-    <name>JLinfro Samples</name>
-    <description>Set of samples for JLinfro framework</description>
+    <name>JLinfro Core</name>
+    <description>Core module of JLinfro framework. Contains base DSL definition.</description>
     <url>https://github.com/linfro/JLinfro</url>
     <inceptionYear>2014</inceptionYear>
 
@@ -42,18 +42,6 @@
     </developers>
 
     <dependencies>
-        <dependency>
-            <groupId>com.github.linfro</groupId>
-            <artifactId>jlinfro</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-simple</artifactId>
-        </dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>

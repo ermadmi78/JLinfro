@@ -37,7 +37,12 @@
 
     <modules>
         <module>jlinfro</module>
-        <module>jlinfro-sample</module>
+
+        <module>jlinfro-core</module>
+        <module>jlinfro-javafx</module>
+        <module>jlinfro-javafx-sample</module>
+        <module>jlinfro-swing</module>
+        <module>jlinfro-swing-sample</module>        
     </modules>
 
     <scm>
@@ -61,6 +66,23 @@
                 <artifactId>jlinfro</artifactId>
                 <version>${project.version}</version>
             </dependency>
+            
+            <dependency>
+                <groupId>com.github.linfro</groupId>
+                <artifactId>jlinfro-core</artifactId>
+                <version>${project.version}</version>
+            </dependency>            
+            <dependency>
+                <groupId>com.github.linfro</groupId>
+                <artifactId>jlinfro-javafx</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.linfro</groupId>
+                <artifactId>jlinfro-swing</artifactId>
+                <version>${project.version}</version>
+            </dependency>            
+            
             <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-api</artifactId>

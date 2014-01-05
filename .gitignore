@@ -1,7 +1,12 @@
 # Maven output directories
 /target
 /jlinfro/target
-/jlinfro-sample/target
+
+/jlinfro-core/target
+/jlinfro-javafx/target
+/jlinfro-javafx-sample/target
+/jlinfro-swing/target
+/jlinfro-swing-sample/target
 
 # Idea files
 **/*.ipr
