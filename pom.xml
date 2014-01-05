@@ -1,10 +1,9 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.github.linfro</groupId>
     <artifactId>jlinfro-parent</artifactId>
     <packaging>pom</packaging>
-    <version>0.0.5-SNAPSHOT</version>
+    <version>0.0.5</version>
 
     <name>JLinfro Parent</name>
     <description>Parent module for JLinfro framework</description>
@@ -47,7 +46,7 @@
         <connection>scm:git:https://github.com/linfro/JLinfro</connection>
         <developerConnection>scm:git:https://github.com/linfro/JLinfro</developerConnection>
         <url>https://github.com/linfro/JLinfro</url>
-        <tag>HEAD</tag>
+        <tag>jlinfro-parent-0.0.5</tag>
     </scm>
 
     <properties>
