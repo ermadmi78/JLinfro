@@ -1,4 +1,4 @@
-package com.github.linfro.common;
+package com.github.linfro.core.common;
 
 /**
  * @author Dmitry Ermakov

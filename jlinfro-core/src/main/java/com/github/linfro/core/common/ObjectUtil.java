@@ -1,4 +1,4 @@
-package com.github.linfro.common;
+package com.github.linfro.core.common;
 
 import java.io.*;
 import java.math.BigDecimal;
