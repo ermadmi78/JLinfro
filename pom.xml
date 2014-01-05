@@ -7,7 +7,7 @@
     <version>0.0.5-SNAPSHOT</version>
 
     <name>JLinfro Parent</name>
-    <description>Parent module for JLinfro project</description>
+    <description>Parent module for JLinfro framework</description>
     <url>https://github.com/linfro/JLinfro</url>
     <inceptionYear>2014</inceptionYear>
 
@@ -36,8 +36,6 @@
     </developers>
 
     <modules>
-        <module>jlinfro</module>
-
         <module>jlinfro-core</module>
         <module>jlinfro-javafx</module>
         <module>jlinfro-javafx-sample</module>
