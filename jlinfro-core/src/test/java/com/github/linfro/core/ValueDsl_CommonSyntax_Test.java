@@ -15,7 +15,7 @@ import static org.junit.Assert.*;
  * @version 2014-01-06
  * @since 1.0.0
  */
-public class ValueDslTest {
+public class ValueDsl_CommonSyntax_Test {
     @Test
     public void testNewHasValue() {
         HasValue<String> strValue = newHasValue();
@@ -73,5 +73,28 @@ public class ValueDslTest {
         a.setValue("test");
         assertEquals("test", a.getValue());
         assertEquals("new b", b.getValue());
+    }
+
+    @Test
+    public void testCallLoop() {
+        HasValue<String> a = newHasValue("a");
+        HasValue<String> b = newHasValue("b");
+        HasValue<String> c = newHasValue("c");
+
+        // Make call loop
+        linkFrom(a).to(b);
+        linkFrom(b).to(c);
+        linkFrom(c).to(a);
+
+        try {
+            a.setValue("loop"); // Start call loop
+            fail("Call loop is not detected");
+        } catch (IllegalStateException e) {
+            assertEquals("Call loop detected", e.getMessage());
+        }
+
+        assertEquals("loop", a.getValue());
+        assertEquals("loop", b.getValue());
+        assertEquals("loop", c.getValue());
     }
 }

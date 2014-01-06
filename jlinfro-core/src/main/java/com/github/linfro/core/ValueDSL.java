@@ -167,4 +167,30 @@ public abstract class ValueDSL<DSL, F, SRC extends GetValue<F>> {
     public Disposable to(HasValue<F> to) {
         return createLink(to);
     }
+
+    //******************************************************************************************************************
+    //  Aggregation syntax
+    //******************************************************************************************************************
+
+    public Disposable to(HasAggregateValue<F> aggregateValue) {
+        notNull(aggregateValue);
+        return to(addToDispose(notNull(aggregateValue.newMemberValue())));
+    }
+
+    public static <A> DefaultHasAggregateValue<A> newAggregateValue(Aggregator<A> aggregator) {
+        notNull(aggregator);
+        return new DefaultHasAggregateValue<>(aggregator);
+    }
+
+    public static DefaultHasAggregateValue<Boolean> andValue() {
+        return newAggregateValue(ValueUtil.AGGREGATOR_AND);
+    }
+
+    public static DefaultHasAggregateValue<Boolean> orValue() {
+        return newAggregateValue(ValueUtil.AGGREGATOR_OR);
+    }
+
+    public static RevertFunction<Boolean, Boolean> not() {
+        return ValueUtil.NOT_FUNCTION;
+    }
 }
