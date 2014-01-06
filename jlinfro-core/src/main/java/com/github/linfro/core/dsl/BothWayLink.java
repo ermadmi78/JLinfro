@@ -1,7 +1,7 @@
 package com.github.linfro.core.dsl;
 
+
 import com.github.linfro.core.common.Disposable;
-import com.github.linfro.core.value.GetValue;
 import com.github.linfro.core.value.Getter;
 import com.github.linfro.core.value.HasValue;
 import com.github.linfro.core.value.ValueChangeListener;
@@ -13,14 +13,14 @@ import static com.github.linfro.core.common.ObjectUtil.notNull;
  * @version 2014-01-06
  * @since 1.0.0
  */
-public class Link<A> implements Disposable {
-    private GetValue<A> from;
+public class BothWayLink<A> implements Disposable {
+    private HasValue<A> from;
     private HasValue<A> to;
     private Context context;
 
     private boolean flag = false;
 
-    public Link(GetValue<A> from, HasValue<A> to, Context context) {
+    public BothWayLink(HasValue<A> from, HasValue<A> to, Context context) {
         this.from = notNull(from);
         this.to = notNull(to);
         this.context = notNull(context);
@@ -29,11 +29,6 @@ public class Link<A> implements Disposable {
     }
 
     private void link() {
-        if (context.isSync() && !(from instanceof HasValue)) {
-            throw new IllegalArgumentException("Cannot create bidirectional link for source of GetValue type");
-        }
-
-
         if ((context.getSourceApplyDelay() != null) && (context.getDestinationApplyDelay() != null)) {
             context.getDestinationApplyDelay().setApplyDelay(context.getSourceApplyDelay().getApplyDelay());
         }
@@ -51,7 +46,7 @@ public class Link<A> implements Disposable {
         }
     }
 
-    private ValueChangeListener<A> fromListener = new ValueChangeListener<A>() {
+    private final ValueChangeListener<A> fromListener = new ValueChangeListener<A>() {
         @Override
         public void valueChanged(Getter<? extends A> getter) {
             if (flag) {
@@ -70,7 +65,7 @@ public class Link<A> implements Disposable {
         }
     };
 
-    private ValueChangeListener<A> toListener = new ValueChangeListener<A>() {
+    private final ValueChangeListener<A> toListener = new ValueChangeListener<A>() {
         @Override
         public void valueChanged(Getter<? extends A> getter) {
             if (flag) {
@@ -81,7 +76,7 @@ public class Link<A> implements Disposable {
             try {
                 A newValue = getter.getValue();
                 if (!context.isStrong() || !context.getEquality().areEquals(newValue, from.getValue())) {
-                    ((HasValue<A>) from).setValue(newValue);
+                    from.setValue(newValue);
                 }
             } finally {
                 flag = false;
