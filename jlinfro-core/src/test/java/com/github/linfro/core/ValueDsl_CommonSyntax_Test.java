@@ -30,7 +30,7 @@ public class ValueDsl_CommonSyntax_Test {
     }
 
     @Test
-    public void testBothWayLink() {
+    public void testOneWayLink() {
         TestGetValue<String> a = newGetValue("a");
         HasValue<String> b = newHasValue("b");
 
@@ -54,7 +54,7 @@ public class ValueDsl_CommonSyntax_Test {
     }
 
     @Test
-    public void testOneWayLink() {
+    public void testBothWayLink() {
         HasValue<String> a = newHasValue("a");
         HasValue<String> b = newHasValue("b");
 
