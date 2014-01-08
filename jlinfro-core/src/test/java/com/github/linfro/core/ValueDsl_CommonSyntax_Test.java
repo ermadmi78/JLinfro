@@ -1,13 +1,13 @@
 package com.github.linfro.core;
 
-import com.github.linfro.core.auxiliary.TestGetValue;
 import com.github.linfro.core.common.Disposable;
 import com.github.linfro.core.value.HasValue;
+import com.github.linfro.core.value.TestGetValue;
 import org.junit.Test;
 
 import static com.github.linfro.core.ValueDSL.linkFrom;
 import static com.github.linfro.core.ValueDSL.newHasValue;
-import static com.github.linfro.core.auxiliary.TestGetValue.newGetValue;
+import static com.github.linfro.core.value.TestGetValue.newGetValue;
 import static org.junit.Assert.*;
 
 /**

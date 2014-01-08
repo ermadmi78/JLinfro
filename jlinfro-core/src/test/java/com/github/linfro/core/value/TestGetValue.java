@@ -1,6 +1,4 @@
-package com.github.linfro.core.auxiliary;
-
-import com.github.linfro.core.value.AbstractGetValue;
+package com.github.linfro.core.value;
 
 /**
  * @author Dmitry Ermakov
