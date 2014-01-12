@@ -1,5 +1,6 @@
 package com.github.linfro.core.common;
 
+import java.io.Serializable;
 import java.util.Comparator;
 
 /**
@@ -7,7 +8,7 @@ import java.util.Comparator;
  * @version 2014-01-05
  * @since 1.0.0
  */
-public class SafeComparator<T extends Comparable<T>> implements Comparator<T> {
+public class SafeComparator<T extends Comparable<T>> implements Comparator<T>, Serializable {
     boolean reverse;
 
     public SafeComparator() {

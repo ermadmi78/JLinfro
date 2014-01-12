@@ -133,14 +133,20 @@ public final class ObjectUtil {
     private static final Integer MINUS = -1;
     private static final Integer PLUS = 1;
 
-    public static final Comparator<Object> OBJECTS_BY_STRING_COMPARATOR = new Comparator<Object>() {
-        public int compare(Object first, Object second) {
-            return compareObjectByString(first, second);
-        }
-    };
+    public static final Comparator<Object> OBJECTS_BY_STRING_COMPARATOR = new ObjectsByStringComparator();
 
-    @SuppressWarnings("unchecked")
-    public static final Comparator<Comparable> UNSAFE_COMPARATOR = new Comparator<Comparable>() {
+    public static class ObjectsByStringComparator implements Comparator<Object>, Serializable {
+        @Override
+        public int compare(Object o1, Object o2) {
+            return compareObjectByString(o1, o2);
+        }
+    }
+
+    public static final Comparator<Comparable> UNSAFE_COMPARATOR = new UnsafeComparator();
+
+    public static class UnsafeComparator implements Comparator<Comparable>, Serializable {
+        @Override
+        @SuppressWarnings("unchecked")
         public int compare(Comparable o1, Comparable o2) {
             Integer nullRes = compareByNull(o1, o2);
             if (nullRes != null) {
@@ -148,14 +154,16 @@ public final class ObjectUtil {
             }
             return o1.compareTo(o2);
         }
-    };
+    }
 
-    public static final Comparator<String> STRINGS_IGNORE_CASE_COMPARATOR = new Comparator<String>() {
+    public static final Comparator<String> STRINGS_IGNORE_CASE_COMPARATOR = new StringsIgnoreCaseComparator();
+
+    public static class StringsIgnoreCaseComparator implements Comparator<String>, Serializable {
         @Override
         public int compare(String o1, String o2) {
             return compareStringIgnoreCase(o1, o2);
         }
-    };
+    }
 
     public static int compareChar(char first, char second) {
         return first - second;

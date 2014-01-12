@@ -75,7 +75,7 @@ public class DefaultHasAggregateValue<T> extends AbstractGetValue<T> implements 
             if (!disposed) {
                 DefaultHasAggregateValue.this.fireValueChanged();
             }
-            fireValueChanged();
+            super.fireValueChanged();
         }
 
         @Override
