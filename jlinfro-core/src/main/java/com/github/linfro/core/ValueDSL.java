@@ -193,4 +193,29 @@ public abstract class ValueDSL<DSL, F, SRC extends GetValue<F>> {
     public static RevertFunction<Boolean, Boolean> not() {
         return ValueUtil.NOT_FUNCTION;
     }
+
+    //******************************************************************************************************************
+    //  Java Bean syntax
+    //******************************************************************************************************************
+
+    public static <F> HybridDSL<F> linkFromProperty(Object bean, String property) {
+        return null; //todo
+    }
+
+    public Disposable toProperty(Object bean, String property) {
+        return null; //todo;
+    }
+
+    public static <X, F> OneWayDSL<F> linkFrom(GetValue<X> beanValue, String property) {
+        return null; //todo
+    }
+
+    public static <X, F> HybridDSL<F> linkFrom(HasValue<X> beanValue, String property) {
+        return null; //todo
+    }
+
+    public <X> Disposable to(HasValue<X> beanValue, String property) {
+        //getClass().getGenericInterfaces()
+        return null; //todo
+    }
 }
