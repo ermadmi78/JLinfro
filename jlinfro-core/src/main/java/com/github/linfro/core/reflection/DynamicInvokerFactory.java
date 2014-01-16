@@ -16,11 +16,11 @@ public class DynamicInvokerFactory implements InvokerFactory {
 
     @Override
     public Invoker createGetterInvoker(Field field) {
-        return null; //todo
+        return new DynamicGetterInvoker(field);
     }
 
     @Override
     public Invoker createSetterInvoker(Field field) {
-        return null; //todo
+        return new DynamicSetterInvoker(field);
     }
 }

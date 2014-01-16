@@ -66,15 +66,15 @@ public class InvokerFieldTest {
         print(invokerCounter);
         System.out.println("#################");
 
-        /* todo
         int fieldsCount = FieldsBean.class.getDeclaredFields().length;
 
         assertEquals(new Integer(fieldsCount * 2), factoryCounter.get(ReflectiveInvokerFactory.class));
         assertEquals(new Integer(fieldsCount * 2), factoryCounter.get(DynamicInvokerFactory.class));
 
-        assertEquals(new Integer(fieldsCount * 2), invokerCounter.get(ReflectiveMethodInvoker.class));
-        assertEquals(new Integer(fieldsCount * 2), invokerCounter.get(DynamicMethodInvoker.class));
-        */
+        assertEquals(new Integer(fieldsCount), invokerCounter.get(ReflectiveGetterInvoker.class));
+        assertEquals(new Integer(fieldsCount), invokerCounter.get(ReflectiveSetterInvoker.class));
+        assertEquals(new Integer(fieldsCount), invokerCounter.get(DynamicGetterInvoker.class));
+        assertEquals(new Integer(fieldsCount), invokerCounter.get(DynamicSetterInvoker.class));
 
         clearStatistics();
     }
@@ -90,7 +90,7 @@ public class InvokerFieldTest {
     @DataPoints
     public static InvokerFactory[][] FACTORIES = new InvokerFactory[][]{
             {new ReflectiveInvokerFactory()},
-            //todo {new DynamicInvokerFactory()}
+            {new DynamicInvokerFactory()}
     };
 
     // *************************** Boolean *****************************************************************************
