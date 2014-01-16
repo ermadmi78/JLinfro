@@ -1,9 +1,9 @@
 package com.github.linfro.core.reflection;
 
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.util.*;
 
 import static com.github.linfro.core.common.ObjectUtil.notNull;
 
@@ -104,5 +104,182 @@ public final class ReflectionUtil {
 
     public static void setInvokerFactory(InvokerFactory invokerFactory) {
         ReflectionUtil.invokerFactory = notNull(invokerFactory);
+    }
+
+    public static PropertyInvoker createPropertyInvoker(Class<?> beanClass, String propertyName, InvokerFactory factory) {
+        notNull(beanClass);
+        notNull(propertyName);
+        notNull(factory);
+
+        if (!isValidPropertyName(propertyName)) {
+            InvalidInvoker invoker = new InvalidInvoker("Invalid property name: " + propertyName);
+            return new PropertyInvoker(beanClass, propertyName, invoker, invoker);
+        }
+
+        Field field = null;
+        try {
+            field = beanClass.getField(propertyName);
+        } catch (NoSuchFieldException e) {
+            // Do nothing
+        }
+
+        final String camelizedName = camelize(propertyName);
+
+        Method getter = null;
+        try {
+            getter = beanClass.getMethod("get" + camelizedName);
+        } catch (NoSuchMethodException e) {
+            // Do nothing
+        }
+
+        if (getter == null) {
+            try {
+                getter = beanClass.getMethod("is" + camelizedName);
+            } catch (NoSuchMethodException e) {
+                // Do nothing
+            }
+        }
+
+        if (getter != null) {
+            Class<?> ret = getter.getReturnType();
+            if ((ret == null) || (ret == void.class) || ((field != null) && (ret != field.getType()))) {
+                getter = null;
+            }
+        }
+
+        if ((field == null) && (getter == null)) {
+            InvalidInvoker invoker = new InvalidInvoker("Cannot find property '" + propertyName +
+                    "' for bean: " + beanClass.getName());
+            return new PropertyInvoker(beanClass, propertyName, invoker, invoker);
+        }
+
+        Class<?> type = getter != null ? getter.getReturnType() : field.getType();
+
+        Method setter = null;
+        try {
+            setter = beanClass.getMethod("set" + camelizedName, type);
+        } catch (NoSuchMethodException e) {
+            // Do nothing
+        }
+
+        if (setter != null) {
+            Class<?> ret = setter.getReturnType();
+            if ((ret != null) && (ret != void.class)) {
+                setter = null;
+            }
+        }
+
+        final Invoker getterInvoker = notNull(
+                getter != null ? factory.createMethodInvoker(getter) : factory.createGetterInvoker(field)
+        );
+
+        final Invoker setterInvoker = notNull(
+                setter != null ? factory.createMethodInvoker(setter) : (
+                        field != null ? factory.createSetterInvoker(field) :
+                                new InvalidInvoker("Property '" + propertyName +
+                                        "' is read only for bean: " + beanClass.getName())
+                )
+
+        );
+
+        return new PropertyInvoker(beanClass, propertyName, getterInvoker, setterInvoker);
+    }
+
+    //******************************************************************************************************************
+
+    public static final Set<String> RESERVED_KEYWORDS;
+
+    static {
+        Set<String> set = new HashSet<>();
+        set.add("abstract");
+        set.add("assert");
+        set.add("boolean");
+        set.add("break");
+        set.add("byte");
+        set.add("case");
+        set.add("catch");
+        set.add("char");
+        set.add("class");
+        set.add("const");
+        set.add("continue");
+        set.add("default");
+        set.add("do");
+        set.add("double");
+        set.add("else");
+        set.add("enum");
+        set.add("extends");
+        set.add("final");
+        set.add("finally");
+        set.add("float");
+        set.add("for");
+        set.add("goto");
+        set.add("if");
+        set.add("implements");
+        set.add("import");
+        set.add("instanceof");
+        set.add("int");
+        set.add("interface");
+        set.add("long");
+        set.add("native");
+        set.add("new");
+        set.add("package");
+        set.add("private");
+        set.add("protected");
+        set.add("public");
+        set.add("return");
+        set.add("short");
+        set.add("static");
+        set.add("strictfp");
+        set.add("super");
+        set.add("switch");
+        set.add("synchronized");
+        set.add("this");
+        set.add("throw");
+        set.add("throws");
+        set.add("transient");
+        set.add("try");
+        set.add("void");
+        set.add("volatile");
+        set.add("while");
+
+        RESERVED_KEYWORDS = Collections.unmodifiableSet(set);
+    }
+
+    public static boolean isValidPropertyName(String s) {
+        if ((s == null) || s.isEmpty()) {
+            return false;
+        }
+
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (i == 0) {
+                if (!Character.isJavaIdentifierStart(c)) {
+                    return false;
+                }
+            } else {
+                if (!Character.isJavaIdentifierPart(c)) {
+                    return false;
+                }
+            }
+        }
+
+        return !RESERVED_KEYWORDS.contains(s);
+    }
+
+    public static String camelize(String s) {
+        if ((s == null) || s.isEmpty()) {
+            return s;
+        }
+
+        if (s.length() == 1) {
+            return s.toUpperCase();
+        }
+
+        if (Character.isUpperCase(s.charAt(1))) {
+            // retain first letter in lower case (e.g. xRate will remain as xRate and corresponding getter is getxRate)
+            return s;
+        }
+
+        return s.substring(0, 1).toUpperCase() + s.substring(1);
     }
 }
