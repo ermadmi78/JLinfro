@@ -6,6 +6,7 @@ import java.lang.reflect.Method;
 import java.util.*;
 
 import static com.github.linfro.core.common.ObjectUtil.notNull;
+import static com.github.linfro.core.common.ObjectUtil.nvl;
 
 /**
  * @author Dmitry Ermakov
@@ -281,5 +282,51 @@ public final class ReflectionUtil {
         }
 
         return s.substring(0, 1).toUpperCase() + s.substring(1);
+    }
+
+    public static String[] splitProperty(String s) throws IllegalArgumentException {
+        s = nvl(s).trim();
+
+        if (s.isEmpty()) {
+            throw new IllegalArgumentException("Invalid property name: property name must not be empty");
+        }
+
+        if ((s.charAt(0) == '.') || (s.charAt(s.length() - 1) == '.')) {
+            throw new IllegalArgumentException("Invalid property name: " + s);
+        }
+
+        int count = 0;
+        for (int i = 0; i < s.length(); i++) {
+            if (s.charAt(i) == '.') {
+                count++;
+            }
+        }
+
+        String[] res = new String[count + 1];
+        if (res.length == 1) {
+            res[0] = s; // Small optimization
+        } else {
+            int index = 0;
+            int lastPos = -1;
+            for (int i = 0; i < s.length(); i++) {
+                if (s.charAt(i) == '.') {
+                    res[index++] = s.substring(lastPos + 1, i);
+                    lastPos = i;
+                }
+            }
+            res[index] = s.substring(lastPos + 1);
+        }
+
+        for (String name : res) {
+            if (!isValidPropertyName(name)) {
+                throw new IllegalArgumentException(
+                        "Invalid property name: " + s + (
+                                ((res.length == 1) || nvl(name).isEmpty()) ? "" : (" (" + name + ")")
+                        )
+                );
+            }
+        }
+
+        return res;
     }
 }
