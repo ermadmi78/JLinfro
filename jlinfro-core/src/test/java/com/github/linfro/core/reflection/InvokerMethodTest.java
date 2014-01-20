@@ -94,7 +94,7 @@ public class InvokerMethodTest {
     // *************************** Boolean *****************************************************************************
     @Theory
     public void testPrimBooleanGetter(InvokerFactory... factories) throws Exception {
-        Method method = MethodsBean.class.getMethod("getPrimBoolean");
+        Method method = MethodsBean.class.getMethod("isPrimBoolean");
         assertNotNull(method);
 
         InvokerFactory factory = factories[0];
@@ -105,13 +105,13 @@ public class InvokerMethodTest {
         incInvokerCounter(invoker.getClass());
 
         MethodsBean bean = new MethodsBean();
-        assertFalse(bean.getPrimBoolean());
+        assertFalse(bean.isPrimBoolean());
 
         Object res = invoker.invoke(bean);
         assertEquals(Boolean.FALSE, res);
 
         bean.setPrimBoolean(true);
-        assertTrue(bean.getPrimBoolean());
+        assertTrue(bean.isPrimBoolean());
 
         res = invoker.invoke(bean);
         assertEquals(Boolean.TRUE, res);
@@ -130,14 +130,14 @@ public class InvokerMethodTest {
         incInvokerCounter(invoker.getClass());
 
         MethodsBean bean = new MethodsBean();
-        assertFalse(bean.getPrimBoolean());
+        assertFalse(bean.isPrimBoolean());
 
         invoker.invoke(bean, true);
-        assertTrue(bean.getPrimBoolean());
+        assertTrue(bean.isPrimBoolean());
 
         Boolean nullVal = null;
         invoker.invoke(bean, nullVal);
-        assertFalse(bean.getPrimBoolean());
+        assertFalse(bean.isPrimBoolean());
     }
 
     @Theory

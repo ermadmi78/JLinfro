@@ -36,7 +36,7 @@ public class MethodsBean {
 
     private List<String> wrapList;
 
-    public boolean getPrimBoolean() {
+    public boolean isPrimBoolean() {
         return primBoolean;
     }
 
