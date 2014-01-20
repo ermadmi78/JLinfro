@@ -11,7 +11,7 @@ import static org.junit.Assert.assertTrue;
  * @version 2014-01-18
  * @since 1.0.0
  */
-public class TestIsValidPropertyName {
+public class IsValidPropertyNameTest {
     @Test
     public void testInvalidName() throws Exception {
         assertFalse(isValidPropertyName(null));

@@ -63,7 +63,7 @@ public final class ReflectionUtil {
         invokerFactory = isUseDynamicInvoker() ? new DynamicInvokerFactory() : new ReflectiveInvokerFactory();
     }
 
-    private static boolean isUseDynamicInvoker() {
+    public static boolean isUseDynamicInvoker() {
         return "true".equals(System.getProperty(KEY_USE_DYNAMIC_INVOKER, "false"));
     }
 

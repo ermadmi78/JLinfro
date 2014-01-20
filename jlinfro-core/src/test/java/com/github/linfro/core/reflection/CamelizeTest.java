@@ -11,7 +11,7 @@ import static org.junit.Assert.assertNull;
  * @version 2014-01-18
  * @since 1.0.0
  */
-public class TestCamelize {
+public class CamelizeTest {
     @Test
     public void testCamelize() throws Exception {
         assertNull(camelize(null));
