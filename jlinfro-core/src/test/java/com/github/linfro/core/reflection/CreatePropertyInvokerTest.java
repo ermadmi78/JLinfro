@@ -24,6 +24,9 @@ public class CreatePropertyInvokerTest {
         PropertyInvoker invoker = createPropertyInvoker(FieldsBean.class, "5invalid_name", factory);
 
         assertNotNull(invoker);
+        assertEquals(FieldsBean.class, invoker.getBeanClass());
+        assertEquals("5invalid_name", invoker.getPropertyName());
+        assertEquals(void.class, invoker.getPropertyType());
         assertFalse(invoker.canRead());
         assertFalse(invoker.canWrite());
 
@@ -53,6 +56,9 @@ public class CreatePropertyInvokerTest {
         PropertyInvoker invoker = createPropertyInvoker(FieldsBean.class, "no_such_property", factory);
 
         assertNotNull(invoker);
+        assertEquals(FieldsBean.class, invoker.getBeanClass());
+        assertEquals("no_such_property", invoker.getPropertyName());
+        assertEquals(void.class, invoker.getPropertyType());
         assertFalse(invoker.canRead());
         assertFalse(invoker.canWrite());
 
@@ -84,6 +90,9 @@ public class CreatePropertyInvokerTest {
         PropertyInvoker invoker = createPropertyInvoker(FieldsBean.class, "wrapString", factory);
 
         assertNotNull(invoker);
+        assertEquals(FieldsBean.class, invoker.getBeanClass());
+        assertEquals("wrapString", invoker.getPropertyName());
+        assertEquals(String.class, invoker.getPropertyType());
         assertTrue(invoker.canRead());
         assertTrue(invoker.canWrite());
 
@@ -107,6 +116,9 @@ public class CreatePropertyInvokerTest {
         PropertyInvoker invoker = createPropertyInvoker(FieldsBean.class, "primInt", factory);
 
         assertNotNull(invoker);
+        assertEquals(FieldsBean.class, invoker.getBeanClass());
+        assertEquals("primInt", invoker.getPropertyName());
+        assertEquals(Integer.TYPE, invoker.getPropertyType());
         assertTrue(invoker.canRead());
         assertTrue(invoker.canWrite());
 
@@ -130,6 +142,9 @@ public class CreatePropertyInvokerTest {
         PropertyInvoker invoker = createPropertyInvoker(MethodsBean.class, "wrapString", factory);
 
         assertNotNull(invoker);
+        assertEquals(MethodsBean.class, invoker.getBeanClass());
+        assertEquals("wrapString", invoker.getPropertyName());
+        assertEquals(String.class, invoker.getPropertyType());
         assertTrue(invoker.canRead());
         assertTrue(invoker.canWrite());
 
@@ -153,6 +168,9 @@ public class CreatePropertyInvokerTest {
         PropertyInvoker invoker = createPropertyInvoker(MethodsBean.class, "primInt", factory);
 
         assertNotNull(invoker);
+        assertEquals(MethodsBean.class, invoker.getBeanClass());
+        assertEquals("primInt", invoker.getPropertyName());
+        assertEquals(Integer.TYPE, invoker.getPropertyType());
         assertTrue(invoker.canRead());
         assertTrue(invoker.canWrite());
 
@@ -176,6 +194,9 @@ public class CreatePropertyInvokerTest {
         PropertyInvoker invoker = createPropertyInvoker(MethodsBean.class, "primBoolean", factory);
 
         assertNotNull(invoker);
+        assertEquals(MethodsBean.class, invoker.getBeanClass());
+        assertEquals("primBoolean", invoker.getPropertyName());
+        assertEquals(Boolean.TYPE, invoker.getPropertyType());
         assertTrue(invoker.canRead());
         assertTrue(invoker.canWrite());
 
@@ -198,6 +219,9 @@ public class CreatePropertyInvokerTest {
         PropertyInvoker invoker = createPropertyInvoker(TestBean.class, "readOnlyInt", factory);
 
         assertNotNull(invoker);
+        assertEquals(TestBean.class, invoker.getBeanClass());
+        assertEquals("readOnlyInt", invoker.getPropertyName());
+        assertEquals(Integer.TYPE, invoker.getPropertyType());
         assertTrue(invoker.canRead());
         assertFalse(invoker.canWrite());
 
@@ -224,6 +248,9 @@ public class CreatePropertyInvokerTest {
         PropertyInvoker invoker = createPropertyInvoker(TestBean.class, "preferGetter", factory);
 
         assertNotNull(invoker);
+        assertEquals(TestBean.class, invoker.getBeanClass());
+        assertEquals("preferGetter", invoker.getPropertyName());
+        assertEquals(Integer.TYPE, invoker.getPropertyType());
         assertTrue(invoker.canRead());
         assertTrue(invoker.canWrite());
 
@@ -249,6 +276,9 @@ public class CreatePropertyInvokerTest {
         PropertyInvoker invoker = createPropertyInvoker(TestBean.class, "preferSetter", factory);
 
         assertNotNull(invoker);
+        assertEquals(TestBean.class, invoker.getBeanClass());
+        assertEquals("preferSetter", invoker.getPropertyName());
+        assertEquals(Integer.TYPE, invoker.getPropertyType());
         assertTrue(invoker.canRead());
         assertTrue(invoker.canWrite());
 
@@ -273,6 +303,9 @@ public class CreatePropertyInvokerTest {
         PropertyInvoker invoker = createPropertyInvoker(TestBean.class, "preferMethods", factory);
 
         assertNotNull(invoker);
+        assertEquals(TestBean.class, invoker.getBeanClass());
+        assertEquals("preferMethods", invoker.getPropertyName());
+        assertEquals(String.class, invoker.getPropertyType());
         assertTrue(invoker.canRead());
         assertTrue(invoker.canWrite());
 
@@ -300,6 +333,9 @@ public class CreatePropertyInvokerTest {
         PropertyInvoker invoker = createPropertyInvoker(TestBean.class, "invalidGetter", factory);
 
         assertNotNull(invoker);
+        assertEquals(TestBean.class, invoker.getBeanClass());
+        assertEquals("invalidGetter", invoker.getPropertyName());
+        assertEquals(Integer.TYPE, invoker.getPropertyType());
         assertTrue(invoker.canRead());
         assertTrue(invoker.canWrite());
 
@@ -325,6 +361,9 @@ public class CreatePropertyInvokerTest {
         PropertyInvoker invoker = createPropertyInvoker(TestBean.class, "invalidSetter", factory);
 
         assertNotNull(invoker);
+        assertEquals(TestBean.class, invoker.getBeanClass());
+        assertEquals("invalidSetter", invoker.getPropertyName());
+        assertEquals(Integer.TYPE, invoker.getPropertyType());
         assertTrue(invoker.canRead());
         assertTrue(invoker.canWrite());
 

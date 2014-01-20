@@ -114,7 +114,7 @@ public final class ReflectionUtil {
 
         if (!isValidPropertyName(propertyName)) {
             InvalidInvoker invoker = new InvalidInvoker("Invalid property name: " + propertyName);
-            return new PropertyInvoker(beanClass, propertyName, invoker, invoker);
+            return new PropertyInvoker(beanClass, propertyName, void.class, invoker, invoker);
         }
 
         Field field = null;
@@ -151,10 +151,10 @@ public final class ReflectionUtil {
         if ((field == null) && (getter == null)) {
             InvalidInvoker invoker = new InvalidInvoker("Cannot find property '" + propertyName +
                     "' for bean: " + beanClass.getName());
-            return new PropertyInvoker(beanClass, propertyName, invoker, invoker);
+            return new PropertyInvoker(beanClass, propertyName, void.class, invoker, invoker);
         }
 
-        Class<?> type = getter != null ? getter.getReturnType() : field.getType();
+        final Class<?> type = getter != null ? getter.getReturnType() : field.getType();
 
         Method setter = null;
         try {
@@ -183,7 +183,7 @@ public final class ReflectionUtil {
 
         );
 
-        return new PropertyInvoker(beanClass, propertyName, getterInvoker, setterInvoker);
+        return new PropertyInvoker(beanClass, propertyName, type, getterInvoker, setterInvoker);
     }
 
     //******************************************************************************************************************
