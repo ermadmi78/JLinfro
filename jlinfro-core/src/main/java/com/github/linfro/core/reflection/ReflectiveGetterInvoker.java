@@ -3,6 +3,7 @@ package com.github.linfro.core.reflection;
 import java.lang.reflect.Field;
 
 import static com.github.linfro.core.common.ObjectUtil.notNull;
+import static com.github.linfro.core.reflection.ReflectionUtil.setAccessibleIfNeed;
 
 /**
  * @author Dmitry Ermakov
@@ -14,9 +15,7 @@ public class ReflectiveGetterInvoker implements Invoker {
 
     public ReflectiveGetterInvoker(Field field) {
         this.field = notNull(field);
-        if (!this.field.isAccessible()) {
-            this.field.setAccessible(true);
-        }
+        setAccessibleIfNeed(this.field);
     }
 
     @Override

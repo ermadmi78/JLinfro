@@ -4,8 +4,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import static com.github.linfro.core.common.ObjectUtil.notNull;
-import static com.github.linfro.core.reflection.ReflectionUtil.getDefaultPrimitiveValue;
-import static com.github.linfro.core.reflection.ReflectionUtil.isPrimitive;
+import static com.github.linfro.core.reflection.ReflectionUtil.*;
 
 /**
  * @author Dmitry Ermakov
@@ -18,9 +17,8 @@ public class ReflectiveMethodInvoker implements Invoker {
 
     public ReflectiveMethodInvoker(Method method) {
         this.method = notNull(method);
-        if (!this.method.isAccessible()) {
-            this.method.setAccessible(true);
-        }
+        setAccessibleIfNeed(this.method);
+
         this.types = notNull(method.getParameterTypes());
     }
 

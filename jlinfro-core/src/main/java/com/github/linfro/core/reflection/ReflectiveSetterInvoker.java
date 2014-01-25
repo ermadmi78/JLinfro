@@ -3,8 +3,7 @@ package com.github.linfro.core.reflection;
 import java.lang.reflect.Field;
 
 import static com.github.linfro.core.common.ObjectUtil.notNull;
-import static com.github.linfro.core.reflection.ReflectionUtil.getDefaultPrimitiveValue;
-import static com.github.linfro.core.reflection.ReflectionUtil.isPrimitive;
+import static com.github.linfro.core.reflection.ReflectionUtil.*;
 
 /**
  * @author Dmitry Ermakov
@@ -17,9 +16,8 @@ public class ReflectiveSetterInvoker implements Invoker {
 
     public ReflectiveSetterInvoker(Field field) {
         this.field = notNull(field);
-        if (!this.field.isAccessible()) {
-            this.field.setAccessible(true);
-        }
+        setAccessibleIfNeed(this.field);
+
         this.type = notNull(this.field.getType());
     }
 

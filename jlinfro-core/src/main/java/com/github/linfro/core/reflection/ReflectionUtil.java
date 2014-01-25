@@ -3,6 +3,7 @@ package com.github.linfro.core.reflection;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.*;
 
 import static com.github.linfro.core.common.ObjectUtil.notNull;
@@ -184,6 +185,24 @@ public final class ReflectionUtil {
         );
 
         return new SimplePropertyInvoker(beanClass, propertyName, type, getterInvoker, setterInvoker);
+    }
+
+    public static void setAccessibleIfNeed(Field field) {
+        notNull(field);
+        if (!Modifier.isPublic(field.getModifiers()) || !Modifier.isPublic(field.getDeclaringClass().getModifiers())) {
+            if (!field.isAccessible()) {
+                field.setAccessible(true);
+            }
+        }
+    }
+
+    public static void setAccessibleIfNeed(Method method) {
+        notNull(method);
+        if (!Modifier.isPublic(method.getModifiers()) || !Modifier.isPublic(method.getDeclaringClass().getModifiers())) {
+            if (!method.isAccessible()) {
+                method.setAccessible(true);
+            }
+        }
     }
 
     //******************************************************************************************************************
