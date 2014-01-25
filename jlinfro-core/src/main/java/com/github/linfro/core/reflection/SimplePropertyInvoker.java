@@ -7,14 +7,14 @@ import static com.github.linfro.core.common.ObjectUtil.notNull;
  * @version 2014-01-16
  * @since 1.0.0
  */
-public class PropertyInvoker {
+public class SimplePropertyInvoker {
     protected final Class<?> beanClass;
     protected final String propertyName;
     protected final Class<?> propertyType;
     protected final Invoker getter;
     protected final Invoker setter;
 
-    public PropertyInvoker(Class<?> beanClass, String propertyName, Class<?> propertyType, Invoker getter, Invoker setter) {
+    public SimplePropertyInvoker(Class<?> beanClass, String propertyName, Class<?> propertyType, Invoker getter, Invoker setter) {
         this.beanClass = notNull(beanClass);
         this.propertyName = notNull(propertyName);
         this.propertyType = notNull(propertyType);
@@ -59,7 +59,7 @@ public class PropertyInvoker {
             return false;
         }
 
-        PropertyInvoker that = (PropertyInvoker) obj;
+        SimplePropertyInvoker that = (SimplePropertyInvoker) obj;
         return beanClass.equals(that.beanClass) && propertyName.equals(that.propertyName);
     }
 

@@ -107,14 +107,14 @@ public final class ReflectionUtil {
         ReflectionUtil.invokerFactory = notNull(invokerFactory);
     }
 
-    public static PropertyInvoker createPropertyInvoker(Class<?> beanClass, String propertyName, InvokerFactory factory) {
+    public static SimplePropertyInvoker createPropertyInvoker(Class<?> beanClass, String propertyName, InvokerFactory factory) {
         notNull(beanClass);
         notNull(propertyName);
         notNull(factory);
 
         if (!isValidPropertyName(propertyName)) {
             InvalidInvoker invoker = new InvalidInvoker("Invalid property name: " + propertyName);
-            return new PropertyInvoker(beanClass, propertyName, void.class, invoker, invoker);
+            return new SimplePropertyInvoker(beanClass, propertyName, void.class, invoker, invoker);
         }
 
         Field field = null;
@@ -151,7 +151,7 @@ public final class ReflectionUtil {
         if ((field == null) && (getter == null)) {
             InvalidInvoker invoker = new InvalidInvoker("Cannot find property '" + propertyName +
                     "' for bean: " + beanClass.getName());
-            return new PropertyInvoker(beanClass, propertyName, void.class, invoker, invoker);
+            return new SimplePropertyInvoker(beanClass, propertyName, void.class, invoker, invoker);
         }
 
         final Class<?> type = getter != null ? getter.getReturnType() : field.getType();
@@ -183,7 +183,7 @@ public final class ReflectionUtil {
 
         );
 
-        return new PropertyInvoker(beanClass, propertyName, type, getterInvoker, setterInvoker);
+        return new SimplePropertyInvoker(beanClass, propertyName, type, getterInvoker, setterInvoker);
     }
 
     //******************************************************************************************************************

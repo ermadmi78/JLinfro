@@ -11,7 +11,7 @@ import static org.junit.Assert.*;
  * @version 2014-01-20
  * @since 1.0.0
  */
-public class CreatePropertyInvokerTest {
+public class CreateSimplePropertyInvokerTest {
     private final InvokerFactoryDecorator factory = new InvokerFactoryDecorator(new ReflectiveInvokerFactory());
 
     @Before
@@ -21,7 +21,7 @@ public class CreatePropertyInvokerTest {
 
     @Test
     public void testInvalidName() throws Exception {
-        PropertyInvoker invoker = createPropertyInvoker(FieldsBean.class, "5invalid_name", factory);
+        SimplePropertyInvoker invoker = createPropertyInvoker(FieldsBean.class, "5invalid_name", factory);
 
         assertNotNull(invoker);
         assertEquals(FieldsBean.class, invoker.getBeanClass());
@@ -53,7 +53,7 @@ public class CreatePropertyInvokerTest {
 
     @Test
     public void testNoSuchPropertyName() throws Exception {
-        PropertyInvoker invoker = createPropertyInvoker(FieldsBean.class, "no_such_property", factory);
+        SimplePropertyInvoker invoker = createPropertyInvoker(FieldsBean.class, "no_such_property", factory);
 
         assertNotNull(invoker);
         assertEquals(FieldsBean.class, invoker.getBeanClass());
@@ -87,7 +87,7 @@ public class CreatePropertyInvokerTest {
 
     @Test
     public void testWrapFieldProperty() throws Exception {
-        PropertyInvoker invoker = createPropertyInvoker(FieldsBean.class, "wrapString", factory);
+        SimplePropertyInvoker invoker = createPropertyInvoker(FieldsBean.class, "wrapString", factory);
 
         assertNotNull(invoker);
         assertEquals(FieldsBean.class, invoker.getBeanClass());
@@ -113,7 +113,7 @@ public class CreatePropertyInvokerTest {
 
     @Test
     public void testPrimitiveFieldProperty() throws Exception {
-        PropertyInvoker invoker = createPropertyInvoker(FieldsBean.class, "primInt", factory);
+        SimplePropertyInvoker invoker = createPropertyInvoker(FieldsBean.class, "primInt", factory);
 
         assertNotNull(invoker);
         assertEquals(FieldsBean.class, invoker.getBeanClass());
@@ -139,7 +139,7 @@ public class CreatePropertyInvokerTest {
 
     @Test
     public void testWrapMethodProperty() throws Exception {
-        PropertyInvoker invoker = createPropertyInvoker(MethodsBean.class, "wrapString", factory);
+        SimplePropertyInvoker invoker = createPropertyInvoker(MethodsBean.class, "wrapString", factory);
 
         assertNotNull(invoker);
         assertEquals(MethodsBean.class, invoker.getBeanClass());
@@ -165,7 +165,7 @@ public class CreatePropertyInvokerTest {
 
     @Test
     public void testPrimitiveMethodProperty() throws Exception {
-        PropertyInvoker invoker = createPropertyInvoker(MethodsBean.class, "primInt", factory);
+        SimplePropertyInvoker invoker = createPropertyInvoker(MethodsBean.class, "primInt", factory);
 
         assertNotNull(invoker);
         assertEquals(MethodsBean.class, invoker.getBeanClass());
@@ -191,7 +191,7 @@ public class CreatePropertyInvokerTest {
 
     @Test
     public void testBoolMethodProperty() throws Exception {
-        PropertyInvoker invoker = createPropertyInvoker(MethodsBean.class, "primBoolean", factory);
+        SimplePropertyInvoker invoker = createPropertyInvoker(MethodsBean.class, "primBoolean", factory);
 
         assertNotNull(invoker);
         assertEquals(MethodsBean.class, invoker.getBeanClass());
@@ -216,7 +216,7 @@ public class CreatePropertyInvokerTest {
 
     @Test
     public void testReadOnlyProperty() throws Exception {
-        PropertyInvoker invoker = createPropertyInvoker(TestBean.class, "readOnlyInt", factory);
+        SimplePropertyInvoker invoker = createPropertyInvoker(TestBean.class, "readOnlyInt", factory);
 
         assertNotNull(invoker);
         assertEquals(TestBean.class, invoker.getBeanClass());
@@ -245,7 +245,7 @@ public class CreatePropertyInvokerTest {
 
     @Test
     public void testPreferGetter() throws Exception {
-        PropertyInvoker invoker = createPropertyInvoker(TestBean.class, "preferGetter", factory);
+        SimplePropertyInvoker invoker = createPropertyInvoker(TestBean.class, "preferGetter", factory);
 
         assertNotNull(invoker);
         assertEquals(TestBean.class, invoker.getBeanClass());
@@ -273,7 +273,7 @@ public class CreatePropertyInvokerTest {
 
     @Test
     public void testPreferSetter() throws Exception {
-        PropertyInvoker invoker = createPropertyInvoker(TestBean.class, "preferSetter", factory);
+        SimplePropertyInvoker invoker = createPropertyInvoker(TestBean.class, "preferSetter", factory);
 
         assertNotNull(invoker);
         assertEquals(TestBean.class, invoker.getBeanClass());
@@ -300,7 +300,7 @@ public class CreatePropertyInvokerTest {
 
     @Test
     public void testPreferMethods() throws Exception {
-        PropertyInvoker invoker = createPropertyInvoker(TestBean.class, "preferMethods", factory);
+        SimplePropertyInvoker invoker = createPropertyInvoker(TestBean.class, "preferMethods", factory);
 
         assertNotNull(invoker);
         assertEquals(TestBean.class, invoker.getBeanClass());
@@ -330,7 +330,7 @@ public class CreatePropertyInvokerTest {
 
     @Test
     public void testInvalidGetter() throws Exception {
-        PropertyInvoker invoker = createPropertyInvoker(TestBean.class, "invalidGetter", factory);
+        SimplePropertyInvoker invoker = createPropertyInvoker(TestBean.class, "invalidGetter", factory);
 
         assertNotNull(invoker);
         assertEquals(TestBean.class, invoker.getBeanClass());
@@ -358,7 +358,7 @@ public class CreatePropertyInvokerTest {
 
     @Test
     public void testInvalidSetter() throws Exception {
-        PropertyInvoker invoker = createPropertyInvoker(TestBean.class, "invalidSetter", factory);
+        SimplePropertyInvoker invoker = createPropertyInvoker(TestBean.class, "invalidSetter", factory);
 
         assertNotNull(invoker);
         assertEquals(TestBean.class, invoker.getBeanClass());
