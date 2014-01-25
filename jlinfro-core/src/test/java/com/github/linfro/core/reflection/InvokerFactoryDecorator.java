@@ -32,51 +32,51 @@ public class InvokerFactoryDecorator implements InvokerFactory, Disposable {
     }
 
     @Override
-    public Invoker createMethodInvoker(Method method) {
+    public synchronized Invoker createMethodInvoker(Method method) {
         inc(methodMap, notNull(method).getName());
         return factory.createMethodInvoker(method);
     }
 
     @Override
-    public Invoker createGetterInvoker(Field field) {
+    public synchronized Invoker createGetterInvoker(Field field) {
         inc(getterMap, notNull(field).getName());
         return factory.createGetterInvoker(field);
     }
 
     @Override
-    public Invoker createSetterInvoker(Field field) {
+    public synchronized Invoker createSetterInvoker(Field field) {
         inc(setterMap, notNull(field).getName());
         return factory.createSetterInvoker(field);
     }
 
     @Override
-    public void dispose() {
+    public synchronized void dispose() {
         methodMap.clear();
         getterMap.clear();
         setterMap.clear();
     }
 
-    public int getMethodCount() {
+    public synchronized int getMethodCount() {
         return methodMap.size();
     }
 
-    public int getMethodCount(String name) {
+    public synchronized int getMethodCount(String name) {
         return nvl(methodMap.get(notNull(name)), 0);
     }
 
-    public int getGetterCount() {
+    public synchronized int getGetterCount() {
         return getterMap.size();
     }
 
-    public int getGetterCount(String name) {
+    public synchronized int getGetterCount(String name) {
         return nvl(getterMap.get(notNull(name)), 0);
     }
 
-    public int getSetterCount() {
+    public synchronized int getSetterCount() {
         return setterMap.size();
     }
 
-    public int getSetterCount(String name) {
+    public synchronized int getSetterCount(String name) {
         return nvl(setterMap.get(notNull(name)), 0);
     }
 }

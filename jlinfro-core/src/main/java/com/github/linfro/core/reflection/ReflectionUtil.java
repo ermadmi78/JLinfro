@@ -107,7 +107,7 @@ public final class ReflectionUtil {
         ReflectionUtil.invokerFactory = notNull(invokerFactory);
     }
 
-    public static SimplePropertyInvoker createPropertyInvoker(Class<?> beanClass, String propertyName, InvokerFactory factory) {
+    public static SimplePropertyInvoker createSimplePropertyInvoker(Class<?> beanClass, String propertyName, InvokerFactory factory) {
         notNull(beanClass);
         notNull(propertyName);
         notNull(factory);

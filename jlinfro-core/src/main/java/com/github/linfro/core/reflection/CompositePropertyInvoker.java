@@ -8,7 +8,7 @@ import static com.github.linfro.core.reflection.ReflectionUtil.*;
  * @version 2014-01-16
  * @since 1.0.0
  */
-public class CompositePropertyInvoker {
+public class CompositePropertyInvoker implements PropertyInvoker {
     protected final Class<?> beanClass;
     protected final String propertyName;
     protected final Class<?> propertyType;
@@ -45,9 +45,9 @@ public class CompositePropertyInvoker {
         boolean write = true;
         for (int i = 0; i < this.nameChain.length; i++) {
             String name = notNull(this.nameChain[i]);
-            SimplePropertyInvoker invoker = notNull(createPropertyInvoker(curBeanClass, name, factory));
+            SimplePropertyInvoker invoker = notNull(createSimplePropertyInvoker(curBeanClass, name, factory));
             this.invokerChain[i] = invoker;
-            curBeanClass = notNull(invoker.getBeanClass());
+            curBeanClass = notNull(invoker.getPropertyType());
 
             read &= invoker.canRead();
             write &= invoker.canWrite();
@@ -58,18 +58,22 @@ public class CompositePropertyInvoker {
         this.writeAbility = write;
     }
 
+    @Override
     public Class<?> getBeanClass() {
         return beanClass;
     }
 
+    @Override
     public String getPropertyName() {
         return propertyName;
     }
 
+    @Override
     public Class<?> getPropertyType() {
         return propertyType;
     }
 
+    @Override
     public Object getPropertyValue(Object bean) {
         Object curBean = bean;
         for (SimplePropertyInvoker propertyInvoker : invokerChain) {
@@ -83,6 +87,7 @@ public class CompositePropertyInvoker {
         return curBean;
     }
 
+    @Override
     public void setPropertyValue(Object bean, Object value) {
         Object curBean = bean;
         for (int i = 0; i < invokerChain.length; i++) {
@@ -99,10 +104,12 @@ public class CompositePropertyInvoker {
         }
     }
 
+    @Override
     public boolean canRead() {
         return readAbility;
     }
 
+    @Override
     public boolean canWrite() {
         return writeAbility;
     }
