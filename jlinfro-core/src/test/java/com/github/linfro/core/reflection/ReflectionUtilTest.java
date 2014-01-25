@@ -129,4 +129,94 @@ public class ReflectionUtilTest {
     public void testWrapToPrimitiveException() throws Exception {
         wrapToPrimitive(String.class);
     }
+
+    @Test
+    public void testGetDefaultPrimitiveValue() throws Exception {
+        assertEquals(false, getDefaultPrimitiveValue(Boolean.TYPE));
+        assertEquals('\u0000', getDefaultPrimitiveValue(Character.TYPE));
+        assertEquals((byte) 0, getDefaultPrimitiveValue(Byte.TYPE));
+        assertEquals((short) 0, getDefaultPrimitiveValue(Short.TYPE));
+        assertEquals(0, getDefaultPrimitiveValue(Integer.TYPE));
+        assertEquals(0L, getDefaultPrimitiveValue(Long.TYPE));
+        assertEquals(0F, (Float) getDefaultPrimitiveValue(Float.TYPE), 0.01F);
+        assertEquals(0D, (Double) getDefaultPrimitiveValue(Double.TYPE), 0.01D);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testGetDefaultPrimitiveValueException() throws Exception {
+        getDefaultPrimitiveValue(String.class);
+    }
+
+    @Test
+    public void testSetDefaultPrimitiveValue() throws Exception {
+        assertEquals(false, getDefaultPrimitiveValue(Boolean.TYPE));
+        assertEquals('\u0000', getDefaultPrimitiveValue(Character.TYPE));
+        assertEquals((byte) 0, getDefaultPrimitiveValue(Byte.TYPE));
+        assertEquals((short) 0, getDefaultPrimitiveValue(Short.TYPE));
+        assertEquals(0, getDefaultPrimitiveValue(Integer.TYPE));
+        assertEquals(0L, getDefaultPrimitiveValue(Long.TYPE));
+        assertEquals(0F, (Float) getDefaultPrimitiveValue(Float.TYPE), 0.01F);
+        assertEquals(0D, (Double) getDefaultPrimitiveValue(Double.TYPE), 0.01D);
+
+        setDefaultPrimitiveValue(Boolean.TYPE, true);
+        setDefaultPrimitiveValue(Character.TYPE, 'A');
+        setDefaultPrimitiveValue(Byte.TYPE, (byte) 1);
+        setDefaultPrimitiveValue(Short.TYPE, (short) 1);
+        setDefaultPrimitiveValue(Integer.TYPE, 1);
+        setDefaultPrimitiveValue(Long.TYPE, 1L);
+        setDefaultPrimitiveValue(Float.TYPE, 1F);
+        setDefaultPrimitiveValue(Double.TYPE, 1D);
+
+        assertEquals(true, getDefaultPrimitiveValue(Boolean.TYPE));
+        assertEquals('A', getDefaultPrimitiveValue(Character.TYPE));
+        assertEquals((byte) 1, getDefaultPrimitiveValue(Byte.TYPE));
+        assertEquals((short) 1, getDefaultPrimitiveValue(Short.TYPE));
+        assertEquals(1, getDefaultPrimitiveValue(Integer.TYPE));
+        assertEquals(1L, getDefaultPrimitiveValue(Long.TYPE));
+        assertEquals(1F, (Float) getDefaultPrimitiveValue(Float.TYPE), 0.01F);
+        assertEquals(1D, (Double) getDefaultPrimitiveValue(Double.TYPE), 0.01D);
+
+        setDefaultPrimitiveValue(Boolean.TYPE, false);
+        setDefaultPrimitiveValue(Character.TYPE, '\u0000');
+        setDefaultPrimitiveValue(Byte.TYPE, (byte) 0);
+        setDefaultPrimitiveValue(Short.TYPE, (short) 0);
+        setDefaultPrimitiveValue(Integer.TYPE, 0);
+        setDefaultPrimitiveValue(Long.TYPE, 0L);
+        setDefaultPrimitiveValue(Float.TYPE, 0F);
+        setDefaultPrimitiveValue(Double.TYPE, 0D);
+
+        assertEquals(false, getDefaultPrimitiveValue(Boolean.TYPE));
+        assertEquals('\u0000', getDefaultPrimitiveValue(Character.TYPE));
+        assertEquals((byte) 0, getDefaultPrimitiveValue(Byte.TYPE));
+        assertEquals((short) 0, getDefaultPrimitiveValue(Short.TYPE));
+        assertEquals(0, getDefaultPrimitiveValue(Integer.TYPE));
+        assertEquals(0L, getDefaultPrimitiveValue(Long.TYPE));
+        assertEquals(0F, (Float) getDefaultPrimitiveValue(Float.TYPE), 0.01F);
+        assertEquals(0D, (Double) getDefaultPrimitiveValue(Double.TYPE), 0.01D);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testSetDefaultPrimitiveValueException() throws Exception {
+        setDefaultPrimitiveValue(String.class, "");
+    }
+
+    @Test
+    public void testIsUseDynamicInvoker() throws Exception {
+        assertFalse(isUseDynamicInvoker());
+    }
+
+    @Test
+    public void testGetAndSetInvokerFactory() throws Exception {
+        final InvokerFactory oldFactory = getInvokerFactory();
+        assertTrue(oldFactory instanceof ReflectiveInvokerFactory);
+
+        DynamicInvokerFactory newFactory = new DynamicInvokerFactory();
+        assertNotSame(oldFactory, newFactory);
+
+        setInvokerFactory(newFactory);
+        assertSame(newFactory, getInvokerFactory());
+
+        setInvokerFactory(oldFactory);
+        assertSame(oldFactory, getInvokerFactory());
+    }
 }
