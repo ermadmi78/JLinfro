@@ -42,7 +42,6 @@ public class CompositePropertyInvoker implements PropertyInvoker {
         this.invokerChain = new SimplePropertyInvoker[this.nameChain.length];
         Class<?> curBeanClass = beanClass;
         boolean read = true;
-        boolean write = true;
         for (int i = 0; i < this.nameChain.length; i++) {
             String name = notNull(this.nameChain[i]);
             SimplePropertyInvoker invoker = notNull(createSimplePropertyInvoker(curBeanClass, name, factory));
@@ -50,12 +49,11 @@ public class CompositePropertyInvoker implements PropertyInvoker {
             curBeanClass = notNull(invoker.getPropertyType());
 
             read &= invoker.canRead();
-            write &= invoker.canWrite();
         }
 
         this.propertyType = notNull(curBeanClass);
         this.readAbility = read;
-        this.writeAbility = write;
+        this.writeAbility = read && this.invokerChain[this.invokerChain.length - 1].canWrite();
     }
 
     @Override
