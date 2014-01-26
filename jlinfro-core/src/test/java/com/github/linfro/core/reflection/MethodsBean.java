@@ -1,5 +1,7 @@
 package com.github.linfro.core.reflection;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.util.List;
 
 /**
@@ -35,6 +37,16 @@ public class MethodsBean {
     private String wrapString;
 
     private List<String> wrapList;
+
+    private final PropertyChangeSupport listeners = new PropertyChangeSupport(this);
+
+    public void addPropertyChangeListener(String propertyName, PropertyChangeListener listener) {
+        listeners.addPropertyChangeListener(propertyName, listener);
+    }
+
+    public void removePropertyChangeListener(String propertyName, PropertyChangeListener listener) {
+        listeners.removePropertyChangeListener(propertyName, listener);
+    }
 
     public boolean isPrimBoolean() {
         return primBoolean;
@@ -105,7 +117,9 @@ public class MethodsBean {
     }
 
     public void setPrimInt(int primInt) {
+        int old = this.primInt;
         this.primInt = primInt;
+        listeners.firePropertyChange("primInt", old, this.primInt);
     }
 
     public Integer getWrapInt() {
@@ -113,7 +127,9 @@ public class MethodsBean {
     }
 
     public void setWrapInt(Integer wrapInt) {
+        Integer old = this.wrapInt;
         this.wrapInt = wrapInt;
+        listeners.firePropertyChange("wrapInt", old, this.wrapInt);
     }
 
     public long getPrimLong() {

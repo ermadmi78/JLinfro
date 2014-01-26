@@ -66,7 +66,7 @@ public class InvokerMethodTest {
         print(invokerCounter);
         System.out.println("#################");
 
-        int fieldsCount = MethodsBean.class.getDeclaredFields().length;
+        int fieldsCount = MethodsBean.class.getDeclaredFields().length - 1; // Exclude "listeners" field
 
         assertEquals(new Integer(fieldsCount * 2), factoryCounter.get(ReflectiveInvokerFactory.class));
         assertEquals(new Integer(fieldsCount * 2), factoryCounter.get(DynamicInvokerFactory.class));

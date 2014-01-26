@@ -1,6 +1,9 @@
 package com.github.linfro.core.reflection;
 
 
+import com.github.linfro.core.common.Disposable;
+
+import java.beans.PropertyChangeListener;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
@@ -203,6 +206,75 @@ public final class ReflectionUtil {
                 method.setAccessible(true);
             }
         }
+    }
+
+    public static boolean addPropertyChangeListener(Object bean, String property, PropertyChangeListener listener) {
+        return addPropertyChangeListener(bean, property, listener, getInvokerFactory());
+    }
+
+    public static boolean addPropertyChangeListener(Object bean, String property, PropertyChangeListener listener,
+                                                    InvokerFactory factory) {
+        notNull(bean);
+        notNull(property);
+        notNull(listener);
+        notNull(factory);
+
+        Method method;
+        try {
+            method = notNull(
+                    bean.getClass().getMethod("addPropertyChangeListener",
+                            String.class, PropertyChangeListener.class)
+            );
+        } catch (NoSuchMethodException e) {
+            return false;
+        }
+
+        Invoker invoker = factory.createMethodInvoker(method);
+        invoker.invoke(bean, property, listener);
+        return true;
+    }
+
+    public static boolean removePropertyChangeListener(Object bean, String property, PropertyChangeListener listener) {
+        return removePropertyChangeListener(bean, property, listener, getInvokerFactory());
+    }
+
+    public static boolean removePropertyChangeListener(Object bean, String property, PropertyChangeListener listener,
+                                                       InvokerFactory factory) {
+        notNull(bean);
+        notNull(property);
+        notNull(listener);
+        notNull(factory);
+
+        Method method;
+        try {
+            method = notNull(
+                    bean.getClass().getMethod("removePropertyChangeListener",
+                            String.class, PropertyChangeListener.class)
+            );
+        } catch (NoSuchMethodException e) {
+            return false;
+        }
+
+        Invoker invoker = factory.createMethodInvoker(method);
+        invoker.invoke(bean, property, listener);
+        return true;
+    }
+
+    public static Disposable synchronizeProperty(Object firstBean, String firstName,
+                                                 Object secondBean, String secondName,
+                                                 boolean ignoreNull, InvokerFactory factory) {
+        return new PropertySynchronizer(firstBean, firstName, secondBean, secondName, ignoreNull, factory);
+    }
+
+    public static Disposable synchronizeProperty(Object firstBean, String firstName,
+                                                 Object secondBean, String secondName,
+                                                 boolean ignoreNull) {
+        return synchronizeProperty(firstBean, firstName, secondBean, secondName, ignoreNull, getInvokerFactory());
+    }
+
+    public static Disposable synchronizeProperty(String property, Object firstBean, Object secondBean,
+                                                 boolean ignoreNull) {
+        return synchronizeProperty(firstBean, property, secondBean, property, ignoreNull, getInvokerFactory());
     }
 
     //******************************************************************************************************************
