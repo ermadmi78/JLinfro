@@ -57,11 +57,11 @@ public abstract class ValueDSL<DSL, F, SRC extends GetValue<F>> {
 
         @Override
         protected Disposable createLink(HasValue<F> to) {
-            return new OneWayLink<>(from, to, context);
+            return new OneWayLink<F>(from, to, context);
         }
 
         public <T> OneWayDSL<T> transform(Function<F, T> function) {
-            return new OneWayDSL<>(new TransformedGetValue<>(from, function), context).addFromToDispose();
+            return new OneWayDSL<T>(new TransformedGetValue<F, T>(from, function), context).addFromToDispose();
         }
     }
 
@@ -77,7 +77,7 @@ public abstract class ValueDSL<DSL, F, SRC extends GetValue<F>> {
 
         @Override
         protected Disposable createLink(HasValue<F> to) {
-            return new BothWayLink<>(from, to, context);
+            return new BothWayLink<F>(from, to, context);
         }
 
         public BothWayDSL<F> sync() {
@@ -86,12 +86,12 @@ public abstract class ValueDSL<DSL, F, SRC extends GetValue<F>> {
         }
 
         public <T> BothWayDSL<T> transform(RevertFunction<F, T> function) {
-            return new BothWayDSL<>(new TransformedHasValue<>(from, function), context).addFromToDispose();
+            return new BothWayDSL<T>(new TransformedHasValue<F, T>(from, function), context).addFromToDispose();
         }
 
         public <T> BothWayDSL<T> transform(Function<F, T> function, Function<T, F> revertFunction) {
-            return new BothWayDSL<>(new TransformedHasValue<>(
-                    from, new DefaultRevertFunction<>(function, revertFunction)), context
+            return new BothWayDSL<T>(new TransformedHasValue<F, T>(
+                    from, new DefaultRevertFunction<F, T>(function, revertFunction)), context
             ).addFromToDispose();
         }
     }
@@ -108,22 +108,22 @@ public abstract class ValueDSL<DSL, F, SRC extends GetValue<F>> {
 
         @Override
         protected Disposable createLink(HasValue<F> to) {
-            return new BothWayLink<>(from, to, context);
+            return new BothWayLink<F>(from, to, context);
         }
 
         public <T> HybridDSL<T> transform(RevertFunction<F, T> function) {
-            return new HybridDSL<>(new TransformedHasValue<>(from, function), context).addFromToDispose();
+            return new HybridDSL<T>(new TransformedHasValue<F, T>(from, function), context).addFromToDispose();
         }
 
         public <T> HybridDSL<T> transform(Function<F, T> function, Function<T, F> revertFunction) {
-            return new HybridDSL<>(new TransformedHasValue<>(
-                    from, new DefaultRevertFunction<>(function, revertFunction)), context
+            return new HybridDSL<T>(new TransformedHasValue<F, T>(
+                    from, new DefaultRevertFunction<F, T>(function, revertFunction)), context
             ).addFromToDispose();
         }
 
         // One way branch
         public <T> OneWayDSL<T> transform(Function<F, T> function) {
-            return new OneWayDSL<>(new TransformedGetValue<>(from, function), context).addFromToDispose();
+            return new OneWayDSL<T>(new TransformedGetValue<F, T>(from, function), context).addFromToDispose();
         }
 
         // Both way branch
