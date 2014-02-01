@@ -1,6 +1,9 @@
 package com.github.linfro.core;
 
-import com.github.linfro.core.common.*;
+import com.github.linfro.core.common.AutoDisposable;
+import com.github.linfro.core.common.Disposable;
+import com.github.linfro.core.common.Equality;
+import com.github.linfro.core.common.RevertFunction;
 import com.github.linfro.core.dsl.Context;
 import com.github.linfro.core.dsl.InOutLink;
 import com.github.linfro.core.dsl.OutLink;
@@ -52,7 +55,7 @@ public abstract class Flow<DSL, F, SRC extends GetValue<F>> {
 
         @Override
         protected Disposable createLink(HasValue<F> to) {
-            return new OutLink<F>(from, to, context);
+            return new OutLink<>(from, to, context);
         }
 
         public <T> OutFlow<T> map(Function<F, T> function) {
@@ -72,7 +75,7 @@ public abstract class Flow<DSL, F, SRC extends GetValue<F>> {
 
         @Override
         protected Disposable createLink(HasValue<F> to) {
-            return new InOutLink<F>(from, to, context);
+            return new InOutLink<>(from, to, context);
         }
 
         public InOutFlow<F> sync() {
@@ -81,13 +84,11 @@ public abstract class Flow<DSL, F, SRC extends GetValue<F>> {
         }
 
         public <T> InOutFlow<T> map(RevertFunction<F, T> function) {
-            return new InOutFlow<T>(new TransformedHasValue<F, T>(from, function), context);
+            return new InOutFlow<>(from.inOutMap(function), context);
         }
 
-        public <T> InOutFlow<T> map(Function<F, T> function, Function<T, F> revertFunction) {
-            return new InOutFlow<T>(new TransformedHasValue<F, T>(
-                    from, new DefaultRevertFunction<F, T>(function, revertFunction)), context
-            );
+        public <T> InOutFlow<T> map(Function<F, T> outFunc, Function<T, F> inFunc) {
+            return new InOutFlow<>(from.map(outFunc, inFunc), context);
         }
     }
 
@@ -103,22 +104,20 @@ public abstract class Flow<DSL, F, SRC extends GetValue<F>> {
 
         @Override
         protected Disposable createLink(HasValue<F> to) {
-            return new InOutLink<F>(from, to, context);
+            return new InOutLink<>(from, to, context);
         }
 
         public <T> HybridFlow<T> map(RevertFunction<F, T> function) {
-            return new HybridFlow<T>(new TransformedHasValue<F, T>(from, function), context);
+            return new HybridFlow<>(from.inOutMap(function), context);
         }
 
-        public <T> HybridFlow<T> map(Function<F, T> function, Function<T, F> revertFunction) {
-            return new HybridFlow<T>(new TransformedHasValue<F, T>(
-                    from, new DefaultRevertFunction<F, T>(function, revertFunction)), context
-            );
+        public <T> HybridFlow<T> map(Function<F, T> inFunc, Function<T, F> outFunc) {
+            return new HybridFlow<>(from.map(inFunc, outFunc), context);
         }
 
         // Out branch
         public <T> OutFlow<T> map(Function<F, T> function) {
-            return new OutFlow<T>(new TransformedGetValue<F, T>(from, function), context);
+            return new OutFlow<>(from.map(function), context);
         }
 
         // In-out branch

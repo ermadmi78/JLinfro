@@ -10,21 +10,21 @@ import static com.github.linfro.core.common.ObjectUtil.notNull;
  * @since 1.0.0
  */
 public class DefaultRevertFunction<F, T> implements RevertFunction<F, T> {
-    private final Function<F, T> directFunc;
-    private final Function<T, F> revertFunc;
+    private final Function<F, T> outFunc;
+    private final Function<T, F> inFunc;
 
-    public DefaultRevertFunction(Function<F, T> directFunc, Function<T, F> revertFunc) {
-        this.directFunc = notNull(directFunc);
-        this.revertFunc = notNull(revertFunc);
+    public DefaultRevertFunction(Function<F, T> outFunc, Function<T, F> inFunc) {
+        this.outFunc = notNull(outFunc);
+        this.inFunc = notNull(inFunc);
     }
 
     @Override
     public T apply(F from) {
-        return directFunc.apply(from);
+        return outFunc.apply(from);
     }
 
     @Override
     public F revert(T to) {
-        return revertFunc.apply(to);
+        return inFunc.apply(to);
     }
 }
