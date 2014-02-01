@@ -116,12 +116,12 @@ public abstract class Flow<DSL, F, SRC extends GetValue<F>> {
             );
         }
 
-        // One way branch
+        // Out branch
         public <T> OutFlow<T> map(Function<F, T> function) {
             return new OutFlow<T>(new TransformedGetValue<F, T>(from, function), context);
         }
 
-        // Both way branch
+        // In-out branch
         public InOutFlow<F> sync() {
             context.setSync(true);
             return new InOutFlow<>(from, context);
