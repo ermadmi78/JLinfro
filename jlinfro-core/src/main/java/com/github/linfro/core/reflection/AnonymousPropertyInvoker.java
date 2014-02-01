@@ -1,5 +1,7 @@
 package com.github.linfro.core.reflection;
 
+import com.github.linfro.core.common.Disposable;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -12,7 +14,7 @@ import static com.github.linfro.core.reflection.ReflectionUtil.splitProperty;
  * @version 2014-01-26
  * @since 1.0.0
  */
-public class AnonymousPropertyInvoker {
+public class AnonymousPropertyInvoker implements Disposable {
     protected final String propertyName;
     protected final InvokerFactory factory;
 
@@ -61,6 +63,11 @@ public class AnonymousPropertyInvoker {
 
         PropertyInvoker invoker = notNull(getPropertyInvoker(bean.getClass()));
         invoker.setPropertyValue(bean, value);
+    }
+
+    @Override
+    public void dispose() {
+        invokerMap.clear();
     }
 
     @Override
