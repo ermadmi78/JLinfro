@@ -1,5 +1,7 @@
 package com.github.linfro.core.common;
 
+import java.util.function.Function;
+
 /**
  * @author Dmitry Ermakov
  * @version 2014-01-05

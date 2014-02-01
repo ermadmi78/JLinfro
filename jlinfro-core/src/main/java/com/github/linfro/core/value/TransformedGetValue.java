@@ -1,6 +1,6 @@
 package com.github.linfro.core.value;
 
-import com.github.linfro.core.common.Function;
+import java.util.function.Function;
 
 import static com.github.linfro.core.common.ObjectUtil.notNull;
 

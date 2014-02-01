@@ -1,10 +1,15 @@
 package com.github.linfro.core;
 
-import com.github.linfro.core.common.*;
+import com.github.linfro.core.common.DefaultRevertFunction;
+import com.github.linfro.core.common.Disposable;
+import com.github.linfro.core.common.Equality;
+import com.github.linfro.core.common.RevertFunction;
 import com.github.linfro.core.dsl.BothWayLink;
 import com.github.linfro.core.dsl.Context;
 import com.github.linfro.core.dsl.OneWayLink;
 import com.github.linfro.core.value.*;
+
+import java.util.function.Function;
 
 import static com.github.linfro.core.common.ObjectUtil.notNull;
 

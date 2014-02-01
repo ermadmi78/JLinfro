@@ -1,5 +1,7 @@
 package com.github.linfro.core.common;
 
+import java.util.function.Function;
+
 import static com.github.linfro.core.common.ObjectUtil.notNull;
 
 /**
