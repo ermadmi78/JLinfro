@@ -1,6 +1,9 @@
 package com.github.linfro.core.value;
 
 import com.github.linfro.core.Flow;
+import com.github.linfro.core.common.AutoDisposable;
+
+import java.util.function.Function;
 
 /**
  * @author Dmitry Ermakov
@@ -15,7 +18,20 @@ public interface GetValue<T> extends Getter<T> {
 
     public void removeChangeListener(ValueChangeListener<? super T> listener);
 
-    public default Flow.OneWayFlow<T> directFlow() {
+    public default void autoDispose() {
+        if (this instanceof AutoDisposable) {
+            AutoDisposable disposable = (AutoDisposable) this;
+            if (disposable.isAutoDispose()) {
+                disposable.dispose();
+            }
+        }
+    }
+
+    public default Flow.OutFlow<T> outFlow() {
         return Flow.from(this);
+    }
+
+    public default <M> GetDisposableValue<M> map(Function<T, M> function) {
+        return new TransformedGetValue<>(this, function);
     }
 }

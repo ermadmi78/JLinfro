@@ -46,11 +46,11 @@ public class Flow_TransformationSyntax_Test {
         HasValue<Integer> intVal = Flow.newHasValue();
 
         /*
-        Disposable link = strVal.directFlow().map(
+        Disposable link = strVal.outFlow().map(
                 (from) -> from == null ? null : Integer.valueOf(from)
         ).to(intVal);
         */
-        Disposable link = strVal.directFlow().map(Integer::valueOf).to(intVal);
+        Disposable link = strVal.outFlow().map(Integer::valueOf).to(intVal);
 
         strVal.update("50");
         assertEquals("50", strVal.getValue());

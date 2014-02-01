@@ -1,9 +1,9 @@
 package com.github.linfro.core;
 
 import com.github.linfro.core.common.*;
-import com.github.linfro.core.dsl.BothWayLink;
 import com.github.linfro.core.dsl.Context;
-import com.github.linfro.core.dsl.OneWayLink;
+import com.github.linfro.core.dsl.InOutLink;
+import com.github.linfro.core.dsl.OutLink;
 import com.github.linfro.core.value.*;
 
 import java.util.function.Function;
@@ -40,52 +40,52 @@ public abstract class Flow<DSL, F, SRC extends GetValue<F>> {
     //  Transformation syntax
     //******************************************************************************************************************
 
-    public static final class OneWayFlow<F> extends Flow<OneWayFlow<F>, F, GetValue<F>> {
-        private OneWayFlow(GetValue<F> from, Context context) {
+    public static final class OutFlow<F> extends Flow<OutFlow<F>, F, GetValue<F>> {
+        private OutFlow(GetValue<F> from, Context context) {
             super(from, context);
         }
 
         @Override
-        protected OneWayFlow<F> nextDSL() {
+        protected OutFlow<F> nextDSL() {
             return this;
         }
 
         @Override
         protected Disposable createLink(HasValue<F> to) {
-            return new OneWayLink<F>(from, to, context);
+            return new OutLink<F>(from, to, context);
         }
 
-        public <T> OneWayFlow<T> map(Function<F, T> function) {
-            return new OneWayFlow<T>(new TransformedGetValue<F, T>(from, function), context);
+        public <T> OutFlow<T> map(Function<F, T> function) {
+            return new OutFlow<>(from.map(function), context);
         }
     }
 
-    public static final class BothWayFlow<F> extends Flow<BothWayFlow<F>, F, HasValue<F>> {
-        private BothWayFlow(HasValue<F> from, Context context) {
+    public static final class InOutFlow<F> extends Flow<InOutFlow<F>, F, HasValue<F>> {
+        private InOutFlow(HasValue<F> from, Context context) {
             super(from, context);
         }
 
         @Override
-        protected BothWayFlow<F> nextDSL() {
+        protected InOutFlow<F> nextDSL() {
             return this;
         }
 
         @Override
         protected Disposable createLink(HasValue<F> to) {
-            return new BothWayLink<F>(from, to, context);
+            return new InOutLink<F>(from, to, context);
         }
 
-        public BothWayFlow<F> sync() {
+        public InOutFlow<F> sync() {
             context.setSync(true);
             return nextDSL();
         }
 
-        public <T> BothWayFlow<T> map(RevertFunction<F, T> function) {
-            return new BothWayFlow<T>(new TransformedHasValue<F, T>(from, function), context);
+        public <T> InOutFlow<T> map(RevertFunction<F, T> function) {
+            return new InOutFlow<T>(new TransformedHasValue<F, T>(from, function), context);
         }
 
-        public <T> BothWayFlow<T> map(Function<F, T> function, Function<T, F> revertFunction) {
-            return new BothWayFlow<T>(new TransformedHasValue<F, T>(
+        public <T> InOutFlow<T> map(Function<F, T> function, Function<T, F> revertFunction) {
+            return new InOutFlow<T>(new TransformedHasValue<F, T>(
                     from, new DefaultRevertFunction<F, T>(function, revertFunction)), context
             );
         }
@@ -103,7 +103,7 @@ public abstract class Flow<DSL, F, SRC extends GetValue<F>> {
 
         @Override
         protected Disposable createLink(HasValue<F> to) {
-            return new BothWayLink<F>(from, to, context);
+            return new InOutLink<F>(from, to, context);
         }
 
         public <T> HybridFlow<T> map(RevertFunction<F, T> function) {
@@ -117,14 +117,14 @@ public abstract class Flow<DSL, F, SRC extends GetValue<F>> {
         }
 
         // One way branch
-        public <T> OneWayFlow<T> map(Function<F, T> function) {
-            return new OneWayFlow<T>(new TransformedGetValue<F, T>(from, function), context);
+        public <T> OutFlow<T> map(Function<F, T> function) {
+            return new OutFlow<T>(new TransformedGetValue<F, T>(from, function), context);
         }
 
         // Both way branch
-        public BothWayFlow<F> sync() {
+        public InOutFlow<F> sync() {
             context.setSync(true);
-            return new BothWayFlow<>(from, context);
+            return new InOutFlow<>(from, context);
         }
     }
 
@@ -140,8 +140,8 @@ public abstract class Flow<DSL, F, SRC extends GetValue<F>> {
         return new DefaultHasValue<>(value);
     }
 
-    public static <F> OneWayFlow<F> from(GetValue<F> from) {
-        return new OneWayFlow<>(from, new Context());
+    public static <F> OutFlow<F> from(GetValue<F> from) {
+        return new OutFlow<>(from, new Context());
     }
 
     public static <F> HybridFlow<F> from(HasValue<F> from) {
@@ -206,7 +206,7 @@ public abstract class Flow<DSL, F, SRC extends GetValue<F>> {
         return null; //todo;
     }
 
-    public static <X, F> OneWayFlow<F> from(GetValue<X> beanValue, String property) {
+    public static <X, F> OutFlow<F> from(GetValue<X> beanValue, String property) {
         return null; //todo
     }
 

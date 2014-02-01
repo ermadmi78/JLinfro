@@ -81,5 +81,6 @@ public class TransformedHasValue<F, T> extends AbstractHasValue<T> implements Ha
         result = null;
         calculated = false;
         from.removeChangeListener(fromListener);
+        from.autoDispose();
     }
 }

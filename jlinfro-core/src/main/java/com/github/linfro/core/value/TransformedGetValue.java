@@ -73,5 +73,6 @@ public class TransformedGetValue<F, T> extends AbstractGetValue<T> implements Ge
         result = null;
         calculated = false;
         from.removeChangeListener(fromListener);
+        from.autoDispose();
     }
 }
