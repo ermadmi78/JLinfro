@@ -6,5 +6,5 @@ package com.github.linfro.core.value;
  * @since 1.0.0
  */
 public interface Aggregator<T> {
-    public T aggregate(Iterable<T> members);
+    public T aggregate(Iterable<T> args);
 }

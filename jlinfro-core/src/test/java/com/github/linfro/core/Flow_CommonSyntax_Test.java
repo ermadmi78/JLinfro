@@ -7,9 +7,6 @@ import com.github.linfro.core.value.TestGetValue;
 import com.github.linfro.core.value.ValueChangeListener;
 import org.junit.Test;
 
-import static com.github.linfro.core.ValueDSL.linkFrom;
-import static com.github.linfro.core.ValueDSL.newHasValue;
-import static com.github.linfro.core.value.TestGetValue.newGetValue;
 import static org.junit.Assert.*;
 
 /**
@@ -17,24 +14,24 @@ import static org.junit.Assert.*;
  * @version 2014-01-06
  * @since 1.0.0
  */
-public class ValueDsl_CommonSyntax_Test {
+public class Flow_CommonSyntax_Test {
     @Test
     public void testNewHasValue() {
-        HasValue<String> strValue = newHasValue();
+        HasValue<String> strValue = Flow.newHasValue();
         assertNotNull(strValue);
         assertNull(strValue.getValue());
 
-        HasValue<Integer> intValue = newHasValue(500);
+        HasValue<Integer> intValue = Flow.newHasValue(500);
         assertNotNull(intValue);
         assertEquals(new Integer(500), intValue.getValue());
     }
 
     @Test
     public void testOneWayLink() {
-        TestGetValue<String> a = newGetValue("a");
-        HasValue<String> b = newHasValue("b");
+        TestGetValue<String> a = TestGetValue.newGetValue("a");
+        HasValue<String> b = Flow.newHasValue("b");
 
-        Disposable link = linkFrom(a).to(b);
+        Disposable link = Flow.from(a).to(b);
         assertNotNull(link);
         assertEquals("a", a.getValue());
         assertEquals("b", b.getValue());
@@ -55,10 +52,10 @@ public class ValueDsl_CommonSyntax_Test {
 
     @Test
     public void testBothWayLink() {
-        HasValue<String> a = newHasValue("a");
-        HasValue<String> b = newHasValue("b");
+        HasValue<String> a = Flow.newHasValue("a");
+        HasValue<String> b = Flow.newHasValue("b");
 
-        Disposable link = linkFrom(a).to(b);
+        Disposable link = Flow.from(a).to(b);
         assertNotNull(link);
         assertEquals("a", a.getValue());
         assertEquals("b", b.getValue());
@@ -79,14 +76,14 @@ public class ValueDsl_CommonSyntax_Test {
 
     @Test
     public void testCallLoop() {
-        HasValue<String> a = newHasValue("a");
-        HasValue<String> b = newHasValue("b");
-        HasValue<String> c = newHasValue("c");
+        HasValue<String> a = Flow.newHasValue("a");
+        HasValue<String> b = Flow.newHasValue("b");
+        HasValue<String> c = Flow.newHasValue("c");
 
         // Make call loop
-        linkFrom(a).to(b);
-        linkFrom(b).to(c);
-        linkFrom(c).to(a);
+        Flow.from(a).to(b);
+        Flow.from(b).to(c);
+        Flow.from(c).to(a);
 
         try {
             a.setValue("loop"); // Start call loop
@@ -102,10 +99,10 @@ public class ValueDsl_CommonSyntax_Test {
 
     @Test
     public void testBothWaySyncLink() {
-        HasValue<String> a = newHasValue("a");
-        HasValue<String> b = newHasValue("b");
+        HasValue<String> a = Flow.newHasValue("a");
+        HasValue<String> b = Flow.newHasValue("b");
 
-        Disposable link = linkFrom(a).sync().to(b);
+        Disposable link = Flow.from(a).sync().to(b);
         assertNotNull(link);
         assertEquals("a", a.getValue());
         assertEquals("b", b.getValue());
@@ -130,10 +127,10 @@ public class ValueDsl_CommonSyntax_Test {
 
     @Test
     public void testOneWayForceLink() {
-        TestGetValue<String> a = newGetValue("a");
-        HasValue<String> b = newHasValue("b");
+        TestGetValue<String> a = TestGetValue.newGetValue("a");
+        HasValue<String> b = Flow.newHasValue("b");
 
-        Disposable link = linkFrom(a).force().to(b);
+        Disposable link = Flow.from(a).force().to(b);
         assertEquals("a", a.getValue());
         assertEquals("a", b.getValue());
 
@@ -153,10 +150,10 @@ public class ValueDsl_CommonSyntax_Test {
 
     @Test
     public void testBothWayForceLink() {
-        HasValue<String> a = newHasValue("a");
-        HasValue<String> b = newHasValue("b");
+        HasValue<String> a = Flow.newHasValue("a");
+        HasValue<String> b = Flow.newHasValue("b");
 
-        Disposable link = linkFrom(a).force().to(b);
+        Disposable link = Flow.from(a).force().to(b);
         assertEquals("a", a.getValue());
         assertEquals("a", b.getValue());
 
@@ -179,13 +176,13 @@ public class ValueDsl_CommonSyntax_Test {
         AffectedListener al = new AffectedListener();
         AffectedListener bl = new AffectedListener();
 
-        TestGetValue<String> a = newGetValue("a");
-        HasValue<String> b = newHasValue("b");
+        TestGetValue<String> a = TestGetValue.newGetValue("a");
+        HasValue<String> b = Flow.newHasValue("b");
 
         a.addChangeListener(al);
         b.addChangeListener(bl);
 
-        linkFrom(a).strong().to(b);
+        Flow.from(a).strong().to(b);
 
         a.update("b");
         assertEquals("b", b.getValue());
@@ -203,13 +200,13 @@ public class ValueDsl_CommonSyntax_Test {
         AffectedListener al = new AffectedListener();
         AffectedListener bl = new AffectedListener();
 
-        HasValue<String> a = newHasValue("a");
-        HasValue<String> b = newHasValue("b");
+        HasValue<String> a = Flow.newHasValue("a");
+        HasValue<String> b = Flow.newHasValue("b");
 
         a.addChangeListener(al);
         b.addChangeListener(bl);
 
-        linkFrom(a).strong().to(b);
+        Flow.from(a).strong().to(b);
 
         a.setValue("b");
         assertEquals("b", b.getValue());
@@ -227,13 +224,13 @@ public class ValueDsl_CommonSyntax_Test {
         AffectedListener al = new AffectedListener();
         AffectedListener bl = new AffectedListener();
 
-        HasValue<String> a = newHasValue("a");
-        HasValue<String> b = newHasValue("b");
+        HasValue<String> a = Flow.newHasValue("a");
+        HasValue<String> b = Flow.newHasValue("b");
 
         a.addChangeListener(al);
         b.addChangeListener(bl);
 
-        linkFrom(a).sync().strong().to(b);
+        Flow.from(a).sync().strong().to(b);
 
         a.setValue("b");
         assertEquals("b", b.getValue());
@@ -261,13 +258,13 @@ public class ValueDsl_CommonSyntax_Test {
         AffectedListener al = new AffectedListener();
         AffectedListener bl = new AffectedListener();
 
-        HasValue<String> a = newHasValue("a");
-        HasValue<String> b = newHasValue("b");
+        HasValue<String> a = Flow.newHasValue("a");
+        HasValue<String> b = Flow.newHasValue("b");
 
         a.addChangeListener(al);
         b.addChangeListener(bl);
 
-        linkFrom(a).sync().strong().force().to(b);
+        Flow.from(a).sync().strong().force().to(b);
 
         assertEquals("a", b.getValue());
         assertFalse(al.testAffectedAndReset());

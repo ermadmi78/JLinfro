@@ -1,5 +1,6 @@
 package com.github.linfro.core.value;
 
+import com.github.linfro.core.common.AutoDisposable;
 import com.github.linfro.core.common.RevertFunction;
 
 import static com.github.linfro.core.common.ObjectUtil.notNull;
@@ -9,16 +10,12 @@ import static com.github.linfro.core.common.ObjectUtil.notNull;
  * @version 2014-01-05
  * @since 1.0.0
  */
-public class TransformedHasValue<F, T> extends AbstractHasValue<T> implements HasDisposableValue<T> {
+public class TransformedHasValue<F, T> extends AbstractHasValue<T> implements HasDisposableValue<T>, AutoDisposable {
     protected final HasValue<F> from;
     protected final RevertFunction<F, T> function;
-    protected final ValueChangeListener<F> fromListener = new ValueChangeListener<F>() {
-        @Override
-        public void valueChanged(Getter<? extends F> getter) {
-            fireValueChanged();
-        }
-    };
+    protected final ValueChangeListener<F> fromListener = (getter) -> fireValueChanged();
 
+    protected boolean autoDispose = true;
     protected boolean disposed = false;
 
     private T result;
@@ -63,6 +60,15 @@ public class TransformedHasValue<F, T> extends AbstractHasValue<T> implements Ha
         result = null;
         calculated = false;
         super.fireValueChanged();
+    }
+
+    @Override
+    public boolean isAutoDispose() {
+        return autoDispose;
+    }
+
+    public void setAutoDispose(boolean autoDispose) {
+        this.autoDispose = autoDispose;
     }
 
     @Override

@@ -1,5 +1,7 @@
 package com.github.linfro.core.value;
 
+import com.github.linfro.core.common.AutoDisposable;
+
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -11,19 +13,19 @@ import static com.github.linfro.core.common.ObjectUtil.notNull;
  * @version 2014-01-05
  * @since 1.0.0
  */
-public class DefaultHasAggregateValue<T> extends AbstractGetValue<T> implements HasAggregateValue<T> {
+public class DefaultGetAggregateValue<T> extends AbstractGetValue<T> implements GetAggregateValue<T> {
     protected final Aggregator<T> aggregator;
     protected T initialValue;
-    protected final List<HasDisposableValue<T>> members = new LinkedList<>();
+    protected final List<HasDisposableValue<T>> arguments = new LinkedList<>();
 
     private T aggregation;
     private boolean aggregationCalculated = false;
 
-    public DefaultHasAggregateValue(Aggregator<T> aggregator) {
+    public DefaultGetAggregateValue(Aggregator<T> aggregator) {
         this(aggregator, null);
     }
 
-    public DefaultHasAggregateValue(Aggregator<T> aggregator, T initialValue) {
+    public DefaultGetAggregateValue(Aggregator<T> aggregator, T initialValue) {
         this.aggregator = notNull(aggregator);
         this.initialValue = initialValue;
     }
@@ -44,9 +46,9 @@ public class DefaultHasAggregateValue<T> extends AbstractGetValue<T> implements 
     }
 
     @Override
-    public HasDisposableValue<T> newMemberValue() {
-        DisposableMember member = new DisposableMember(getInitialValue());
-        members.add(member);
+    public HasDisposableValue<T> newArgument() {
+        DisposableArgument member = new DisposableArgument(getInitialValue());
+        arguments.add(member);
         fireValueChanged();
 
         return member;
@@ -56,11 +58,11 @@ public class DefaultHasAggregateValue<T> extends AbstractGetValue<T> implements 
         return initialValue;
     }
 
-    private class DisposableMember extends AbstractHasValue<T> implements HasDisposableValue<T> {
+    private class DisposableArgument extends AbstractHasValue<T> implements HasDisposableValue<T>, AutoDisposable {
         private T value;
         private boolean disposed = false;
 
-        private DisposableMember(T value) {
+        private DisposableArgument(T value) {
             this.value = value;
         }
 
@@ -73,17 +75,22 @@ public class DefaultHasAggregateValue<T> extends AbstractGetValue<T> implements 
         public void setValue(T value) {
             this.value = value;
             if (!disposed) {
-                DefaultHasAggregateValue.this.fireValueChanged();
+                DefaultGetAggregateValue.this.fireValueChanged();
             }
             super.fireValueChanged();
+        }
+
+        @Override
+        public boolean isAutoDispose() {
+            return true;
         }
 
         @Override
         public void dispose() {
             if (!disposed) {
                 disposed = true;
-                members.remove(this);
-                DefaultHasAggregateValue.this.fireValueChanged();
+                arguments.remove(this);
+                DefaultGetAggregateValue.this.fireValueChanged();
             }
         }
     }
@@ -94,7 +101,7 @@ public class DefaultHasAggregateValue<T> extends AbstractGetValue<T> implements 
     }
 
     private class InternalValueIterator implements Iterator<T> {
-        private final Iterator<HasDisposableValue<T>> iterator = members.iterator();
+        private final Iterator<HasDisposableValue<T>> iterator = arguments.iterator();
 
         @Override
         public boolean hasNext() {

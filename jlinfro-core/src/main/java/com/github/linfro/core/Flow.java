@@ -1,9 +1,6 @@
 package com.github.linfro.core;
 
-import com.github.linfro.core.common.DefaultRevertFunction;
-import com.github.linfro.core.common.Disposable;
-import com.github.linfro.core.common.Equality;
-import com.github.linfro.core.common.RevertFunction;
+import com.github.linfro.core.common.*;
 import com.github.linfro.core.dsl.BothWayLink;
 import com.github.linfro.core.dsl.Context;
 import com.github.linfro.core.dsl.OneWayLink;
@@ -18,22 +15,20 @@ import static com.github.linfro.core.common.ObjectUtil.notNull;
  * @version 2014-01-06
  * @since 1.0.0
  */
-public abstract class ValueDSL<DSL, F, SRC extends GetValue<F>> {
+public abstract class Flow<DSL, F, SRC extends GetValue<F>> {
     protected final SRC from;
     protected final Context context;
 
-    private ValueDSL(SRC from, Context context) {
+    private Flow(SRC from, Context context) {
         this.from = notNull(from);
         this.context = notNull(context);
+        autoDispose(this.from);
     }
 
-    protected DSL addFromToDispose() {
-        context.addToDispose(from);
-        return nextDSL();
-    }
-
-    protected <A> A addToDispose(A obj) {
-        context.addToDispose(obj);
+    protected final <A> A autoDispose(A obj) {
+        if ((obj instanceof AutoDisposable) && ((AutoDisposable) obj).isAutoDispose()) {
+            context.addToDispose(obj);
+        }
         return obj;
     }
 
@@ -45,13 +40,13 @@ public abstract class ValueDSL<DSL, F, SRC extends GetValue<F>> {
     //  Transformation syntax
     //******************************************************************************************************************
 
-    public static final class OneWayDSL<F> extends ValueDSL<OneWayDSL<F>, F, GetValue<F>> {
-        private OneWayDSL(GetValue<F> from, Context context) {
+    public static final class OneWayFlow<F> extends Flow<OneWayFlow<F>, F, GetValue<F>> {
+        private OneWayFlow(GetValue<F> from, Context context) {
             super(from, context);
         }
 
         @Override
-        protected OneWayDSL<F> nextDSL() {
+        protected OneWayFlow<F> nextDSL() {
             return this;
         }
 
@@ -60,18 +55,18 @@ public abstract class ValueDSL<DSL, F, SRC extends GetValue<F>> {
             return new OneWayLink<F>(from, to, context);
         }
 
-        public <T> OneWayDSL<T> transform(Function<F, T> function) {
-            return new OneWayDSL<T>(new TransformedGetValue<F, T>(from, function), context).addFromToDispose();
+        public <T> OneWayFlow<T> map(Function<F, T> function) {
+            return new OneWayFlow<T>(new TransformedGetValue<F, T>(from, function), context);
         }
     }
 
-    public static final class BothWayDSL<F> extends ValueDSL<BothWayDSL<F>, F, HasValue<F>> {
-        private BothWayDSL(HasValue<F> from, Context context) {
+    public static final class BothWayFlow<F> extends Flow<BothWayFlow<F>, F, HasValue<F>> {
+        private BothWayFlow(HasValue<F> from, Context context) {
             super(from, context);
         }
 
         @Override
-        protected BothWayDSL<F> nextDSL() {
+        protected BothWayFlow<F> nextDSL() {
             return this;
         }
 
@@ -80,29 +75,29 @@ public abstract class ValueDSL<DSL, F, SRC extends GetValue<F>> {
             return new BothWayLink<F>(from, to, context);
         }
 
-        public BothWayDSL<F> sync() {
+        public BothWayFlow<F> sync() {
             context.setSync(true);
             return nextDSL();
         }
 
-        public <T> BothWayDSL<T> transform(RevertFunction<F, T> function) {
-            return new BothWayDSL<T>(new TransformedHasValue<F, T>(from, function), context).addFromToDispose();
+        public <T> BothWayFlow<T> map(RevertFunction<F, T> function) {
+            return new BothWayFlow<T>(new TransformedHasValue<F, T>(from, function), context);
         }
 
-        public <T> BothWayDSL<T> transform(Function<F, T> function, Function<T, F> revertFunction) {
-            return new BothWayDSL<T>(new TransformedHasValue<F, T>(
+        public <T> BothWayFlow<T> map(Function<F, T> function, Function<T, F> revertFunction) {
+            return new BothWayFlow<T>(new TransformedHasValue<F, T>(
                     from, new DefaultRevertFunction<F, T>(function, revertFunction)), context
-            ).addFromToDispose();
+            );
         }
     }
 
-    public static final class HybridDSL<F> extends ValueDSL<HybridDSL<F>, F, HasValue<F>> {
-        private HybridDSL(HasValue<F> from, Context context) {
+    public static final class HybridFlow<F> extends Flow<HybridFlow<F>, F, HasValue<F>> {
+        private HybridFlow(HasValue<F> from, Context context) {
             super(from, context);
         }
 
         @Override
-        protected HybridDSL<F> nextDSL() {
+        protected HybridFlow<F> nextDSL() {
             return this;
         }
 
@@ -111,25 +106,25 @@ public abstract class ValueDSL<DSL, F, SRC extends GetValue<F>> {
             return new BothWayLink<F>(from, to, context);
         }
 
-        public <T> HybridDSL<T> transform(RevertFunction<F, T> function) {
-            return new HybridDSL<T>(new TransformedHasValue<F, T>(from, function), context).addFromToDispose();
+        public <T> HybridFlow<T> map(RevertFunction<F, T> function) {
+            return new HybridFlow<T>(new TransformedHasValue<F, T>(from, function), context);
         }
 
-        public <T> HybridDSL<T> transform(Function<F, T> function, Function<T, F> revertFunction) {
-            return new HybridDSL<T>(new TransformedHasValue<F, T>(
+        public <T> HybridFlow<T> map(Function<F, T> function, Function<T, F> revertFunction) {
+            return new HybridFlow<T>(new TransformedHasValue<F, T>(
                     from, new DefaultRevertFunction<F, T>(function, revertFunction)), context
-            ).addFromToDispose();
+            );
         }
 
         // One way branch
-        public <T> OneWayDSL<T> transform(Function<F, T> function) {
-            return new OneWayDSL<T>(new TransformedGetValue<F, T>(from, function), context).addFromToDispose();
+        public <T> OneWayFlow<T> map(Function<F, T> function) {
+            return new OneWayFlow<T>(new TransformedGetValue<F, T>(from, function), context);
         }
 
         // Both way branch
-        public BothWayDSL<F> sync() {
+        public BothWayFlow<F> sync() {
             context.setSync(true);
-            return new BothWayDSL<>(from, context);
+            return new BothWayFlow<>(from, context);
         }
     }
 
@@ -145,12 +140,12 @@ public abstract class ValueDSL<DSL, F, SRC extends GetValue<F>> {
         return new DefaultHasValue<>(value);
     }
 
-    public static <F> OneWayDSL<F> linkFrom(GetValue<F> from) {
-        return new OneWayDSL<>(from, new Context());
+    public static <F> OneWayFlow<F> from(GetValue<F> from) {
+        return new OneWayFlow<>(from, new Context());
     }
 
-    public static <F> HybridDSL<F> linkFrom(HasValue<F> from) {
-        return new HybridDSL<>(from, new Context());
+    public static <F> HybridFlow<F> from(HasValue<F> from) {
+        return new HybridFlow<>(from, new Context());
     }
 
     public DSL strong() {
@@ -170,28 +165,28 @@ public abstract class ValueDSL<DSL, F, SRC extends GetValue<F>> {
     }
 
     public Disposable to(HasValue<F> to) {
-        return createLink(to);
+        return createLink(autoDispose(to));
     }
 
     //******************************************************************************************************************
     //  Aggregation syntax
     //******************************************************************************************************************
 
-    public Disposable to(HasAggregateValue<F> aggregateValue) {
+    public Disposable to(GetAggregateValue<F> aggregateValue) {
         notNull(aggregateValue);
-        return to(addToDispose(notNull(aggregateValue.newMemberValue())));
+        return to(notNull(aggregateValue.newArgument()));
     }
 
-    public static <A> DefaultHasAggregateValue<A> newAggregateValue(Aggregator<A> aggregator) {
+    public static <A> DefaultGetAggregateValue<A> newAggregateValue(Aggregator<A> aggregator) {
         notNull(aggregator);
-        return new DefaultHasAggregateValue<>(aggregator);
+        return new DefaultGetAggregateValue<>(aggregator);
     }
 
-    public static DefaultHasAggregateValue<Boolean> andValue() {
+    public static DefaultGetAggregateValue<Boolean> andValue() {
         return newAggregateValue(ValueUtil.AGGREGATOR_AND);
     }
 
-    public static DefaultHasAggregateValue<Boolean> orValue() {
+    public static DefaultGetAggregateValue<Boolean> orValue() {
         return newAggregateValue(ValueUtil.AGGREGATOR_OR);
     }
 
@@ -203,7 +198,7 @@ public abstract class ValueDSL<DSL, F, SRC extends GetValue<F>> {
     //  Java Bean syntax
     //******************************************************************************************************************
 
-    public static <F> HybridDSL<F> linkFromProperty(Object bean, String property) {
+    public static <F> HybridFlow<F> fromProperty(Object bean, String property) {
         return null; //todo
     }
 
@@ -211,11 +206,11 @@ public abstract class ValueDSL<DSL, F, SRC extends GetValue<F>> {
         return null; //todo;
     }
 
-    public static <X, F> OneWayDSL<F> linkFrom(GetValue<X> beanValue, String property) {
+    public static <X, F> OneWayFlow<F> from(GetValue<X> beanValue, String property) {
         return null; //todo
     }
 
-    public static <X, F> HybridDSL<F> linkFrom(HasValue<X> beanValue, String property) {
+    public static <X, F> HybridFlow<F> from(HasValue<X> beanValue, String property) {
         return null; //todo
     }
 

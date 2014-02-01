@@ -8,9 +8,6 @@ import org.junit.Test;
 
 import java.util.function.Function;
 
-import static com.github.linfro.core.ValueDSL.linkFrom;
-import static com.github.linfro.core.ValueDSL.newHasValue;
-import static com.github.linfro.core.value.TestGetValue.newGetValue;
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -18,13 +15,13 @@ import static org.junit.Assert.assertEquals;
  * @version 2014-01-08
  * @since 1.0.0
  */
-public class ValueDSL_TransformationSyntax_Test {
+public class Flow_TransformationSyntax_Test {
     @Test
     public void testOneWayDirectTransform() {
-        TestGetValue<String> strVal = newGetValue();
-        HasValue<Integer> intVal = newHasValue();
+        TestGetValue<String> strVal = TestGetValue.newGetValue();
+        HasValue<Integer> intVal = Flow.newHasValue();
 
-        Disposable link = linkFrom(strVal).transform(
+        Disposable link = Flow.from(strVal).map(
                 new Function<String, Integer>() {
                     @Override
                     public Integer apply(String from) {
@@ -43,14 +40,36 @@ public class ValueDSL_TransformationSyntax_Test {
         assertEquals(new Integer(50), intVal.getValue());
     }
 
+    @Test
+    public void testOneWayDirectMap() {
+        TestGetValue<String> strVal = TestGetValue.newGetValue();
+        HasValue<Integer> intVal = Flow.newHasValue();
+
+        /*
+        Disposable link = strVal.directFlow().map(
+                (from) -> from == null ? null : Integer.valueOf(from)
+        ).to(intVal);
+        */
+        Disposable link = strVal.directFlow().map(Integer::valueOf).to(intVal);
+
+        strVal.update("50");
+        assertEquals("50", strVal.getValue());
+        assertEquals(new Integer(50), intVal.getValue());
+
+        link.dispose();
+        strVal.update("700");
+        assertEquals("700", strVal.getValue());
+        assertEquals(new Integer(50), intVal.getValue());
+    }
+
     //******************************************************************************************************************
 
     @Test
     public void testHybridDirectTransform() {
-        HasValue<String> strVal = newHasValue();
-        HasValue<Integer> intVal = newHasValue();
+        HasValue<String> strVal = Flow.newHasValue();
+        HasValue<Integer> intVal = Flow.newHasValue();
 
-        Disposable link = linkFrom(strVal).transform(
+        Disposable link = Flow.from(strVal).map(
                 new Function<String, Integer>() {
                     @Override
                     public Integer apply(String from) {
@@ -71,10 +90,10 @@ public class ValueDSL_TransformationSyntax_Test {
 
     @Test
     public void testHybridSyncTransform() {
-        HasValue<String> strVal = newHasValue();
-        HasValue<Integer> intVal = newHasValue();
+        HasValue<String> strVal = Flow.newHasValue();
+        HasValue<Integer> intVal = Flow.newHasValue();
 
-        Disposable link = linkFrom(strVal).transform(
+        Disposable link = Flow.from(strVal).map(
                 new RevertFunction<String, Integer>() {
                     @Override
                     public Integer apply(String from) {
@@ -109,10 +128,10 @@ public class ValueDSL_TransformationSyntax_Test {
 
     @Test
     public void testHybridSync2FunctionsTransform() {
-        HasValue<String> strVal = newHasValue();
-        HasValue<Integer> intVal = newHasValue();
+        HasValue<String> strVal = Flow.newHasValue();
+        HasValue<Integer> intVal = Flow.newHasValue();
 
-        Disposable link = linkFrom(strVal).transform(
+        Disposable link = Flow.from(strVal).map(
                 new Function<String, Integer>() {
                     @Override
                     public Integer apply(String from) {
@@ -150,10 +169,10 @@ public class ValueDSL_TransformationSyntax_Test {
 
     @Test
     public void testBothWaySyncTransform() {
-        HasValue<String> strVal = newHasValue();
-        HasValue<Integer> intVal = newHasValue();
+        HasValue<String> strVal = Flow.newHasValue();
+        HasValue<Integer> intVal = Flow.newHasValue();
 
-        Disposable link = linkFrom(strVal).sync().transform(
+        Disposable link = Flow.from(strVal).sync().map(
                 new RevertFunction<String, Integer>() {
                     @Override
                     public Integer apply(String from) {
@@ -188,10 +207,10 @@ public class ValueDSL_TransformationSyntax_Test {
 
     @Test
     public void testBothWaySync2FunctionsTransform() {
-        HasValue<String> strVal = newHasValue();
-        HasValue<Integer> intVal = newHasValue();
+        HasValue<String> strVal = Flow.newHasValue();
+        HasValue<Integer> intVal = Flow.newHasValue();
 
-        Disposable link = linkFrom(strVal).sync().transform(
+        Disposable link = Flow.from(strVal).sync().map(
                 new Function<String, Integer>() {
                     @Override
                     public Integer apply(String from) {
@@ -227,10 +246,10 @@ public class ValueDSL_TransformationSyntax_Test {
 
     @Test
     public void testBothWaySync2FunctionsSyncTransform() {
-        HasValue<String> strVal = newHasValue();
-        HasValue<Integer> intVal = newHasValue();
+        HasValue<String> strVal = Flow.newHasValue();
+        HasValue<Integer> intVal = Flow.newHasValue();
 
-        Disposable link = linkFrom(strVal).sync().transform(
+        Disposable link = Flow.from(strVal).sync().map(
                 new Function<String, Integer>() {
                     @Override
                     public Integer apply(String from) {

@@ -1,5 +1,7 @@
 package com.github.linfro.core.value;
 
+import com.github.linfro.core.Flow;
+
 /**
  * @author Dmitry Ermakov
  * @version 2014-01-04
@@ -16,4 +18,8 @@ public interface HasValue<T> extends GetValue<T> {
 
     @Override
     public void removeChangeListener(ValueChangeListener<? super T> listener);
+
+    public default Flow.HybridFlow<T> flow() {
+        return Flow.from(this);
+    }
 }

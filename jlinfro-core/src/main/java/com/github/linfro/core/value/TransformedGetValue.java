@@ -1,5 +1,7 @@
 package com.github.linfro.core.value;
 
+import com.github.linfro.core.common.AutoDisposable;
+
 import java.util.function.Function;
 
 import static com.github.linfro.core.common.ObjectUtil.notNull;
@@ -9,16 +11,12 @@ import static com.github.linfro.core.common.ObjectUtil.notNull;
  * @version 2014-01-05
  * @since 1.0.0
  */
-public class TransformedGetValue<F, T> extends AbstractGetValue<T> implements GetDisposableValue<T> {
+public class TransformedGetValue<F, T> extends AbstractGetValue<T> implements GetDisposableValue<T>, AutoDisposable {
     protected final GetValue<F> from;
     protected final Function<F, T> function;
-    protected final ValueChangeListener<F> fromListener = new ValueChangeListener<F>() {
-        @Override
-        public void valueChanged(Getter<? extends F> getter) {
-            fireValueChanged();
-        }
-    };
+    protected final ValueChangeListener<F> fromListener = (getter) -> fireValueChanged();
 
+    protected boolean autoDispose = true;
     protected boolean disposed = false;
 
     private T result;
@@ -54,6 +52,15 @@ public class TransformedGetValue<F, T> extends AbstractGetValue<T> implements Ge
         result = null;
         calculated = false;
         super.fireValueChanged();
+    }
+
+    @Override
+    public boolean isAutoDispose() {
+        return autoDispose;
+    }
+
+    public void setAutoDispose(boolean autoDispose) {
+        this.autoDispose = autoDispose;
     }
 
     @Override

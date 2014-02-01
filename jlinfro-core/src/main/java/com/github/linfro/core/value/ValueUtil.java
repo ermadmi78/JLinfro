@@ -24,10 +24,10 @@ public final class ValueUtil {
 
     public static final Aggregator<Boolean> AGGREGATOR_AND = new Aggregator<Boolean>() {
         @Override
-        public Boolean aggregate(Iterable<Boolean> members) {
+        public Boolean aggregate(Iterable<Boolean> args) {
             int counter = 0;
-            if (members != null) {
-                for (Boolean val : members) {
+            if (args != null) {
+                for (Boolean val : args) {
                     counter++;
                     if (!nvl(val)) {
                         return Boolean.FALSE;
@@ -41,9 +41,9 @@ public final class ValueUtil {
 
     public static final Aggregator<Boolean> AGGREGATOR_OR = new Aggregator<Boolean>() {
         @Override
-        public Boolean aggregate(Iterable<Boolean> members) {
-            if (members != null) {
-                for (Boolean val : members) {
+        public Boolean aggregate(Iterable<Boolean> args) {
+            if (args != null) {
+                for (Boolean val : args) {
                     if (nvl(val)) {
                         return Boolean.TRUE;
                     }
