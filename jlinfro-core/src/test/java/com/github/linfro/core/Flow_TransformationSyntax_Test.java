@@ -206,6 +206,32 @@ public class Flow_TransformationSyntax_Test {
     }
 
     @Test
+    public void testBothWaySyncMap() throws Exception {
+        HasValue<String> strVal = Flow.newHasValue();
+        HasValue<Integer> intVal = Flow.newHasValue();
+
+        Disposable link = strVal.map(Integer::valueOf, (to) -> to.toString()).flow().sync().to(intVal);
+
+        strVal.setValue("50");
+        assertEquals("50", strVal.getValue());
+        assertEquals(new Integer(50), intVal.getValue());
+
+        intVal.setValue(60);
+        assertEquals("60", strVal.getValue());
+        assertEquals(new Integer(60), intVal.getValue());
+
+        link.dispose();
+
+        strVal.setValue("500");
+        assertEquals("500", strVal.getValue());
+        assertEquals(new Integer(60), intVal.getValue());
+
+        intVal.setValue(600);
+        assertEquals("500", strVal.getValue());
+        assertEquals(new Integer(600), intVal.getValue());
+    }
+
+    @Test
     public void testBothWaySync2FunctionsTransform() {
         HasValue<String> strVal = Flow.newHasValue();
         HasValue<Integer> intVal = Flow.newHasValue();
