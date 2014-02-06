@@ -5,6 +5,7 @@ import com.github.linfro.core.common.Equality;
 import com.github.linfro.core.value.GetAggregateValue;
 import com.github.linfro.core.value.HasValue;
 
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 /**
@@ -21,6 +22,9 @@ public interface IHybridFlow<F> extends IOutFlow<F> {
 
     @Override
     public IHybridFlow<F> force();
+
+    @Override
+    public Disposable to(Consumer<? super F> consumer);
 
     @Override
     public Disposable to(HasValue<F> to);

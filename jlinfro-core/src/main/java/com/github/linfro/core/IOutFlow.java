@@ -5,6 +5,7 @@ import com.github.linfro.core.common.Equality;
 import com.github.linfro.core.value.GetAggregateValue;
 import com.github.linfro.core.value.HasValue;
 
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 /**
@@ -18,6 +19,8 @@ public interface IOutFlow<F> {
     public IOutFlow<F> strong(Equality equality);
 
     public IOutFlow<F> force();
+
+    public Disposable to(Consumer<? super F> consumer);
 
     public Disposable to(HasValue<F> to);
 

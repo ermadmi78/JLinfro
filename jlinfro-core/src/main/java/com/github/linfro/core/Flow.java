@@ -3,11 +3,13 @@ package com.github.linfro.core;
 import com.github.linfro.core.common.AutoDisposable;
 import com.github.linfro.core.common.Disposable;
 import com.github.linfro.core.common.Equality;
+import com.github.linfro.core.dsl.ConsumerLink;
 import com.github.linfro.core.dsl.Context;
 import com.github.linfro.core.dsl.InOutLink;
 import com.github.linfro.core.dsl.OutLink;
 import com.github.linfro.core.value.*;
 
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 import static com.github.linfro.core.common.ObjectUtil.notNull;
@@ -55,6 +57,10 @@ public abstract class Flow<DSL, F, SRC extends GetValue<F>> {
         @Override
         protected Disposable createLink(HasValue<F> to) {
             return new OutLink<>(from, to, context);
+        }
+
+        public Disposable to(Consumer<? super F> consumer) {
+            return new ConsumerLink<F>(from, consumer, context);
         }
 
         public <T> OutFlow<T> map(Function<F, T> function) {
@@ -108,6 +114,10 @@ public abstract class Flow<DSL, F, SRC extends GetValue<F>> {
         @Override
         protected Disposable createLink(HasValue<F> to) {
             return new InOutLink<>(from, to, context);
+        }
+
+        public Disposable to(Consumer<? super F> consumer) {
+            return new ConsumerLink<F>(from, consumer, context);
         }
 
         public <T> HybridFlow<T> map(Function<F, T> inFunc, Function<T, F> outFunc) {
