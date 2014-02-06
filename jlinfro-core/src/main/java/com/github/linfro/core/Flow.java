@@ -3,7 +3,6 @@ package com.github.linfro.core;
 import com.github.linfro.core.common.AutoDisposable;
 import com.github.linfro.core.common.Disposable;
 import com.github.linfro.core.common.Equality;
-import com.github.linfro.core.common.RevertFunction;
 import com.github.linfro.core.dsl.Context;
 import com.github.linfro.core.dsl.InOutLink;
 import com.github.linfro.core.dsl.OutLink;
@@ -83,10 +82,6 @@ public abstract class Flow<DSL, F, SRC extends GetValue<F>> {
             return nextDSL();
         }
 
-        public <T> InOutFlow<T> map(RevertFunction<F, T> function) {
-            return new InOutFlow<>(from.inOutMap(function), context);
-        }
-
         public <T> InOutFlow<T> map(Function<F, T> outFunc, Function<T, F> inFunc) {
             return new InOutFlow<>(from.map(outFunc, inFunc), context);
         }
@@ -105,10 +100,6 @@ public abstract class Flow<DSL, F, SRC extends GetValue<F>> {
         @Override
         protected Disposable createLink(HasValue<F> to) {
             return new InOutLink<>(from, to, context);
-        }
-
-        public <T> HybridFlow<T> map(RevertFunction<F, T> function) {
-            return new HybridFlow<>(from.inOutMap(function), context);
         }
 
         public <T> HybridFlow<T> map(Function<F, T> inFunc, Function<T, F> outFunc) {
@@ -187,10 +178,6 @@ public abstract class Flow<DSL, F, SRC extends GetValue<F>> {
 
     public static DefaultGetAggregateValue<Boolean> orValue() {
         return newAggregateValue(ValueUtil.AGGREGATOR_OR);
-    }
-
-    public static RevertFunction<Boolean, Boolean> not() {
-        return ValueUtil.NOT_FUNCTION;
     }
 
     //******************************************************************************************************************

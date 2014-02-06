@@ -1,7 +1,5 @@
 package com.github.linfro.core.value;
 
-import com.github.linfro.core.common.RevertFunction;
-
 import static com.github.linfro.core.common.ObjectUtil.nvl;
 
 /**
@@ -10,18 +8,6 @@ import static com.github.linfro.core.common.ObjectUtil.nvl;
  * @since 1.0.0
  */
 public final class ValueUtil {
-    public static final RevertFunction<Boolean, Boolean> NOT_FUNCTION = new RevertFunction<Boolean, Boolean>() {
-        @Override
-        public Boolean apply(Boolean from) {
-            return !nvl(from);
-        }
-
-        @Override
-        public Boolean revert(Boolean to) {
-            return !nvl(to);
-        }
-    };
-
     public static final Aggregator<Boolean> AGGREGATOR_AND = new Aggregator<Boolean>() {
         @Override
         public Boolean aggregate(Iterable<Boolean> args) {

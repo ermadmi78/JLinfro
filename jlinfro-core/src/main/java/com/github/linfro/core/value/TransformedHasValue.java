@@ -1,7 +1,8 @@
 package com.github.linfro.core.value;
 
 import com.github.linfro.core.common.AutoDisposable;
-import com.github.linfro.core.common.RevertFunction;
+
+import java.util.function.Function;
 
 import static com.github.linfro.core.common.ObjectUtil.notNull;
 
@@ -12,7 +13,8 @@ import static com.github.linfro.core.common.ObjectUtil.notNull;
  */
 public class TransformedHasValue<F, T> extends AbstractHasValue<T> implements HasDisposableValue<T>, AutoDisposable {
     protected final HasValue<F> from;
-    protected final RevertFunction<F, T> function;
+    protected final Function<F, T> outFunc;
+    protected final Function<T, F> inFunc;
     protected final ValueChangeListener<F> fromListener = (getter) -> fireValueChanged();
 
     protected boolean autoDispose = true;
@@ -21,9 +23,10 @@ public class TransformedHasValue<F, T> extends AbstractHasValue<T> implements Ha
     private T result;
     private boolean calculated = false;
 
-    public TransformedHasValue(HasValue<F> from, RevertFunction<F, T> function) {
+    public TransformedHasValue(HasValue<F> from, Function<F, T> outFunc, Function<T, F> inFunc) {
         this.from = notNull(from);
-        this.function = notNull(function);
+        this.outFunc = notNull(outFunc);
+        this.inFunc = notNull(inFunc);
 
         this.from.addChangeListener(fromListener);
     }
@@ -36,7 +39,7 @@ public class TransformedHasValue<F, T> extends AbstractHasValue<T> implements Ha
 
         if (!calculated) {
             calculated = true;
-            result = function.apply(from.getValue());
+            result = outFunc.apply(from.getValue());
         }
 
         return result;
@@ -48,7 +51,7 @@ public class TransformedHasValue<F, T> extends AbstractHasValue<T> implements Ha
             throw new IllegalStateException("Value is disposed");
         }
 
-        from.setValue(function.revert(value));
+        from.setValue(inFunc.apply(value));
     }
 
     @Override

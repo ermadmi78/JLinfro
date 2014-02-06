@@ -1,8 +1,6 @@
 package com.github.linfro.core.value;
 
 import com.github.linfro.core.Flow;
-import com.github.linfro.core.common.DefaultRevertFunction;
-import com.github.linfro.core.common.RevertFunction;
 
 import java.util.function.Function;
 
@@ -27,11 +25,7 @@ public interface HasValue<T> extends GetValue<T> {
         return Flow.from(this);
     }
 
-    public default <M> HasDisposableValue<M> inOutMap(RevertFunction<T, M> function) {
-        return new TransformedHasValue<>(this, function);
-    }
-
     public default <M> HasDisposableValue<M> map(Function<T, M> outFunc, Function<M, T> inFunc) {
-        return new TransformedHasValue<>(this, new DefaultRevertFunction<>(outFunc, inFunc));
+        return new TransformedHasValue<>(this, outFunc, inFunc);
     }
 }
