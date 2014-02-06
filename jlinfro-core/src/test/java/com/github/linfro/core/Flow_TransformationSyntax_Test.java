@@ -8,6 +8,7 @@ import org.junit.Test;
 import java.util.function.Function;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 /**
  * @author Dmitry Ermakov
@@ -44,12 +45,9 @@ public class Flow_TransformationSyntax_Test {
         TestGetValue<String> strVal = TestGetValue.newGetValue();
         HasValue<Integer> intVal = Flow.newHasValue();
 
-        /*
-        Disposable link = strVal.outFlow().map(
+        Disposable link = strVal.flow().map(
                 (from) -> from == null ? null : Integer.valueOf(from)
         ).to(intVal);
-        */
-        Disposable link = strVal.outFlow().map(Integer::valueOf).to(intVal);
 
         strVal.update("50");
         assertEquals("50", strVal.getValue());
@@ -230,5 +228,133 @@ public class Flow_TransformationSyntax_Test {
         intVal.setValue(600);
         assertEquals("500", strVal.getValue());
         assertEquals(new Integer(600), intVal.getValue());
+    }
+
+    // Not null mapping ************************************************************************************************
+
+    @Test
+    public void testNotNullOutMappingForIOutFlow() throws Exception {
+        TestGetValue<String> strVal = TestGetValue.newGetValue();
+        HasValue<Integer> intVal = Flow.newHasValue(5);
+
+        assertNull(strVal.getValue());
+        assertEquals(new Integer(5), intVal.getValue());
+
+        Disposable link = strVal.flow().mapNotNull(Integer::valueOf).force().to(intVal);
+
+        assertNull(strVal.getValue());
+        assertNull(intVal.getValue());
+
+        strVal.update("20");
+        assertEquals("20", strVal.getValue());
+        assertEquals(new Integer(20), intVal.getValue());
+
+        strVal.update(null);
+        assertNull(strVal.getValue());
+        assertNull(intVal.getValue());
+
+        link.dispose();
+
+        strVal.update("100");
+        assertEquals("100", strVal.getValue());
+        assertNull(intVal.getValue());
+    }
+
+    @Test
+    public void testNotNullOutMappingForIHybridFlow() throws Exception {
+        HasValue<String> strVal = Flow.newHasValue();
+        HasValue<Integer> intVal = Flow.newHasValue(5);
+
+        assertNull(strVal.getValue());
+        assertEquals(new Integer(5), intVal.getValue());
+
+        Disposable link = strVal.flow().mapNotNull(Integer::valueOf).force().to(intVal);
+
+        assertNull(strVal.getValue());
+        assertNull(intVal.getValue());
+
+        strVal.setValue("20");
+        assertEquals("20", strVal.getValue());
+        assertEquals(new Integer(20), intVal.getValue());
+
+        strVal.setValue(null);
+        assertNull(strVal.getValue());
+        assertNull(intVal.getValue());
+
+        link.dispose();
+
+        strVal.setValue("100");
+        assertEquals("100", strVal.getValue());
+        assertNull(intVal.getValue());
+    }
+
+    @Test
+    public void testNotNullInOutMappingForIInOutFlow() throws Exception {
+        HasValue<String> strVal = Flow.newHasValue();
+        HasValue<Integer> intVal = Flow.newHasValue();
+
+        assertNull(strVal.getValue());
+        assertNull(intVal.getValue());
+
+        Disposable link = strVal.flow().sync().mapNotNull((s) -> Integer.valueOf(s), (i) -> i.toString()).to(intVal);
+
+        strVal.setValue("20");
+        assertEquals("20", strVal.getValue());
+        assertEquals(new Integer(20), intVal.getValue());
+
+        strVal.setValue(null);
+        assertNull(strVal.getValue());
+        assertNull(intVal.getValue());
+
+        intVal.setValue(375);
+        assertEquals("375", strVal.getValue());
+        assertEquals(new Integer(375), intVal.getValue());
+
+        intVal.setValue(null);
+        assertNull(strVal.getValue());
+        assertNull(intVal.getValue());
+
+        link.dispose();
+
+        strVal.setValue("test");
+        intVal.setValue(-123);
+
+        assertEquals("test", strVal.getValue());
+        assertEquals(new Integer(-123), intVal.getValue());
+    }
+
+    @Test
+    public void testNotNullInOutMappingForIHybridFlow() throws Exception {
+        HasValue<String> strVal = Flow.newHasValue();
+        HasValue<Integer> intVal = Flow.newHasValue();
+
+        assertNull(strVal.getValue());
+        assertNull(intVal.getValue());
+
+        Disposable link = strVal.flow().mapNotNull((s) -> Integer.valueOf(s), (i) -> i.toString()).sync().to(intVal);
+
+        strVal.setValue("20");
+        assertEquals("20", strVal.getValue());
+        assertEquals(new Integer(20), intVal.getValue());
+
+        strVal.setValue(null);
+        assertNull(strVal.getValue());
+        assertNull(intVal.getValue());
+
+        intVal.setValue(375);
+        assertEquals("375", strVal.getValue());
+        assertEquals(new Integer(375), intVal.getValue());
+
+        intVal.setValue(null);
+        assertNull(strVal.getValue());
+        assertNull(intVal.getValue());
+
+        link.dispose();
+
+        strVal.setValue("test");
+        intVal.setValue(-123);
+
+        assertEquals("test", strVal.getValue());
+        assertEquals(new Integer(-123), intVal.getValue());
     }
 }

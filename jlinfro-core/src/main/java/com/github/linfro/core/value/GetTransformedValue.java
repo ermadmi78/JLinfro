@@ -11,10 +11,9 @@ import static com.github.linfro.core.common.ObjectUtil.notNull;
  * @version 2014-01-05
  * @since 1.0.0
  */
-public class TransformedHasValue<F, T> extends AbstractHasValue<T> implements HasDisposableValue<T>, AutoDisposable {
-    protected final HasValue<F> from;
-    protected final Function<F, T> outFunc;
-    protected final Function<T, F> inFunc;
+public class GetTransformedValue<F, T> extends AbstractGetValue<T> implements GetDisposableValue<T>, AutoDisposable {
+    protected final GetValue<F> from;
+    protected final Function<F, T> function;
     protected final ValueChangeListener<F> fromListener = (getter) -> fireValueChanged();
 
     protected boolean autoDispose = true;
@@ -23,10 +22,9 @@ public class TransformedHasValue<F, T> extends AbstractHasValue<T> implements Ha
     private T result;
     private boolean calculated = false;
 
-    public TransformedHasValue(HasValue<F> from, Function<F, T> outFunc, Function<T, F> inFunc) {
+    public GetTransformedValue(GetValue<F> from, Function<F, T> function) {
         this.from = notNull(from);
-        this.outFunc = notNull(outFunc);
-        this.inFunc = notNull(inFunc);
+        this.function = notNull(function);
 
         this.from.addChangeListener(fromListener);
     }
@@ -39,19 +37,10 @@ public class TransformedHasValue<F, T> extends AbstractHasValue<T> implements Ha
 
         if (!calculated) {
             calculated = true;
-            result = outFunc.apply(from.getValue());
+            result = function.apply(from.getValue());
         }
 
         return result;
-    }
-
-    @Override
-    public void setValue(T value) {
-        if (disposed) {
-            throw new IllegalStateException("Value is disposed");
-        }
-
-        from.setValue(inFunc.apply(value));
     }
 
     @Override

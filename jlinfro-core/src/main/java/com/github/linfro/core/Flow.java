@@ -42,7 +42,7 @@ public abstract class Flow<DSL, F, SRC extends GetValue<F>> {
     //  Transformation syntax
     //******************************************************************************************************************
 
-    public static final class OutFlow<F> extends Flow<OutFlow<F>, F, GetValue<F>> {
+    public static final class OutFlow<F> extends Flow<OutFlow<F>, F, GetValue<F>> implements IOutFlow<F> {
         private OutFlow(GetValue<F> from, Context context) {
             super(from, context);
         }
@@ -60,9 +60,13 @@ public abstract class Flow<DSL, F, SRC extends GetValue<F>> {
         public <T> OutFlow<T> map(Function<F, T> function) {
             return new OutFlow<>(from.map(function), context);
         }
+
+        public <T> OutFlow<T> mapNotNull(Function<F, T> function) {
+            return new OutFlow<>(from.mapNotNull(function), context);
+        }
     }
 
-    public static final class InOutFlow<F> extends Flow<InOutFlow<F>, F, HasValue<F>> {
+    public static final class InOutFlow<F> extends Flow<InOutFlow<F>, F, HasValue<F>> implements IInOutFlow<F> {
         private InOutFlow(HasValue<F> from, Context context) {
             super(from, context);
         }
@@ -85,9 +89,13 @@ public abstract class Flow<DSL, F, SRC extends GetValue<F>> {
         public <T> InOutFlow<T> map(Function<F, T> outFunc, Function<T, F> inFunc) {
             return new InOutFlow<>(from.map(outFunc, inFunc), context);
         }
+
+        public <T> InOutFlow<T> mapNotNull(Function<F, T> outFunc, Function<T, F> inFunc) {
+            return new InOutFlow<>(from.mapNotNull(outFunc, inFunc), context);
+        }
     }
 
-    public static final class HybridFlow<F> extends Flow<HybridFlow<F>, F, HasValue<F>> {
+    public static final class HybridFlow<F> extends Flow<HybridFlow<F>, F, HasValue<F>> implements IHybridFlow<F> {
         private HybridFlow(HasValue<F> from, Context context) {
             super(from, context);
         }
@@ -106,9 +114,17 @@ public abstract class Flow<DSL, F, SRC extends GetValue<F>> {
             return new HybridFlow<>(from.map(inFunc, outFunc), context);
         }
 
+        public <T> HybridFlow<T> mapNotNull(Function<F, T> inFunc, Function<T, F> outFunc) {
+            return new HybridFlow<>(from.mapNotNull(inFunc, outFunc), context);
+        }
+
         // Out branch
         public <T> OutFlow<T> map(Function<F, T> function) {
             return new OutFlow<>(from.map(function), context);
+        }
+
+        public <T> OutFlow<T> mapNotNull(Function<F, T> function) {
+            return new OutFlow<>(from.mapNotNull(function), context);
         }
 
         // In-out branch

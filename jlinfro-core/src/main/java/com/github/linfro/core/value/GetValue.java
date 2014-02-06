@@ -1,7 +1,9 @@
 package com.github.linfro.core.value;
 
 import com.github.linfro.core.Flow;
+import com.github.linfro.core.IOutFlow;
 import com.github.linfro.core.common.AutoDisposable;
+import com.github.linfro.core.common.NullSafeFunction;
 
 import java.util.function.Function;
 
@@ -27,11 +29,15 @@ public interface GetValue<T> extends Getter<T> {
         }
     }
 
-    public default Flow.OutFlow<T> outFlow() {
+    public default IOutFlow<T> flow() {
         return Flow.from(this);
     }
 
     public default <M> GetDisposableValue<M> map(Function<T, M> function) {
-        return new TransformedGetValue<>(this, function);
+        return new GetTransformedValue<>(this, function);
+    }
+
+    public default <M> GetDisposableValue<M> mapNotNull(Function<T, M> function) {
+        return new GetTransformedValue<>(this, new NullSafeFunction<>(function));
     }
 }

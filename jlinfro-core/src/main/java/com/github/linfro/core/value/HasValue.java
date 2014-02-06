@@ -1,6 +1,8 @@
 package com.github.linfro.core.value;
 
 import com.github.linfro.core.Flow;
+import com.github.linfro.core.IHybridFlow;
+import com.github.linfro.core.common.NullSafeFunction;
 
 import java.util.function.Function;
 
@@ -21,11 +23,16 @@ public interface HasValue<T> extends GetValue<T> {
     @Override
     public void removeChangeListener(ValueChangeListener<? super T> listener);
 
-    public default Flow.HybridFlow<T> flow() {
+    @Override
+    public default IHybridFlow<T> flow() {
         return Flow.from(this);
     }
 
     public default <M> HasDisposableValue<M> map(Function<T, M> outFunc, Function<M, T> inFunc) {
-        return new TransformedHasValue<>(this, outFunc, inFunc);
+        return new HasTransformedValue<>(this, outFunc, inFunc);
+    }
+
+    public default <M> HasDisposableValue<M> mapNotNull(Function<T, M> outFunc, Function<M, T> inFunc) {
+        return new HasTransformedValue<>(this, new NullSafeFunction<T, M>(outFunc), new NullSafeFunction<M, T>(inFunc));
     }
 }
