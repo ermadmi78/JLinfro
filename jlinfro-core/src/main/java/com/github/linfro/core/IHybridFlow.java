@@ -7,6 +7,7 @@ import com.github.linfro.core.value.HasValue;
 
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.Predicate;
 
 /**
  * @author Dmitry Ermakov
@@ -14,6 +15,8 @@ import java.util.function.Function;
  * @since 1.0.0
  */
 public interface IHybridFlow<F> extends IOutFlow<F> {
+    public IInOutFlow<F> sync();
+
     @Override
     public IHybridFlow<F> strong();
 
@@ -38,9 +41,12 @@ public interface IHybridFlow<F> extends IOutFlow<F> {
     @Override
     public <T> IOutFlow<T> mapNotNull(Function<F, T> function);
 
+    @Override
+    public IOutFlow<F> filter(Predicate<? super F> predicate);
+
     public <T> IHybridFlow<T> map(Function<F, T> inFunc, Function<T, F> outFunc);
 
     public <T> IHybridFlow<T> mapNotNull(Function<F, T> inFunc, Function<T, F> outFunc);
 
-    public IInOutFlow<F> sync();
+    public IHybridFlow<F> filter(Predicate<? super F> outPredicate, Predicate<? super F> inPredicate);
 }

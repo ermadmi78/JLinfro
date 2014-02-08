@@ -2,21 +2,21 @@ package com.github.linfro.core.value;
 
 import com.github.linfro.core.common.AutoDisposable;
 
-import java.util.function.Function;
+import java.util.function.Predicate;
 
 import static com.github.linfro.core.common.ObjectUtil.notNull;
 
 /**
  * @author Dmitry Ermakov
- * @version 2014-01-05
+ * @version 2014-02-06
  * @since 1.0.0
  */
-public class GetTransformedValue<F, T> extends AbstractGetValue<T> implements GetDisposableValue<T>, AutoDisposable {
-    protected final GetValue<F> from;
-    protected final Function<F, T> function;
-    protected final ValueChangeListener<F> fromListener = new ValueChangeListener<F>() {
+public class GetFilteredValue<T> extends AbstractGetValue<T> implements GetDisposableValue<T>, AutoDisposable {
+    protected final GetValue<T> from;
+    protected final Predicate<? super T> predicate;
+    protected final ValueChangeListener<T> fromListener = new ValueChangeListener<T>() {
         @Override
-        public void valueChanged(Getter<? extends F> getter) {
+        public void valueChanged(Getter<? extends T> getter) {
             fireValueChanged();
         }
     };
@@ -24,25 +24,23 @@ public class GetTransformedValue<F, T> extends AbstractGetValue<T> implements Ge
     protected boolean autoDispose = true;
     protected boolean disposed = false;
 
-    private T result;
-    private boolean calculated = false;
-
-    public GetTransformedValue(GetValue<F> from, Function<F, T> function) {
+    public GetFilteredValue(GetValue<T> from, Predicate<? super T> predicate) {
         this.from = notNull(from);
-        this.function = notNull(function);
+        this.predicate = notNull(predicate);
 
         this.from.addChangeListener(fromListener);
+        fireValueChanged();
     }
 
     @Override
-    public T getValue() {
+    public T getValue() throws FilterException {
         if (disposed) {
             throw new IllegalStateException("Value is disposed");
         }
 
-        if (!calculated) {
-            result = function.apply(from.getValue());
-            calculated = true;
+        T result = from.getValue();
+        if (!predicate.test(result)) {
+            throw new FilterException();
         }
 
         return result;
@@ -50,13 +48,9 @@ public class GetTransformedValue<F, T> extends AbstractGetValue<T> implements Ge
 
     @Override
     public void fireValueChanged() {
-        if (disposed) {
-            return;
+        if (!disposed) {
+            super.fireValueChanged();
         }
-
-        result = null;
-        calculated = false;
-        super.fireValueChanged();
     }
 
     @Override
@@ -75,8 +69,6 @@ public class GetTransformedValue<F, T> extends AbstractGetValue<T> implements Ge
         }
 
         disposed = true;
-        result = null;
-        calculated = false;
         from.removeChangeListener(fromListener);
         from.autoDispose();
     }

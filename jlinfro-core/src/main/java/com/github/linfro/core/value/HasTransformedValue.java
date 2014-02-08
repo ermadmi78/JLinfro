@@ -15,7 +15,12 @@ public class HasTransformedValue<F, T> extends AbstractHasValue<T> implements Ha
     protected final HasValue<F> from;
     protected final Function<F, T> outFunc;
     protected final Function<T, F> inFunc;
-    protected final ValueChangeListener<F> fromListener = (getter) -> fireValueChanged();
+    protected final ValueChangeListener<F> fromListener = new ValueChangeListener<F>() {
+        @Override
+        public void valueChanged(Getter<? extends F> getter) {
+            fireValueChanged();
+        }
+    };
 
     protected boolean autoDispose = true;
     protected boolean disposed = false;
@@ -38,8 +43,8 @@ public class HasTransformedValue<F, T> extends AbstractHasValue<T> implements Ha
         }
 
         if (!calculated) {
-            calculated = true;
             result = outFunc.apply(from.getValue());
+            calculated = true;
         }
 
         return result;

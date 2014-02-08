@@ -5,6 +5,7 @@ import com.github.linfro.core.IHybridFlow;
 import com.github.linfro.core.common.NullSafeFunction;
 
 import java.util.function.Function;
+import java.util.function.Predicate;
 
 /**
  * @author Dmitry Ermakov
@@ -34,5 +35,9 @@ public interface HasValue<T> extends GetValue<T> {
 
     public default <M> HasDisposableValue<M> mapNotNull(Function<T, M> outFunc, Function<M, T> inFunc) {
         return new HasTransformedValue<>(this, new NullSafeFunction<T, M>(outFunc), new NullSafeFunction<M, T>(inFunc));
+    }
+
+    public default HasDisposableValue<T> filter(Predicate<? super T> outPredicate, Predicate<? super T> inPredicate) {
+        return new HasFilteredValue<>(this, outPredicate, inPredicate);
     }
 }

@@ -11,6 +11,7 @@ import com.github.linfro.core.value.*;
 
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.Predicate;
 
 import static com.github.linfro.core.common.ObjectUtil.notNull;
 
@@ -70,6 +71,10 @@ public abstract class Flow<DSL, F, SRC extends GetValue<F>> {
         public <T> OutFlow<T> mapNotNull(Function<F, T> function) {
             return new OutFlow<>(from.mapNotNull(function), context);
         }
+
+        public OutFlow<F> filter(Predicate<? super F> predicate) {
+            return new OutFlow<>(from.filter(predicate), context);
+        }
     }
 
     public static final class InOutFlow<F> extends Flow<InOutFlow<F>, F, HasValue<F>> implements IInOutFlow<F> {
@@ -98,6 +103,10 @@ public abstract class Flow<DSL, F, SRC extends GetValue<F>> {
 
         public <T> InOutFlow<T> mapNotNull(Function<F, T> outFunc, Function<T, F> inFunc) {
             return new InOutFlow<>(from.mapNotNull(outFunc, inFunc), context);
+        }
+
+        public InOutFlow<F> filter(Predicate<? super F> outPredicate, Predicate<? super F> inPredicate) {
+            return new InOutFlow<>(from.filter(outPredicate, inPredicate), context);
         }
     }
 
@@ -128,6 +137,10 @@ public abstract class Flow<DSL, F, SRC extends GetValue<F>> {
             return new HybridFlow<>(from.mapNotNull(inFunc, outFunc), context);
         }
 
+        public HybridFlow<F> filter(Predicate<? super F> outPredicate, Predicate<? super F> inPredicate) {
+            return new HybridFlow<>(from.filter(outPredicate, inPredicate), context);
+        }
+
         // Out branch
         public <T> OutFlow<T> map(Function<F, T> function) {
             return new OutFlow<>(from.map(function), context);
@@ -135,6 +148,10 @@ public abstract class Flow<DSL, F, SRC extends GetValue<F>> {
 
         public <T> OutFlow<T> mapNotNull(Function<F, T> function) {
             return new OutFlow<>(from.mapNotNull(function), context);
+        }
+
+        public OutFlow<F> filter(Predicate<? super F> predicate) {
+            return new OutFlow<>(from.filter(predicate), context);
         }
 
         // In-out branch

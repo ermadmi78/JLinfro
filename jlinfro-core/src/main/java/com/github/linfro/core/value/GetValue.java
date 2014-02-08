@@ -6,6 +6,7 @@ import com.github.linfro.core.common.AutoDisposable;
 import com.github.linfro.core.common.NullSafeFunction;
 
 import java.util.function.Function;
+import java.util.function.Predicate;
 
 /**
  * @author Dmitry Ermakov
@@ -39,5 +40,9 @@ public interface GetValue<T> extends Getter<T> {
 
     public default <M> GetDisposableValue<M> mapNotNull(Function<T, M> function) {
         return new GetTransformedValue<>(this, new NullSafeFunction<>(function));
+    }
+
+    public default GetDisposableValue<T> filter(Predicate<? super T> predicate) {
+        return new GetFilteredValue<>(this, predicate);
     }
 }

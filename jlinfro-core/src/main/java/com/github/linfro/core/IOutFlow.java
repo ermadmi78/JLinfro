@@ -7,6 +7,7 @@ import com.github.linfro.core.value.HasValue;
 
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.Predicate;
 
 /**
  * @author Dmitry Ermakov
@@ -29,4 +30,6 @@ public interface IOutFlow<F> {
     public <T> IOutFlow<T> map(Function<F, T> function);
 
     public <T> IOutFlow<T> mapNotNull(Function<F, T> function);
+
+    public IOutFlow<F> filter(Predicate<? super F> predicate);
 }

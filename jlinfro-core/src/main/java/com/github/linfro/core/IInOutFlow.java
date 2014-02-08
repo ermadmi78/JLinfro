@@ -6,6 +6,7 @@ import com.github.linfro.core.value.GetAggregateValue;
 import com.github.linfro.core.value.HasValue;
 
 import java.util.function.Function;
+import java.util.function.Predicate;
 
 /**
  * @author Dmitry Ermakov
@@ -13,6 +14,8 @@ import java.util.function.Function;
  * @since 1.0.0
  */
 public interface IInOutFlow<F> {
+    public IInOutFlow<F> sync();
+
     public IInOutFlow<F> strong();
 
     public IInOutFlow<F> strong(Equality equality);
@@ -27,5 +30,5 @@ public interface IInOutFlow<F> {
 
     public <T> IInOutFlow<T> mapNotNull(Function<F, T> outFunc, Function<T, F> inFunc);
 
-    public IInOutFlow<F> sync();
+    public IInOutFlow<F> filter(Predicate<? super F> outPredicate, Predicate<? super F> inPredicate);
 }

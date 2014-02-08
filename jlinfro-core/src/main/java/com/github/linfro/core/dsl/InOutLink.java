@@ -2,7 +2,6 @@ package com.github.linfro.core.dsl;
 
 
 import com.github.linfro.core.common.Disposable;
-import com.github.linfro.core.value.Getter;
 import com.github.linfro.core.value.HasValue;
 import com.github.linfro.core.value.ValueChangeListener;
 
@@ -14,90 +13,50 @@ import static com.github.linfro.core.common.ObjectUtil.notNull;
  * @since 1.0.0
  */
 public class InOutLink<A> implements Disposable {
-    private HasValue<A> from;
-    private HasValue<A> to;
-    private Context context;
+    protected final HasValue<A> from;
+    protected final HasValue<A> to;
+    protected final Context context;
 
-    private boolean flag = false;
+    protected final UnsafeLock lock = new UnsafeLock();
+    protected final ValueChangeListener<A> fromListener;
+    protected final ValueChangeListener<A> toListener;
+
+    protected boolean disposed = false;
 
     public InOutLink(HasValue<A> from, HasValue<A> to, Context context) {
         this.from = notNull(from);
         this.to = notNull(to);
         this.context = notNull(context);
 
-        link();
-    }
+        this.fromListener = new LinkListener<>(this.to, this.context, this.lock);
+        this.toListener = new LinkListener<>(this.from, this.context, this.lock);
 
-    private void link() {
-        if ((context.getSourceApplyDelay() != null) && (context.getDestinationApplyDelay() != null)) {
-            context.getDestinationApplyDelay().setApplyDelay(context.getSourceApplyDelay().getApplyDelay());
+        if ((this.context.getSourceApplyDelay() != null) && (this.context.getDestinationApplyDelay() != null)) {
+            this.context.getDestinationApplyDelay().setApplyDelay(this.context.getSourceApplyDelay().getApplyDelay());
         }
 
-        if (context.isForce()) {
-            A newValue = from.getValue();
-            if (!context.isStrong() || !context.getEquality().areEquals(newValue, to.getValue())) {
-                to.setValue(newValue);
-            }
+        if (this.context.isForce()) {
+            this.fromListener.valueChanged(this.from);
         }
 
-        from.addChangeListener(fromListener);
-        if (context.isSync()) {
-            to.addChangeListener(toListener);
+        this.from.addChangeListener(this.fromListener);
+        if (this.context.isSync()) {
+            this.to.addChangeListener(this.toListener);
         }
     }
-
-    private final ValueChangeListener<A> fromListener = new ValueChangeListener<A>() {
-        @Override
-        public void valueChanged(Getter<? extends A> getter) {
-            if (flag) {
-                return;
-            }
-
-            flag = true;
-            try {
-                A newValue = getter.getValue();
-                if (!context.isStrong() || !context.getEquality().areEquals(newValue, to.getValue())) {
-                    to.setValue(newValue);
-                }
-            } finally {
-                flag = false;
-            }
-        }
-    };
-
-    private final ValueChangeListener<A> toListener = new ValueChangeListener<A>() {
-        @Override
-        public void valueChanged(Getter<? extends A> getter) {
-            if (flag) {
-                return;
-            }
-
-            flag = true;
-            try {
-                A newValue = getter.getValue();
-                if (!context.isStrong() || !context.getEquality().areEquals(newValue, from.getValue())) {
-                    from.setValue(newValue);
-                }
-            } finally {
-                flag = false;
-            }
-        }
-    };
 
     @Override
     public void dispose() {
-        if ((from == null) || (to == null) || (context == null)) {
+        if (disposed) {
             return;
         }
+
+        disposed = true;
 
         from.removeChangeListener(fromListener);
         if (context.isSync()) {
             to.removeChangeListener(toListener);
         }
         context.dispose();
-
-        from = null;
-        to = null;
-        context = null;
     }
 }
