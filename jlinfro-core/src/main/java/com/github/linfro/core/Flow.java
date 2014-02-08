@@ -61,7 +61,7 @@ public abstract class Flow<DSL, F, SRC extends GetValue<F>> {
         }
 
         public Disposable to(Consumer<? super F> consumer) {
-            return new ConsumerLink<F>(from, consumer, context);
+            return new ConsumerLink<F>(from, autoDispose(consumer), context);
         }
 
         public <T> OutFlow<T> map(Function<F, T> function) {
@@ -126,7 +126,7 @@ public abstract class Flow<DSL, F, SRC extends GetValue<F>> {
         }
 
         public Disposable to(Consumer<? super F> consumer) {
-            return new ConsumerLink<F>(from, consumer, context);
+            return new ConsumerLink<F>(from, autoDispose(consumer), context);
         }
 
         public <T> HybridFlow<T> map(Function<F, T> inFunc, Function<T, F> outFunc) {
