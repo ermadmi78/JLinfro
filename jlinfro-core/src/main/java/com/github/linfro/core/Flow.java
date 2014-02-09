@@ -120,6 +120,10 @@ public abstract class Flow<DSL, F, SRC extends GetValue<F>> {
         public InOutFlow<F> biMap(Function<F, F> inOutFunction) {
             return new InOutFlow<>(from.biMap(inOutFunction), context);
         }
+
+        public InOutFlow<F> biMapNotNull(Function<F, F> inOutFunction) {
+            return new InOutFlow<>(from.biMapNotNull(inOutFunction), context);
+        }
     }
 
     public static final class HybridFlow<F> extends Flow<HybridFlow<F>, F, HasValue<F>> implements IHybridFlow<F> {
@@ -159,6 +163,10 @@ public abstract class Flow<DSL, F, SRC extends GetValue<F>> {
 
         public HybridFlow<F> biMap(Function<F, F> inOutFunction) {
             return new HybridFlow<>(from.biMap(inOutFunction), context);
+        }
+
+        public HybridFlow<F> biMapNotNull(Function<F, F> inOutFunction) {
+            return new HybridFlow<>(from.biMapNotNull(inOutFunction), context);
         }
 
         // In-out branch

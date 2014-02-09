@@ -56,4 +56,6 @@ public interface IHybridFlow<F> extends IOutFlow<F> {
     public IHybridFlow<F> filter(Predicate<? super F> outPredicate, Predicate<? super F> inPredicate);
 
     public IHybridFlow<F> biMap(Function<F, F> inOutFunction);
+
+    public IHybridFlow<F> biMapNotNull(Function<F, F> inOutFunction);
 }
