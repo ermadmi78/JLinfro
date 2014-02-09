@@ -72,6 +72,10 @@ public abstract class Flow<DSL, F, SRC extends GetValue<F>> {
             return new OutFlow<>(from.mapNotNull(function), context);
         }
 
+        public OutFlow<F> nvl(F nullValue) {
+            return new OutFlow<>(from.nvl(nullValue), context);
+        }
+
         public OutFlow<F> filter(Predicate<? super F> predicate) {
             return new OutFlow<>(from.filter(predicate), context);
         }
@@ -103,6 +107,10 @@ public abstract class Flow<DSL, F, SRC extends GetValue<F>> {
 
         public <T> InOutFlow<T> mapNotNull(Function<F, T> outFunc, Function<T, F> inFunc) {
             return new InOutFlow<>(from.mapNotNull(outFunc, inFunc), context);
+        }
+
+        public InOutFlow<F> nvl(F outNullValue, F inNullValue) {
+            return new InOutFlow<>(from.nvl(outNullValue, inNullValue), context);
         }
 
         public InOutFlow<F> filter(Predicate<? super F> outPredicate, Predicate<? super F> inPredicate) {
@@ -137,8 +145,18 @@ public abstract class Flow<DSL, F, SRC extends GetValue<F>> {
             return new HybridFlow<>(from.mapNotNull(inFunc, outFunc), context);
         }
 
+        public HybridFlow<F> nvl(F outNullValue, F inNullValue) {
+            return new HybridFlow<>(from.nvl(outNullValue, inNullValue), context);
+        }
+
         public HybridFlow<F> filter(Predicate<? super F> outPredicate, Predicate<? super F> inPredicate) {
             return new HybridFlow<>(from.filter(outPredicate, inPredicate), context);
+        }
+
+        // In-out branch
+        public InOutFlow<F> sync() {
+            context.setSync(true);
+            return new InOutFlow<>(from, context);
         }
 
         // Out branch
@@ -150,14 +168,12 @@ public abstract class Flow<DSL, F, SRC extends GetValue<F>> {
             return new OutFlow<>(from.mapNotNull(function), context);
         }
 
-        public OutFlow<F> filter(Predicate<? super F> predicate) {
-            return new OutFlow<>(from.filter(predicate), context);
+        public OutFlow<F> nvl(F nullValue) {
+            return new OutFlow<>(from.nvl(nullValue), context);
         }
 
-        // In-out branch
-        public InOutFlow<F> sync() {
-            context.setSync(true);
-            return new InOutFlow<>(from, context);
+        public OutFlow<F> filter(Predicate<? super F> predicate) {
+            return new OutFlow<>(from.filter(predicate), context);
         }
     }
 

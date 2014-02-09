@@ -42,11 +42,16 @@ public interface IHybridFlow<F> extends IOutFlow<F> {
     public <T> IOutFlow<T> mapNotNull(Function<F, T> function);
 
     @Override
+    public IOutFlow<F> nvl(F nullValue);
+
+    @Override
     public IOutFlow<F> filter(Predicate<? super F> predicate);
 
     public <T> IHybridFlow<T> map(Function<F, T> inFunc, Function<T, F> outFunc);
 
     public <T> IHybridFlow<T> mapNotNull(Function<F, T> inFunc, Function<T, F> outFunc);
+
+    public IHybridFlow<F> nvl(F outNullValue, F inNullValue);
 
     public IHybridFlow<F> filter(Predicate<? super F> outPredicate, Predicate<? super F> inPredicate);
 }

@@ -3,6 +3,7 @@ package com.github.linfro.core.value;
 import com.github.linfro.core.Flow;
 import com.github.linfro.core.IHybridFlow;
 import com.github.linfro.core.common.NullSafeFunction;
+import com.github.linfro.core.common.NvlFunction;
 
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -35,6 +36,10 @@ public interface HasValue<T> extends GetValue<T> {
 
     public default <M> HasDisposableValue<M> mapNotNull(Function<T, M> outFunc, Function<M, T> inFunc) {
         return new HasTransformedValue<>(this, new NullSafeFunction<T, M>(outFunc), new NullSafeFunction<M, T>(inFunc));
+    }
+
+    public default HasDisposableValue<T> nvl(T outNullValue, T inNullValue) {
+        return new HasTransformedValue<>(this, new NvlFunction<T>(outNullValue), new NvlFunction<T>(inNullValue));
     }
 
     public default HasDisposableValue<T> filter(Predicate<? super T> outPredicate, Predicate<? super T> inPredicate) {

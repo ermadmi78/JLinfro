@@ -31,5 +31,7 @@ public interface IOutFlow<F> {
 
     public <T> IOutFlow<T> mapNotNull(Function<F, T> function);
 
+    public IOutFlow<F> nvl(F nullValue);
+
     public IOutFlow<F> filter(Predicate<? super F> predicate);
 }

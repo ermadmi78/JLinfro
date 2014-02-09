@@ -30,5 +30,7 @@ public interface IInOutFlow<F> {
 
     public <T> IInOutFlow<T> mapNotNull(Function<F, T> outFunc, Function<T, F> inFunc);
 
+    public IInOutFlow<F> nvl(F outNullValue, F inNullValue);
+
     public IInOutFlow<F> filter(Predicate<? super F> outPredicate, Predicate<? super F> inPredicate);
 }
