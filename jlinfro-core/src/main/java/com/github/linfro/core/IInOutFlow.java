@@ -37,4 +37,6 @@ public interface IInOutFlow<F> {
     public IInOutFlow<F> biMap(Function<F, F> inOutFunction);
 
     public IInOutFlow<F> biMapNotNull(Function<F, F> inOutFunction);
+
+    public IInOutFlow<F> biNvl(F inOutNullValue);
 }

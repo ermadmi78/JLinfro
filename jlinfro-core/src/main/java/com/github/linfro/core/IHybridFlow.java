@@ -58,4 +58,6 @@ public interface IHybridFlow<F> extends IOutFlow<F> {
     public IHybridFlow<F> biMap(Function<F, F> inOutFunction);
 
     public IHybridFlow<F> biMapNotNull(Function<F, F> inOutFunction);
+
+    public IHybridFlow<F> biNvl(F inOutNullValue);
 }

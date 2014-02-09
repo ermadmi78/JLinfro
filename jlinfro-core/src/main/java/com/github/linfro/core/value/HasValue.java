@@ -54,4 +54,8 @@ public interface HasValue<T> extends GetValue<T> {
         Function<T, T> nullSafeFunction = new NullSafeFunction<>(inOutFunction);
         return new HasTransformedValue<>(this, nullSafeFunction, nullSafeFunction);
     }
+
+    public default HasDisposableValue<T> biNvl(T inOutNullValue) {
+        return new HasTransformedValue<>(this, new NvlFunction<T>(inOutNullValue), new NvlFunction<T>(inOutNullValue));
+    }
 }
