@@ -51,7 +51,7 @@ public interface HasValue<T> extends GetValue<T> {
     }
 
     public default HasDisposableValue<T> biMapNotNull(Function<T, T> inOutFunction) {
-        NullSafeFunction<T, T> nullSafeFunction = new NullSafeFunction<>(inOutFunction);
+        Function<T, T> nullSafeFunction = new NullSafeFunction<>(inOutFunction);
         return new HasTransformedValue<>(this, nullSafeFunction, nullSafeFunction);
     }
 }
