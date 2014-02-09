@@ -116,6 +116,10 @@ public abstract class Flow<DSL, F, SRC extends GetValue<F>> {
         public InOutFlow<F> filter(Predicate<? super F> outPredicate, Predicate<? super F> inPredicate) {
             return new InOutFlow<>(from.filter(outPredicate, inPredicate), context);
         }
+
+        public InOutFlow<F> biMap(Function<F, F> inOutFunction) {
+            return new InOutFlow<>(from.biMap(inOutFunction), context);
+        }
     }
 
     public static final class HybridFlow<F> extends Flow<HybridFlow<F>, F, HasValue<F>> implements IHybridFlow<F> {
@@ -151,6 +155,10 @@ public abstract class Flow<DSL, F, SRC extends GetValue<F>> {
 
         public HybridFlow<F> filter(Predicate<? super F> outPredicate, Predicate<? super F> inPredicate) {
             return new HybridFlow<>(from.filter(outPredicate, inPredicate), context);
+        }
+
+        public HybridFlow<F> biMap(Function<F, F> inOutFunction) {
+            return new HybridFlow<>(from.biMap(inOutFunction), context);
         }
 
         // In-out branch

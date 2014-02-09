@@ -45,4 +45,8 @@ public interface HasValue<T> extends GetValue<T> {
     public default HasDisposableValue<T> filter(Predicate<? super T> outPredicate, Predicate<? super T> inPredicate) {
         return new HasFilteredValue<>(this, outPredicate, inPredicate);
     }
+
+    public default HasDisposableValue<T> biMap(Function<T, T> inOutFunction) {
+        return new HasTransformedValue<>(this, inOutFunction, inOutFunction);
+    }
 }

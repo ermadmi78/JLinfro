@@ -33,4 +33,6 @@ public interface IInOutFlow<F> {
     public IInOutFlow<F> nvl(F outNullValue, F inNullValue);
 
     public IInOutFlow<F> filter(Predicate<? super F> outPredicate, Predicate<? super F> inPredicate);
+
+    public IInOutFlow<F> biMap(Function<F, F> inOutFunction);
 }
