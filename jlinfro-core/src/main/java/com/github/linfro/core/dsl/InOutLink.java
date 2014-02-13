@@ -31,10 +31,6 @@ public class InOutLink<A> implements Disposable {
         this.fromListener = new LinkListener<>(this.to, this.context, this.lock);
         this.toListener = new LinkListener<>(this.from, this.context, this.lock);
 
-        if ((this.context.getSourceApplyDelay() != null) && (this.context.getDestinationApplyDelay() != null)) {
-            this.context.getDestinationApplyDelay().setApplyDelay(this.context.getSourceApplyDelay().getApplyDelay());
-        }
-
         if (this.context.isForce()) {
             this.fromListener.valueChanged(this.from);
         }

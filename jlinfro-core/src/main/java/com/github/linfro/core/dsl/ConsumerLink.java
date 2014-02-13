@@ -34,10 +34,6 @@ public class ConsumerLink<A> implements Disposable {
 
         this.fromListener = new ConsumerListener<>(this.to);
 
-        if ((this.context.getSourceApplyDelay() != null) && (this.context.getDestinationApplyDelay() != null)) {
-            this.context.getDestinationApplyDelay().setApplyDelay(this.context.getSourceApplyDelay().getApplyDelay());
-        }
-
         if (this.context.isForce()) {
             this.fromListener.valueChanged(this.from);
         }

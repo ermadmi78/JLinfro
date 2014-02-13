@@ -1,6 +1,5 @@
 package com.github.linfro.core.dsl;
 
-import com.github.linfro.core.common.ApplyDelayHolder;
 import com.github.linfro.core.common.Disposable;
 import com.github.linfro.core.common.Equality;
 
@@ -19,9 +18,6 @@ public class Context implements Disposable {
     private boolean strong = false;
     private Equality equality = DEFAULT_EQUALITY;
     private boolean force = false;
-
-    private ApplyDelayHolder sourceApplyDelay;
-    private ApplyDelayHolder destinationApplyDelay;
 
     private final List<Disposable> toDisposeList = new LinkedList<>();
 
@@ -57,22 +53,6 @@ public class Context implements Disposable {
         this.force = force;
     }
 
-    public ApplyDelayHolder getSourceApplyDelay() {
-        return sourceApplyDelay;
-    }
-
-    public void setSourceApplyDelay(ApplyDelayHolder sourceApplyDelay) {
-        this.sourceApplyDelay = sourceApplyDelay;
-    }
-
-    public ApplyDelayHolder getDestinationApplyDelay() {
-        return destinationApplyDelay;
-    }
-
-    public void setDestinationApplyDelay(ApplyDelayHolder destinationApplyDelay) {
-        this.destinationApplyDelay = destinationApplyDelay;
-    }
-
     public void addToDispose(Object obj) {
         if (obj instanceof Disposable) {
             toDisposeList.add((Disposable) obj);
@@ -81,9 +61,6 @@ public class Context implements Disposable {
 
     @Override
     public void dispose() {
-        sourceApplyDelay = null;
-        destinationApplyDelay = null;
-
         if (toDisposeList.isEmpty()) {
             return;
         }
