@@ -11,27 +11,14 @@ import static com.github.linfro.core.common.ObjectUtil.notNull;
  * @version 2014-02-08
  * @since 1.0.0
  */
-public class HasFilteredValue<T> extends AbstractHasValue<T> implements HasDisposableValue<T>, AutoDisposable {
-    protected final HasValue<T> from;
+public class HasFilteredValue<T> extends AbstractHasWrapperValue<T, T> implements HasDisposableValue<T>, AutoDisposable {
     protected final Predicate<? super T> outPredicate;
     protected final Predicate<? super T> inPredicate;
-    protected final ValueChangeListener<T> fromListener = new ValueChangeListener<T>() {
-        @Override
-        public void valueChanged(Getter<? extends T> getter) {
-            fireValueChanged();
-        }
-    };
-
-    protected boolean autoDispose = true;
-    protected boolean disposed = false;
 
     public HasFilteredValue(HasValue<T> from, Predicate<? super T> outPredicate, Predicate<? super T> inPredicate) {
-        this.from = notNull(from);
+        super(from);
         this.outPredicate = notNull(outPredicate);
         this.inPredicate = notNull(inPredicate);
-
-        this.from.addChangeListener(fromListener);
-        fireValueChanged();
     }
 
     @Override
@@ -53,32 +40,5 @@ public class HasFilteredValue<T> extends AbstractHasValue<T> implements HasDispo
         if (inPredicate.test(value)) {
             from.setValue(value);
         }
-    }
-
-    @Override
-    public void fireValueChanged() {
-        if (!disposed) {
-            super.fireValueChanged();
-        }
-    }
-
-    @Override
-    public boolean isAutoDispose() {
-        return autoDispose;
-    }
-
-    public void setAutoDispose(boolean autoDispose) {
-        this.autoDispose = autoDispose;
-    }
-
-    @Override
-    public void dispose() {
-        if (disposed) {
-            return;
-        }
-
-        disposed = true;
-        from.removeChangeListener(fromListener);
-        from.autoDispose();
     }
 }
