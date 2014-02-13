@@ -2,14 +2,14 @@
     <parent>
         <groupId>com.github.linfro</groupId>
         <artifactId>jlinfro-parent</artifactId>
-        <version>0.0.7</version>
+        <version>0.0.8-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.github.linfro</groupId>
     <artifactId>jlinfro-javafx-sample</artifactId>
     <packaging>jar</packaging>
-    <version>0.0.7</version>
+    <version>0.0.8-SNAPSHOT</version>
 
     <name>JLinfro JavaFX Sample</name>
     <description>Sample application for JavaFX implementation of JLinfro framework</description>
