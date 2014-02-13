@@ -11,29 +11,17 @@ import static com.github.linfro.core.common.ObjectUtil.notNull;
  * @version 2014-01-05
  * @since 1.0.0
  */
-public class HasTransformedValue<F, T> extends AbstractHasValue<T> implements HasDisposableValue<T>, AutoDisposable {
-    protected final HasValue<F> from;
+public class HasTransformedValue<F, T> extends AbstractHasWrapperValue<F, T> implements HasDisposableValue<T>, AutoDisposable {
     protected final Function<F, T> outFunc;
     protected final Function<T, F> inFunc;
-    protected final ValueChangeListener<F> fromListener = new ValueChangeListener<F>() {
-        @Override
-        public void valueChanged(Getter<? extends F> getter) {
-            fireValueChanged();
-        }
-    };
-
-    protected boolean autoDispose = true;
-    protected boolean disposed = false;
 
     private T result;
     private boolean calculated = false;
 
     public HasTransformedValue(HasValue<F> from, Function<F, T> outFunc, Function<T, F> inFunc) {
-        this.from = notNull(from);
+        super(from);
         this.outFunc = notNull(outFunc);
         this.inFunc = notNull(inFunc);
-
-        this.from.addChangeListener(fromListener);
     }
 
     @Override
@@ -61,34 +49,15 @@ public class HasTransformedValue<F, T> extends AbstractHasValue<T> implements Ha
 
     @Override
     public void fireValueChanged() {
-        if (disposed) {
-            return;
-        }
-
         result = null;
         calculated = false;
         super.fireValueChanged();
     }
 
     @Override
-    public boolean isAutoDispose() {
-        return autoDispose;
-    }
-
-    public void setAutoDispose(boolean autoDispose) {
-        this.autoDispose = autoDispose;
-    }
-
-    @Override
     public void dispose() {
-        if (disposed) {
-            return;
-        }
-
-        disposed = true;
+        super.dispose();
         result = null;
         calculated = false;
-        from.removeChangeListener(fromListener);
-        from.autoDispose();
     }
 }
