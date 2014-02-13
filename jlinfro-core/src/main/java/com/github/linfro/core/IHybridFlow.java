@@ -60,4 +60,10 @@ public interface IHybridFlow<F> extends IOutFlow<F> {
     public IHybridFlow<F> biMapNotNull(Function<F, F> inOutFunction);
 
     public IHybridFlow<F> biNvl(F inOutNullValue);
+
+    @Override
+    public IHybridFlow<F> putMetaInfo(String metaInfoKey, Object metaInfoValue);
+
+    @Override
+    public IHybridFlow<F> named(String name);
 }

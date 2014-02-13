@@ -39,4 +39,8 @@ public interface IInOutFlow<F> {
     public IInOutFlow<F> biMapNotNull(Function<F, F> inOutFunction);
 
     public IInOutFlow<F> biNvl(F inOutNullValue);
+
+    public IInOutFlow<F> putMetaInfo(String metaInfoKey, Object metaInfoValue);
+
+    public IInOutFlow<F> named(String name);
 }

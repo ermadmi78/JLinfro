@@ -45,13 +45,13 @@ public abstract class Flow<DSL, F, SRC extends GetValue<F>> {
     //  Transformation syntax
     //******************************************************************************************************************
 
-    public static final class OutFlow<F> extends Flow<OutFlow<F>, F, GetValue<F>> implements IOutFlow<F> {
+    protected static final class OutFlow<F> extends Flow<IOutFlow<F>, F, GetValue<F>> implements IOutFlow<F> {
         private OutFlow(GetValue<F> from, Context context) {
             super(from, context);
         }
 
         @Override
-        protected OutFlow<F> nextDSL() {
+        protected IOutFlow<F> nextDSL() {
             return this;
         }
 
@@ -60,34 +60,49 @@ public abstract class Flow<DSL, F, SRC extends GetValue<F>> {
             return new OutLink<>(from, to, context);
         }
 
+        @Override
         public Disposable to(Consumer<? super F> consumer) {
             return new ConsumerLink<F>(from, autoDispose(consumer), context);
         }
 
-        public <T> OutFlow<T> map(Function<F, T> function) {
+        @Override
+        public <T> IOutFlow<T> map(Function<F, T> function) {
             return new OutFlow<>(from.map(function), context);
         }
 
-        public <T> OutFlow<T> mapNotNull(Function<F, T> function) {
+        @Override
+        public <T> IOutFlow<T> mapNotNull(Function<F, T> function) {
             return new OutFlow<>(from.mapNotNull(function), context);
         }
 
-        public OutFlow<F> nvl(F nullValue) {
+        @Override
+        public IOutFlow<F> nvl(F nullValue) {
             return new OutFlow<>(from.nvl(nullValue), context);
         }
 
-        public OutFlow<F> filter(Predicate<? super F> predicate) {
+        @Override
+        public IOutFlow<F> filter(Predicate<? super F> predicate) {
             return new OutFlow<>(from.filter(predicate), context);
+        }
+
+        @Override
+        public IOutFlow<F> putMetaInfo(String metaInfoKey, Object metaInfoValue) {
+            return new OutFlow<>(from.putMetaInfo(metaInfoKey, metaInfoValue), context);
+        }
+
+        @Override
+        public IOutFlow<F> named(String name) {
+            return new OutFlow<>(from.named(name), context);
         }
     }
 
-    public static final class InOutFlow<F> extends Flow<InOutFlow<F>, F, HasValue<F>> implements IInOutFlow<F> {
+    protected static final class InOutFlow<F> extends Flow<IInOutFlow<F>, F, HasValue<F>> implements IInOutFlow<F> {
         private InOutFlow(HasValue<F> from, Context context) {
             super(from, context);
         }
 
         @Override
-        protected InOutFlow<F> nextDSL() {
+        protected IInOutFlow<F> nextDSL() {
             return this;
         }
 
@@ -96,47 +111,65 @@ public abstract class Flow<DSL, F, SRC extends GetValue<F>> {
             return new InOutLink<>(from, to, context);
         }
 
-        public InOutFlow<F> sync() {
+        @Override
+        public IInOutFlow<F> sync() {
             context.setSync(true);
             return nextDSL();
         }
 
-        public <T> InOutFlow<T> map(Function<F, T> outFunc, Function<T, F> inFunc) {
+        @Override
+        public <T> IInOutFlow<T> map(Function<F, T> outFunc, Function<T, F> inFunc) {
             return new InOutFlow<>(from.map(outFunc, inFunc), context);
         }
 
-        public <T> InOutFlow<T> mapNotNull(Function<F, T> outFunc, Function<T, F> inFunc) {
+        @Override
+        public <T> IInOutFlow<T> mapNotNull(Function<F, T> outFunc, Function<T, F> inFunc) {
             return new InOutFlow<>(from.mapNotNull(outFunc, inFunc), context);
         }
 
-        public InOutFlow<F> nvl(F outNullValue, F inNullValue) {
+        @Override
+        public IInOutFlow<F> nvl(F outNullValue, F inNullValue) {
             return new InOutFlow<>(from.nvl(outNullValue, inNullValue), context);
         }
 
-        public InOutFlow<F> filter(Predicate<? super F> outPredicate, Predicate<? super F> inPredicate) {
+        @Override
+        public IInOutFlow<F> filter(Predicate<? super F> outPredicate, Predicate<? super F> inPredicate) {
             return new InOutFlow<>(from.filter(outPredicate, inPredicate), context);
         }
 
-        public InOutFlow<F> biMap(Function<F, F> inOutFunction) {
+        @Override
+        public IInOutFlow<F> biMap(Function<F, F> inOutFunction) {
             return new InOutFlow<>(from.biMap(inOutFunction), context);
         }
 
-        public InOutFlow<F> biMapNotNull(Function<F, F> inOutFunction) {
+        @Override
+        public IInOutFlow<F> biMapNotNull(Function<F, F> inOutFunction) {
             return new InOutFlow<>(from.biMapNotNull(inOutFunction), context);
         }
 
-        public InOutFlow<F> biNvl(F inOutNullValue) {
+        @Override
+        public IInOutFlow<F> biNvl(F inOutNullValue) {
             return new InOutFlow<>(from.biNvl(inOutNullValue), context);
+        }
+
+        @Override
+        public IInOutFlow<F> putMetaInfo(String metaInfoKey, Object metaInfoValue) {
+            return new InOutFlow<>(from.putMetaInfo(metaInfoKey, metaInfoValue), context);
+        }
+
+        @Override
+        public IInOutFlow<F> named(String name) {
+            return new InOutFlow<>(from.named(name), context);
         }
     }
 
-    public static final class HybridFlow<F> extends Flow<HybridFlow<F>, F, HasValue<F>> implements IHybridFlow<F> {
+    protected static final class HybridFlow<F> extends Flow<IHybridFlow<F>, F, HasValue<F>> implements IHybridFlow<F> {
         private HybridFlow(HasValue<F> from, Context context) {
             super(from, context);
         }
 
         @Override
-        protected HybridFlow<F> nextDSL() {
+        protected IHybridFlow<F> nextDSL() {
             return this;
         }
 
@@ -145,58 +178,81 @@ public abstract class Flow<DSL, F, SRC extends GetValue<F>> {
             return new InOutLink<>(from, to, context);
         }
 
+        @Override
         public Disposable to(Consumer<? super F> consumer) {
             return new ConsumerLink<F>(from, autoDispose(consumer), context);
         }
 
-        public <T> HybridFlow<T> map(Function<F, T> inFunc, Function<T, F> outFunc) {
+        @Override
+        public <T> IHybridFlow<T> map(Function<F, T> inFunc, Function<T, F> outFunc) {
             return new HybridFlow<>(from.map(inFunc, outFunc), context);
         }
 
-        public <T> HybridFlow<T> mapNotNull(Function<F, T> inFunc, Function<T, F> outFunc) {
+        @Override
+        public <T> IHybridFlow<T> mapNotNull(Function<F, T> inFunc, Function<T, F> outFunc) {
             return new HybridFlow<>(from.mapNotNull(inFunc, outFunc), context);
         }
 
-        public HybridFlow<F> nvl(F outNullValue, F inNullValue) {
+        @Override
+        public IHybridFlow<F> nvl(F outNullValue, F inNullValue) {
             return new HybridFlow<>(from.nvl(outNullValue, inNullValue), context);
         }
 
-        public HybridFlow<F> filter(Predicate<? super F> outPredicate, Predicate<? super F> inPredicate) {
+        @Override
+        public IHybridFlow<F> filter(Predicate<? super F> outPredicate, Predicate<? super F> inPredicate) {
             return new HybridFlow<>(from.filter(outPredicate, inPredicate), context);
         }
 
-        public HybridFlow<F> biMap(Function<F, F> inOutFunction) {
+        @Override
+        public IHybridFlow<F> biMap(Function<F, F> inOutFunction) {
             return new HybridFlow<>(from.biMap(inOutFunction), context);
         }
 
-        public HybridFlow<F> biMapNotNull(Function<F, F> inOutFunction) {
+        @Override
+        public IHybridFlow<F> biMapNotNull(Function<F, F> inOutFunction) {
             return new HybridFlow<>(from.biMapNotNull(inOutFunction), context);
         }
 
-        public HybridFlow<F> biNvl(F inOutNullValue) {
+        @Override
+        public IHybridFlow<F> biNvl(F inOutNullValue) {
             return new HybridFlow<>(from.biNvl(inOutNullValue), context);
         }
 
+        @Override
+        public IHybridFlow<F> putMetaInfo(String metaInfoKey, Object metaInfoValue) {
+            return new HybridFlow<>(from.putMetaInfo(metaInfoKey, metaInfoValue), context);
+        }
+
+        @Override
+        public IHybridFlow<F> named(String name) {
+            return new HybridFlow<>(from.named(name), context);
+        }
+
         // In-out branch
-        public InOutFlow<F> sync() {
+        @Override
+        public IInOutFlow<F> sync() {
             context.setSync(true);
             return new InOutFlow<>(from, context);
         }
 
         // Out branch
-        public <T> OutFlow<T> map(Function<F, T> function) {
+        @Override
+        public <T> IOutFlow<T> map(Function<F, T> function) {
             return new OutFlow<>(from.map(function), context);
         }
 
-        public <T> OutFlow<T> mapNotNull(Function<F, T> function) {
+        @Override
+        public <T> IOutFlow<T> mapNotNull(Function<F, T> function) {
             return new OutFlow<>(from.mapNotNull(function), context);
         }
 
-        public OutFlow<F> nvl(F nullValue) {
+        @Override
+        public IOutFlow<F> nvl(F nullValue) {
             return new OutFlow<>(from.nvl(nullValue), context);
         }
 
-        public OutFlow<F> filter(Predicate<? super F> predicate) {
+        @Override
+        public IOutFlow<F> filter(Predicate<? super F> predicate) {
             return new OutFlow<>(from.filter(predicate), context);
         }
     }
@@ -213,11 +269,11 @@ public abstract class Flow<DSL, F, SRC extends GetValue<F>> {
         return new DefaultHasValue<>(value);
     }
 
-    public static <F> OutFlow<F> from(GetValue<F> from) {
+    public static <F> IOutFlow<F> from(GetValue<F> from) {
         return new OutFlow<>(from, new Context());
     }
 
-    public static <F> HybridFlow<F> from(HasValue<F> from) {
+    public static <F> IHybridFlow<F> from(HasValue<F> from) {
         return new HybridFlow<>(from, new Context());
     }
 
@@ -267,7 +323,7 @@ public abstract class Flow<DSL, F, SRC extends GetValue<F>> {
     //  Java Bean syntax
     //******************************************************************************************************************
 
-    public static <F> HybridFlow<F> fromProperty(Object bean, String property) {
+    public static <F> IHybridFlow<F> fromProperty(Object bean, String property) {
         return null; //todo
     }
 
@@ -275,11 +331,11 @@ public abstract class Flow<DSL, F, SRC extends GetValue<F>> {
         return null; //todo;
     }
 
-    public static <X, F> OutFlow<F> from(GetValue<X> beanValue, String property) {
+    public static <X, F> IOutFlow<F> from(GetValue<X> beanValue, String property) {
         return null; //todo
     }
 
-    public static <X, F> HybridFlow<F> from(HasValue<X> beanValue, String property) {
+    public static <X, F> IHybridFlow<F> from(HasValue<X> beanValue, String property) {
         return null; //todo
     }
 

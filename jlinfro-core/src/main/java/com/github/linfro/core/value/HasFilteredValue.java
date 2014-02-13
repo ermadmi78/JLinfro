@@ -1,6 +1,7 @@
 package com.github.linfro.core.value;
 
 import com.github.linfro.core.common.AutoDisposable;
+import com.github.linfro.core.common.MetaInfoHolder;
 
 import java.util.function.Predicate;
 
@@ -11,7 +12,8 @@ import static com.github.linfro.core.common.ObjectUtil.notNull;
  * @version 2014-02-08
  * @since 1.0.0
  */
-public class HasFilteredValue<T> extends AbstractHasWrapperValue<T, T> implements HasDisposableValue<T>, AutoDisposable {
+public class HasFilteredValue<T> extends AbstractHasWrapperValue<T, T>
+        implements HasDisposableValue<T>, AutoDisposable, MetaInfoHolder {
     protected final Predicate<? super T> outPredicate;
     protected final Predicate<? super T> inPredicate;
 
@@ -37,6 +39,10 @@ public class HasFilteredValue<T> extends AbstractHasWrapperValue<T, T> implement
 
     @Override
     public void setValue(T value) {
+        if (disposed) {
+            throw new IllegalStateException("Value is disposed");
+        }
+
         if (inPredicate.test(value)) {
             from.setValue(value);
         }

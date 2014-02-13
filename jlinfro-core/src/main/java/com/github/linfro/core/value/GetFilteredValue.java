@@ -1,6 +1,7 @@
 package com.github.linfro.core.value;
 
 import com.github.linfro.core.common.AutoDisposable;
+import com.github.linfro.core.common.MetaInfoHolder;
 
 import java.util.function.Predicate;
 
@@ -11,7 +12,8 @@ import static com.github.linfro.core.common.ObjectUtil.notNull;
  * @version 2014-02-06
  * @since 1.0.0
  */
-public class GetFilteredValue<T> extends AbstractGetWrapperValue<T, T> implements GetDisposableValue<T>, AutoDisposable {
+public class GetFilteredValue<T> extends AbstractGetWrapperValue<T, T>
+        implements GetDisposableValue<T>, AutoDisposable, MetaInfoHolder {
     protected final Predicate<? super T> predicate;
 
     public GetFilteredValue(GetValue<T> from, Predicate<? super T> predicate) {

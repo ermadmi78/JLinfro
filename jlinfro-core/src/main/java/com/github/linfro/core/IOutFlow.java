@@ -34,4 +34,8 @@ public interface IOutFlow<F> {
     public IOutFlow<F> nvl(F nullValue);
 
     public IOutFlow<F> filter(Predicate<? super F> predicate);
+
+    public IOutFlow<F> putMetaInfo(String metaInfoKey, Object metaInfoValue);
+
+    public IOutFlow<F> named(String name);
 }

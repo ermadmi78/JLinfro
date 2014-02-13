@@ -1,6 +1,7 @@
 package com.github.linfro.core.value;
 
 import com.github.linfro.core.common.AutoDisposable;
+import com.github.linfro.core.common.MetaInfoHolder;
 
 import static com.github.linfro.core.common.ObjectUtil.notNull;
 
@@ -9,7 +10,8 @@ import static com.github.linfro.core.common.ObjectUtil.notNull;
  * @version 2014-02-13
  * @since 1.0.0
  */
-public abstract class AbstractHasWrapperValue<F, T> extends AbstractHasValue<T> implements HasDisposableValue<T>, AutoDisposable {
+public abstract class AbstractHasWrapperValue<F, T> extends AbstractHasValue<T>
+        implements HasDisposableValue<T>, AutoDisposable, MetaInfoHolder {
     protected final HasValue<F> from;
     protected final ValueChangeListener<F> fromListener = new ValueChangeListener<F>() {
         @Override
@@ -24,6 +26,11 @@ public abstract class AbstractHasWrapperValue<F, T> extends AbstractHasValue<T> 
     protected AbstractHasWrapperValue(HasValue<F> from) {
         this.from = notNull(from);
         this.from.addChangeListener(fromListener);
+    }
+
+    @Override
+    public Object getMetaInfo(String key) {
+        return from.findMetaInfo(key);
     }
 
     @Override

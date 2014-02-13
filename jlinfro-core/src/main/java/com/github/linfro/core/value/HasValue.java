@@ -2,6 +2,7 @@ package com.github.linfro.core.value;
 
 import com.github.linfro.core.Flow;
 import com.github.linfro.core.IHybridFlow;
+import com.github.linfro.core.common.MetaInfoHolder;
 import com.github.linfro.core.common.NullSafeFunction;
 import com.github.linfro.core.common.NvlFunction;
 
@@ -57,5 +58,17 @@ public interface HasValue<T> extends GetValue<T> {
 
     public default HasDisposableValue<T> biNvl(T inOutNullValue) {
         return new HasTransformedValue<>(this, new NvlFunction<T>(inOutNullValue), new NvlFunction<T>(inOutNullValue));
+    }
+
+    // Meta info support
+
+    @Override
+    public default HasDisposableValue<T> putMetaInfo(String metaInfoKey, Object metaInfoValue) {
+        return new HasMetaInfoValue<>(this, metaInfoKey, metaInfoValue);
+    }
+
+    @Override
+    public default HasDisposableValue<T> named(String name) {
+        return putMetaInfo(MetaInfoHolder.META_NAME, name);
     }
 }

@@ -3,6 +3,7 @@ package com.github.linfro.core.value;
 import com.github.linfro.core.Flow;
 import com.github.linfro.core.IOutFlow;
 import com.github.linfro.core.common.AutoDisposable;
+import com.github.linfro.core.common.MetaInfoHolder;
 import com.github.linfro.core.common.NullSafeFunction;
 import com.github.linfro.core.common.NvlFunction;
 
@@ -49,5 +50,23 @@ public interface GetValue<T> extends Getter<T> {
 
     public default GetDisposableValue<T> filter(Predicate<? super T> predicate) {
         return new GetFilteredValue<>(this, predicate);
+    }
+
+    // Meta info support
+
+    public default Object findMetaInfo(String key) {
+        return this instanceof MetaInfoHolder ? ((MetaInfoHolder) this).getMetaInfo(key) : null;
+    }
+
+    public default GetDisposableValue<T> putMetaInfo(String metaInfoKey, Object metaInfoValue) {
+        return new GetMetaInfoValue<>(this, metaInfoKey, metaInfoValue);
+    }
+
+    public default String findMetaName() {
+        return (String) findMetaInfo(MetaInfoHolder.META_NAME);
+    }
+
+    public default GetDisposableValue<T> named(String name) {
+        return putMetaInfo(MetaInfoHolder.META_NAME, name);
     }
 }
