@@ -15,7 +15,7 @@ import static org.junit.Assert.assertNull;
  * @version 2014-01-08
  * @since 1.0.0
  */
-public class Flow_TransformationSyntax_Test {
+public class Flow_Map_Test {
     @Test
     public void testOneWayDirectTransform() {
         TestGetValue<String> strVal = TestGetValue.newGetValue();

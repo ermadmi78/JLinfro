@@ -13,7 +13,7 @@ import static org.junit.Assert.assertNull;
  * @version 2014-02-08
  * @since 1.0.0
  */
-public class Flow_FilterSyntax_Test {
+public class Flow_Filter_Test {
     @Test
     public void testOneWayDirectFilter() throws Exception {
         TestGetValue<String> srcVal = TestGetValue.newGetValue("test");
