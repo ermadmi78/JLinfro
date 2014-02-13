@@ -2,14 +2,14 @@
     <parent>
         <groupId>com.github.linfro</groupId>
         <artifactId>jlinfro-parent</artifactId>
-        <version>0.0.7-SNAPSHOT</version>
+        <version>0.0.7</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.github.linfro</groupId>
     <artifactId>jlinfro-core</artifactId>
     <packaging>jar</packaging>
-    <version>0.0.7-SNAPSHOT</version>
+    <version>0.0.7</version>
 
     <name>JLinfro Core</name>
     <description>Core module of JLinfro framework. Contains base DSL definition.</description>
