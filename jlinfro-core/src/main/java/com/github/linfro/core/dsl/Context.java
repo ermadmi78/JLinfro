@@ -7,6 +7,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import static com.github.linfro.core.common.ObjectUtil.DEFAULT_EQUALITY;
+import static com.github.linfro.core.common.ObjectUtil.nvl;
 
 /**
  * @author Dmitry Ermakov
@@ -42,7 +43,7 @@ public class Context implements Disposable {
     }
 
     public void setEquality(Equality equality) {
-        this.equality = equality == null ? DEFAULT_EQUALITY : equality;
+        this.equality = nvl(equality, DEFAULT_EQUALITY);
     }
 
     public boolean isForce() {
