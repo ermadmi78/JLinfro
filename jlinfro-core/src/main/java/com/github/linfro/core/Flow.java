@@ -153,6 +153,11 @@ public abstract class Flow<DSL, F, SRC extends GetValue<F>> {
         }
 
         @Override
+        public IInOutFlow<F> biFilter(Predicate<? super F> predicate) {
+            return new InOutFlow<>(from.biFilter(predicate), context);
+        }
+
+        @Override
         public IInOutFlow<F> putMetaInfo(String metaInfoKey, Object metaInfoValue) {
             return new InOutFlow<>(from.putMetaInfo(metaInfoKey, metaInfoValue), context);
         }
@@ -216,6 +221,11 @@ public abstract class Flow<DSL, F, SRC extends GetValue<F>> {
         @Override
         public IHybridFlow<F> biNvl(F inOutNullValue) {
             return new HybridFlow<>(from.biNvl(inOutNullValue), context);
+        }
+
+        @Override
+        public IHybridFlow<F> biFilter(Predicate<? super F> predicate) {
+            return new HybridFlow<>(from.biFilter(predicate), context);
         }
 
         @Override

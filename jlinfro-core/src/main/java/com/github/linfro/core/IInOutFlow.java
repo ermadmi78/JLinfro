@@ -40,6 +40,8 @@ public interface IInOutFlow<F> {
 
     public IInOutFlow<F> biNvl(F inOutNullValue);
 
+    public IInOutFlow<F> biFilter(Predicate<? super F> predicate);
+
     public IInOutFlow<F> putMetaInfo(String metaInfoKey, Object metaInfoValue);
 
     public IInOutFlow<F> named(String name);

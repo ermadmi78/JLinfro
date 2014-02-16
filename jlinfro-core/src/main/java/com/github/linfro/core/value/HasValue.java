@@ -60,6 +60,10 @@ public interface HasValue<T> extends GetValue<T> {
         return new HasTransformedValue<>(this, new NvlFunction<T>(inOutNullValue), new NvlFunction<T>(inOutNullValue));
     }
 
+    public default HasDisposableValue<T> biFilter(Predicate<? super T> predicate) {
+        return new HasFilteredValue<>(this, predicate, predicate);
+    }
+
     // Meta info support
 
     @Override

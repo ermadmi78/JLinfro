@@ -61,6 +61,8 @@ public interface IHybridFlow<F> extends IOutFlow<F> {
 
     public IHybridFlow<F> biNvl(F inOutNullValue);
 
+    public IHybridFlow<F> biFilter(Predicate<? super F> predicate);
+
     @Override
     public IHybridFlow<F> putMetaInfo(String metaInfoKey, Object metaInfoValue);
 
