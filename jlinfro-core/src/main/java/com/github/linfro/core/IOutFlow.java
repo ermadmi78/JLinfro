@@ -3,8 +3,10 @@ package com.github.linfro.core;
 import com.github.linfro.core.common.Disposable;
 import com.github.linfro.core.common.Equality;
 import com.github.linfro.core.value.GetAggregateValue;
+import com.github.linfro.core.value.GetValue;
 import com.github.linfro.core.value.HasValue;
 
+import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -38,4 +40,7 @@ public interface IOutFlow<F> {
     public IOutFlow<F> putMetaInfo(String metaInfoKey, Object metaInfoValue);
 
     public IOutFlow<F> named(String name);
+
+    @SuppressWarnings("unchecked")
+    public IOutFlow<List<F>> union(GetValue<? extends F>... args);
 }

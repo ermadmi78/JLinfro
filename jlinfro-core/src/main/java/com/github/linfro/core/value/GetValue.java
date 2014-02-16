@@ -7,6 +7,7 @@ import com.github.linfro.core.common.MetaInfoHolder;
 import com.github.linfro.core.common.NullSafeFunction;
 import com.github.linfro.core.common.NvlFunction;
 
+import java.util.List;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
@@ -68,5 +69,10 @@ public interface GetValue<T> extends Getter<T> {
 
     public default GetDisposableValue<T> named(String name) {
         return putMetaInfo(MetaInfoHolder.META_NAME, name);
+    }
+
+    @SuppressWarnings("unchecked")
+    public default GetDisposableValue<List<T>> union(GetValue<? extends T>... args) {
+        return new GetUnionValue<>(this, args);
     }
 }

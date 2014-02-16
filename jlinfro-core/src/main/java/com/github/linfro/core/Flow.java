@@ -9,6 +9,7 @@ import com.github.linfro.core.dsl.InOutLink;
 import com.github.linfro.core.dsl.OutLink;
 import com.github.linfro.core.value.*;
 
+import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -93,6 +94,12 @@ public abstract class Flow<DSL, F, SRC extends GetValue<F>> {
         @Override
         public IOutFlow<F> named(String name) {
             return new OutFlow<>(from.named(name), context);
+        }
+
+        @SuppressWarnings("unchecked")
+        @Override
+        public IOutFlow<List<F>> union(GetValue<? extends F>... args) {
+            return new OutFlow<>(from.union(args), context);
         }
     }
 
@@ -264,6 +271,12 @@ public abstract class Flow<DSL, F, SRC extends GetValue<F>> {
         @Override
         public IOutFlow<F> filter(Predicate<? super F> predicate) {
             return new OutFlow<>(from.filter(predicate), context);
+        }
+
+        @SuppressWarnings("unchecked")
+        @Override
+        public IOutFlow<List<F>> union(GetValue<? extends F>... args) {
+            return new OutFlow<>(from.union(args), context);
         }
     }
 
