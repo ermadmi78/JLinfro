@@ -71,7 +71,6 @@ public interface IHybridFlow<F> extends IOutFlow<F> {
     @Override
     public IHybridFlow<F> named(String name);
 
-    @SuppressWarnings("unchecked")
     @Override
-    public IOutFlow<List<F>> union(GetValue<? extends F>... args);
+    public IOutFlow<List<F>> union(GetValue... args);
 }

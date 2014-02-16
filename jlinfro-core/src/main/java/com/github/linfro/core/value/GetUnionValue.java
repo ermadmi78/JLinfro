@@ -26,21 +26,20 @@ public class GetUnionValue<T> extends AbstractGetValue<List<T>> implements GetDi
 
     private List<T> result;
 
-    @SuppressWarnings("unchecked")
+    @SafeVarargs
     public GetUnionValue(GetValue<? extends T> firstArg, GetValue<? extends T>... otherArgs) {
         notNull(firstArg);
-        if (otherArgs == null) {
-            otherArgs = new GetValue[0];
-        }
 
-        this.args = new ArrayList<>(otherArgs.length + 1);
+        this.args = new ArrayList<>(otherArgs == null ? 1 : otherArgs.length + 1);
         this.args.add(firstArg);
         firstArg.addChangeListener(argListener);
 
-        for (GetValue<? extends T> arg : otherArgs) {
-            notNull(arg);
-            this.args.add(arg);
-            arg.addChangeListener(argListener);
+        if (otherArgs != null) {
+            for (GetValue<? extends T> arg : otherArgs) {
+                notNull(arg);
+                this.args.add(arg);
+                arg.addChangeListener(argListener);
+            }
         }
     }
 

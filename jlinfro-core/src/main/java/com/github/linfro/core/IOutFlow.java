@@ -41,6 +41,5 @@ public interface IOutFlow<F> {
 
     public IOutFlow<F> named(String name);
 
-    @SuppressWarnings("unchecked")
-    public IOutFlow<List<F>> union(GetValue<? extends F>... args);
+    public IOutFlow<List<F>> union(GetValue... args);
 }

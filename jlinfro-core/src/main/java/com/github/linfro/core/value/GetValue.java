@@ -72,7 +72,7 @@ public interface GetValue<T> extends Getter<T> {
     }
 
     @SuppressWarnings("unchecked")
-    public default GetDisposableValue<List<T>> union(GetValue<? extends T>... args) {
+    public default GetDisposableValue<List<T>> union(GetValue... args) {
         return new GetUnionValue<>(this, args);
     }
 }

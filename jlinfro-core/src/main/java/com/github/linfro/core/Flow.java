@@ -96,9 +96,8 @@ public abstract class Flow<DSL, F, SRC extends GetValue<F>> {
             return new OutFlow<>(from.named(name), context);
         }
 
-        @SuppressWarnings("unchecked")
         @Override
-        public IOutFlow<List<F>> union(GetValue<? extends F>... args) {
+        public IOutFlow<List<F>> union(GetValue... args) {
             return new OutFlow<>(from.union(args), context);
         }
     }
@@ -273,9 +272,8 @@ public abstract class Flow<DSL, F, SRC extends GetValue<F>> {
             return new OutFlow<>(from.filter(predicate), context);
         }
 
-        @SuppressWarnings("unchecked")
         @Override
-        public IOutFlow<List<F>> union(GetValue<? extends F>... args) {
+        public IOutFlow<List<F>> union(GetValue... args) {
             return new OutFlow<>(from.union(args), context);
         }
     }
