@@ -1,10 +1,12 @@
 package com.github.linfro.core;
 
+import com.github.linfro.core.common.Disposable;
+import com.github.linfro.core.common.ObjectUtil;
 import com.github.linfro.core.value.HasValue;
 import com.github.linfro.core.value.TestGetValue;
+import com.github.linfro.core.value.TestListener;
 import org.junit.Test;
 
-import static com.github.linfro.core.common.ObjectUtil.nvl;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
@@ -22,19 +24,40 @@ public class Flow_Union_Test {
 
         HasValue<Integer> res = Flow.newHasValue();
 
-        a.flow().union(b, c).map(
-                (args) -> args.stream().mapToInt((arg) -> nvl(arg, 0)).sum()
+        TestListener listener = new TestListener();
+        res.addChangeListener(listener);
+
+        Disposable link = a.flow().union(b, c).map(
+                (args) -> args.stream().mapToInt(ObjectUtil::nvl).sum()
         ).to(res);
 
         assertNull(res.getValue());
+        assertEquals(0, listener.getCounter());
 
         a.update(1);
         assertEquals(new Integer(1), res.getValue());
+        assertEquals(1, listener.getCounter());
 
         b.update(2);
         assertEquals(new Integer(3), res.getValue());
+        assertEquals(2, listener.getCounter());
 
         c.update(3);
         assertEquals(new Integer(6), res.getValue());
+        assertEquals(3, listener.getCounter());
+
+        link.dispose();
+
+        a.update(10);
+        assertEquals(new Integer(6), res.getValue());
+        assertEquals(3, listener.getCounter());
+
+        b.update(20);
+        assertEquals(new Integer(6), res.getValue());
+        assertEquals(3, listener.getCounter());
+
+        c.update(30);
+        assertEquals(new Integer(6), res.getValue());
+        assertEquals(3, listener.getCounter());
     }
 }

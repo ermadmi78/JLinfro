@@ -2,6 +2,7 @@ package com.github.linfro.core.common;
 
 import java.io.*;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Comparator;
 
 /**
@@ -85,6 +86,42 @@ public final class ObjectUtil {
 
     public static Boolean nvl(Boolean value) {
         return nvl(value, Boolean.FALSE);
+    }
+
+    public static Character nvl(Character value) {
+        return nvl(value, '\u0000');
+    }
+
+    public static Byte nvl(Byte value) {
+        return nvl(value, (byte) 0);
+    }
+
+    public static Short nvl(Short value) {
+        return nvl(value, (short) 0);
+    }
+
+    public static Integer nvl(Integer value) {
+        return nvl(value, 0);
+    }
+
+    public static Long nvl(Long value) {
+        return nvl(value, 0L);
+    }
+
+    public static Float nvl(Float value) {
+        return nvl(value, 0F);
+    }
+
+    public static Double nvl(Double value) {
+        return nvl(value, 0D);
+    }
+
+    public static BigInteger nvl(BigInteger value) {
+        return nvl(value, BigInteger.ZERO);
+    }
+
+    public static BigDecimal nvl(BigDecimal value) {
+        return nvl(value, BigDecimal.ZERO);
     }
 
     public static <T> T nvl(T value, T nullValue) {
