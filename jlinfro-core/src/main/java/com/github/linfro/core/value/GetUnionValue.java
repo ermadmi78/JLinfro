@@ -15,6 +15,7 @@ public class GetUnionValue<T> extends AbstractGetValue<List<T>> {
     protected final ValueChangeListener<T> argListener = new ValueChangeListener<T>() {
         @Override
         public void valueChanged(Getter<? extends T> getter) {
+            lastGetter = getter;
             fireValueChanged();
         }
     };
@@ -23,6 +24,7 @@ public class GetUnionValue<T> extends AbstractGetValue<List<T>> {
     protected boolean disposed = false;
 
     private List<T> result;
+    private Getter<? extends T> lastGetter;
 
     @SafeVarargs
     public GetUnionValue(GetValue<? extends T> firstArg, GetValue<? extends T>... otherArgs) {
@@ -31,6 +33,7 @@ public class GetUnionValue<T> extends AbstractGetValue<List<T>> {
         this.args = new ArrayList<>(otherArgs == null ? 1 : otherArgs.length + 1);
         this.args.add(firstArg);
         firstArg.addChangeListener(argListener);
+        this.lastGetter = firstArg;
 
         if (otherArgs != null) {
             for (GetValue<? extends T> arg : otherArgs) {
@@ -57,6 +60,30 @@ public class GetUnionValue<T> extends AbstractGetValue<List<T>> {
         }
 
         return result;
+    }
+
+    @Override
+    public boolean isValueValid() {
+        if (disposed) {
+            throw new IllegalStateException("Value is disposed");
+        }
+
+        for (GetValue<? extends T> arg : args) {
+            if (!arg.isValueValid()) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    @Override
+    public Object getMetaInfo(String key) {
+        if (disposed) {
+            throw new IllegalStateException("Value is disposed");
+        }
+
+        return lastGetter == null ? null : lastGetter.getMetaInfo(key);
     }
 
     @Override
@@ -91,5 +118,6 @@ public class GetUnionValue<T> extends AbstractGetValue<List<T>> {
         }
         args.clear();
         result = null;
+        lastGetter = null;
     }
 }
