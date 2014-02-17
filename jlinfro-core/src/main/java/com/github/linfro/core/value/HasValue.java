@@ -31,48 +31,48 @@ public interface HasValue<T> extends GetValue<T> {
         return Flow.from(this);
     }
 
-    public default <M> HasDisposableValue<M> map(Function<T, M> outFunc, Function<M, T> inFunc) {
+    public default <M> HasValue<M> map(Function<T, M> outFunc, Function<M, T> inFunc) {
         return new HasTransformedValue<>(this, outFunc, inFunc);
     }
 
-    public default <M> HasDisposableValue<M> mapNotNull(Function<T, M> outFunc, Function<M, T> inFunc) {
+    public default <M> HasValue<M> mapNotNull(Function<T, M> outFunc, Function<M, T> inFunc) {
         return new HasTransformedValue<>(this, new NullSafeFunction<T, M>(outFunc), new NullSafeFunction<M, T>(inFunc));
     }
 
-    public default HasDisposableValue<T> nvl(T outNullValue, T inNullValue) {
+    public default HasValue<T> nvl(T outNullValue, T inNullValue) {
         return new HasTransformedValue<>(this, new NvlFunction<T>(outNullValue), new NvlFunction<T>(inNullValue));
     }
 
-    public default HasDisposableValue<T> filter(Predicate<? super T> outPredicate, Predicate<? super T> inPredicate) {
+    public default HasValue<T> filter(Predicate<? super T> outPredicate, Predicate<? super T> inPredicate) {
         return new HasFilteredValue<>(this, outPredicate, inPredicate);
     }
 
-    public default HasDisposableValue<T> biMap(Function<T, T> inOutFunction) {
+    public default HasValue<T> biMap(Function<T, T> inOutFunction) {
         return new HasTransformedValue<>(this, inOutFunction, inOutFunction);
     }
 
-    public default HasDisposableValue<T> biMapNotNull(Function<T, T> inOutFunction) {
+    public default HasValue<T> biMapNotNull(Function<T, T> inOutFunction) {
         Function<T, T> nullSafeFunction = new NullSafeFunction<>(inOutFunction);
         return new HasTransformedValue<>(this, nullSafeFunction, nullSafeFunction);
     }
 
-    public default HasDisposableValue<T> biNvl(T inOutNullValue) {
+    public default HasValue<T> biNvl(T inOutNullValue) {
         return new HasTransformedValue<>(this, new NvlFunction<T>(inOutNullValue), new NvlFunction<T>(inOutNullValue));
     }
 
-    public default HasDisposableValue<T> biFilter(Predicate<? super T> predicate) {
+    public default HasValue<T> biFilter(Predicate<? super T> predicate) {
         return new HasFilteredValue<>(this, predicate, predicate);
     }
 
     // Meta info support
 
     @Override
-    public default HasDisposableValue<T> putMetaInfo(String metaInfoKey, Object metaInfoValue) {
+    public default HasValue<T> putMetaInfo(String metaInfoKey, Object metaInfoValue) {
         return new HasMetaInfoValue<>(this, metaInfoKey, metaInfoValue);
     }
 
     @Override
-    public default HasDisposableValue<T> named(String name) {
+    public default HasValue<T> named(String name) {
         return putMetaInfo(MetaInfoHolder.META_NAME, name);
     }
 }

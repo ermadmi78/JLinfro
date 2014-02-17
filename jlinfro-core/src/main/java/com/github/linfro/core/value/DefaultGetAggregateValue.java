@@ -1,7 +1,5 @@
 package com.github.linfro.core.value;
 
-import com.github.linfro.core.common.AutoDisposable;
-
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -16,7 +14,7 @@ import static com.github.linfro.core.common.ObjectUtil.notNull;
 public class DefaultGetAggregateValue<T> extends AbstractGetValue<T> implements GetAggregateValue<T> {
     protected final Aggregator<T> aggregator;
     protected T initialValue;
-    protected final List<HasDisposableValue<T>> arguments = new LinkedList<>();
+    protected final List<HasValue<T>> arguments = new LinkedList<>();
 
     private T aggregation;
     private boolean aggregationCalculated = false;
@@ -46,7 +44,7 @@ public class DefaultGetAggregateValue<T> extends AbstractGetValue<T> implements 
     }
 
     @Override
-    public HasDisposableValue<T> newArgument() {
+    public HasValue<T> newArgument() {
         DisposableArgument member = new DisposableArgument(getInitialValue());
         arguments.add(member);
         fireValueChanged();
@@ -58,7 +56,7 @@ public class DefaultGetAggregateValue<T> extends AbstractGetValue<T> implements 
         return initialValue;
     }
 
-    private class DisposableArgument extends AbstractHasValue<T> implements HasDisposableValue<T>, AutoDisposable {
+    private class DisposableArgument extends AbstractHasValue<T> {
         private T value;
         private boolean disposed = false;
 
@@ -101,7 +99,7 @@ public class DefaultGetAggregateValue<T> extends AbstractGetValue<T> implements 
     }
 
     private class InternalValueIterator implements Iterator<T> {
-        private final Iterator<HasDisposableValue<T>> iterator = arguments.iterator();
+        private final Iterator<HasValue<T>> iterator = arguments.iterator();
 
         @Override
         public boolean hasNext() {

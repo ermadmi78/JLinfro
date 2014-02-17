@@ -30,7 +30,9 @@ public class MetaInfoTest {
         assertEquals("val", res.getValue());
         assertEquals(1, listener.getCounter());
 
-        res.autoDispose();
+        if (res.isAutoDispose()) {
+            res.dispose();
+        }
 
         src.update("disposed");
         assertEquals("disposed", src.getValue());
@@ -69,7 +71,9 @@ public class MetaInfoTest {
         assertEquals("new", res.getValue());
         assertEquals(2, listener.getCounter());
 
-        res.autoDispose();
+        if (res.isAutoDispose()) {
+            res.dispose();
+        }
 
         src.setValue("disposed");
         assertEquals("disposed", src.getValue());
@@ -110,7 +114,9 @@ public class MetaInfoTest {
         assertEquals("val", res.getValue());
         assertEquals(1, listener.getCounter());
 
-        res.autoDispose();
+        if (res.isAutoDispose()) {
+            res.dispose();
+        }
 
         src.update("disposed");
         assertEquals("disposed", src.getValue());
@@ -149,7 +155,9 @@ public class MetaInfoTest {
         assertEquals("new", res.getValue());
         assertEquals(2, listener.getCounter());
 
-        res.autoDispose();
+        if (res.isAutoDispose()) {
+            res.dispose();
+        }
 
         src.setValue("disposed");
         assertEquals("disposed", src.getValue());

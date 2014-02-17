@@ -1,6 +1,5 @@
 package com.github.linfro.core.value;
 
-import com.github.linfro.core.common.AutoDisposable;
 import com.github.linfro.core.common.MetaInfoHolder;
 
 import static com.github.linfro.core.common.ObjectUtil.notNull;
@@ -10,8 +9,7 @@ import static com.github.linfro.core.common.ObjectUtil.notNull;
  * @version 2014-02-13
  * @since 1.0.0
  */
-public class GetMetaInfoValue<T> extends AbstractGetWrapperValue<T, T>
-        implements GetDisposableValue<T>, AutoDisposable, MetaInfoHolder {
+public class GetMetaInfoValue<T> extends AbstractGetWrapperValue<T, T> implements MetaInfoHolder {
     protected final String metaInfoKey;
     protected final Object metaInfoValue;
 

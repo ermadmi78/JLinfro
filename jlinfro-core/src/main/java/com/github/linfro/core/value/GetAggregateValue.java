@@ -6,5 +6,5 @@ package com.github.linfro.core.value;
  * @since 1.0.0
  */
 public interface GetAggregateValue<T> extends GetValue<T>, Iterable<T> {
-    public HasDisposableValue<T> newArgument();
+    public HasValue<T> newArgument();
 }

@@ -1,7 +1,5 @@
 package com.github.linfro.core.value;
 
-import com.github.linfro.core.common.AutoDisposable;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,7 +10,7 @@ import static com.github.linfro.core.common.ObjectUtil.notNull;
  * @version 2014-02-16
  * @since 1.0.0
  */
-public class GetUnionValue<T> extends AbstractGetValue<List<T>> implements GetDisposableValue<List<T>>, AutoDisposable {
+public class GetUnionValue<T> extends AbstractGetValue<List<T>> {
     protected final List<GetValue<? extends T>> args;
     protected final ValueChangeListener<T> argListener = new ValueChangeListener<T>() {
         @Override
@@ -87,7 +85,9 @@ public class GetUnionValue<T> extends AbstractGetValue<List<T>> implements GetDi
         disposed = true;
         for (GetValue<? extends T> arg : args) {
             arg.removeChangeListener(argListener);
-            arg.autoDispose();
+            if (arg.isAutoDispose()) {
+                arg.dispose();
+            }
         }
         args.clear();
         result = null;

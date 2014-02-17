@@ -16,7 +16,7 @@ import java.util.function.Predicate;
  * @version 2014-01-04
  * @since 1.0.0
  */
-public interface GetValue<T> extends Getter<T> {
+public interface GetValue<T> extends Getter<T>, AutoDisposable {
     @Override
     public T getValue();
 
@@ -24,32 +24,32 @@ public interface GetValue<T> extends Getter<T> {
 
     public void removeChangeListener(ValueChangeListener<? super T> listener);
 
-    public default void autoDispose() {
-        if (this instanceof AutoDisposable) {
-            AutoDisposable disposable = (AutoDisposable) this;
-            if (disposable.isAutoDispose()) {
-                disposable.dispose();
-            }
-        }
+    @Override
+    public default boolean isAutoDispose() {
+        return false;
+    }
+
+    public default void dispose() {
+        // Do nothing
     }
 
     public default IOutFlow<T> flow() {
         return Flow.from(this);
     }
 
-    public default <M> GetDisposableValue<M> map(Function<T, M> function) {
+    public default <M> GetValue<M> map(Function<T, M> function) {
         return new GetTransformedValue<>(this, function);
     }
 
-    public default <M> GetDisposableValue<M> mapNotNull(Function<T, M> function) {
+    public default <M> GetValue<M> mapNotNull(Function<T, M> function) {
         return new GetTransformedValue<>(this, new NullSafeFunction<>(function));
     }
 
-    public default GetDisposableValue<T> nvl(T nullValue) {
+    public default GetValue<T> nvl(T nullValue) {
         return new GetTransformedValue<>(this, new NvlFunction<T>(nullValue));
     }
 
-    public default GetDisposableValue<T> filter(Predicate<? super T> predicate) {
+    public default GetValue<T> filter(Predicate<? super T> predicate) {
         return new GetFilteredValue<>(this, predicate);
     }
 
@@ -59,7 +59,7 @@ public interface GetValue<T> extends Getter<T> {
         return this instanceof MetaInfoHolder ? ((MetaInfoHolder) this).getMetaInfo(key) : null;
     }
 
-    public default GetDisposableValue<T> putMetaInfo(String metaInfoKey, Object metaInfoValue) {
+    public default GetValue<T> putMetaInfo(String metaInfoKey, Object metaInfoValue) {
         return new GetMetaInfoValue<>(this, metaInfoKey, metaInfoValue);
     }
 
@@ -67,12 +67,12 @@ public interface GetValue<T> extends Getter<T> {
         return (String) findMetaInfo(MetaInfoHolder.META_NAME);
     }
 
-    public default GetDisposableValue<T> named(String name) {
+    public default GetValue<T> named(String name) {
         return putMetaInfo(MetaInfoHolder.META_NAME, name);
     }
 
     @SuppressWarnings("unchecked")
-    public default GetDisposableValue<List<T>> union(GetValue... args) {
+    public default GetValue<List<T>> union(GetValue... args) {
         return new GetUnionValue<>(this, args);
     }
 }
