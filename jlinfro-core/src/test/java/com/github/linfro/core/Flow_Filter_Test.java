@@ -252,16 +252,16 @@ public class Flow_Filter_Test {
 
     @Test
     public void testFilteredUnsafeMappingFlow() throws Exception {
-        HasValue<Integer> srcVal = Flow.newHasValue(0);
-        HasValue<String> dstVal = Flow.newHasValue();
+        HasValue<Integer> srcVal = Flow.newHasValue();
+        HasValue<String> dstVal = Flow.newHasValue("test");
 
-        assertEquals(new Integer(0), srcVal.getValue());
-        assertNull(dstVal.getValue());
+        assertNull(srcVal.getValue());
+        assertEquals("test", dstVal.getValue());
 
         srcVal.flow().filter((i) -> i != null).map(Object::toString).force().to(dstVal);
 
-        assertEquals(new Integer(0), srcVal.getValue());
-        assertEquals("0", dstVal.getValue());
+        assertNull(srcVal.getValue());
+        assertEquals("test", dstVal.getValue());
 
         srcVal.setValue(222);
 
