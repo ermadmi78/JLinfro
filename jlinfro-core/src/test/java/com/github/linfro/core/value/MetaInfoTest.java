@@ -14,11 +14,11 @@ public class MetaInfoTest {
     @Test
     public void testGetSimpleNamed() throws Exception {
         TestGetValue<String> src = TestGetValue.newGetValue();
-        assertNull(src.findMetaName());
+        assertNull(src.getMetaName());
         assertNull(src.getValue());
 
         GetValue<String> res = src.named("test");
-        assertEquals("test", res.findMetaName());
+        assertEquals("test", res.getMetaName());
         assertNull(res.getValue());
 
         TestListener listener = new TestListener();
@@ -36,7 +36,7 @@ public class MetaInfoTest {
 
         src.update("disposed");
         assertEquals("disposed", src.getValue());
-        assertEquals("test", res.findMetaName());
+        assertEquals("test", res.getMetaName());
         assertEquals(1, listener.getCounter());
 
         try {
@@ -50,11 +50,11 @@ public class MetaInfoTest {
     @Test
     public void testHasSimpleNamed() throws Exception {
         HasValue<String> src = Flow.newHasValue();
-        assertNull(src.findMetaName());
+        assertNull(src.getMetaName());
         assertNull(src.getValue());
 
         HasValue<String> res = src.named("test");
-        assertEquals("test", res.findMetaName());
+        assertEquals("test", res.getMetaName());
         assertNull(res.getValue());
 
         TestListener listener = new TestListener();
@@ -77,7 +77,7 @@ public class MetaInfoTest {
 
         src.setValue("disposed");
         assertEquals("disposed", src.getValue());
-        assertEquals("test", res.findMetaName());
+        assertEquals("test", res.getMetaName());
         assertEquals(2, listener.getCounter());
 
         try {
@@ -98,11 +98,11 @@ public class MetaInfoTest {
     @Test
     public void testGetNamedNamed() throws Exception {
         TestGetValue<String> src = TestGetValue.newGetValue();
-        assertNull(src.findMetaName());
+        assertNull(src.getMetaName());
         assertNull(src.getValue());
 
         GetValue<String> res = src.named("first").named("second");
-        assertEquals("second", res.findMetaName());
+        assertEquals("second", res.getMetaName());
         assertNull(res.getValue());
 
         TestListener listener = new TestListener();
@@ -120,7 +120,7 @@ public class MetaInfoTest {
 
         src.update("disposed");
         assertEquals("disposed", src.getValue());
-        assertEquals("second", res.findMetaName());
+        assertEquals("second", res.getMetaName());
         assertEquals(1, listener.getCounter());
 
         try {
@@ -134,11 +134,11 @@ public class MetaInfoTest {
     @Test
     public void testHasNamedNamed() throws Exception {
         HasValue<String> src = Flow.newHasValue();
-        assertNull(src.findMetaName());
+        assertNull(src.getMetaName());
         assertNull(src.getValue());
 
         HasValue<String> res = src.named("first").named("second");
-        assertEquals("second", res.findMetaName());
+        assertEquals("second", res.getMetaName());
         assertNull(res.getValue());
 
         TestListener listener = new TestListener();
@@ -161,7 +161,7 @@ public class MetaInfoTest {
 
         src.setValue("disposed");
         assertEquals("disposed", src.getValue());
-        assertEquals("second", res.findMetaName());
+        assertEquals("second", res.getMetaName());
         assertEquals(2, listener.getCounter());
 
         try {
@@ -185,12 +185,12 @@ public class MetaInfoTest {
         GetValue<String> res = src.named("test").nvl(0).map(Object::toString);
         assertNull(src.getValue());
         assertEquals("0", res.getValue());
-        assertEquals("test", res.findMetaName());
+        assertEquals("test", res.getMetaName());
 
         src.update(11);
         assertEquals(new Integer(11), src.getValue());
         assertEquals("11", res.getValue());
-        assertEquals("test", res.findMetaName());
+        assertEquals("test", res.getMetaName());
     }
 
     @Test
@@ -199,17 +199,17 @@ public class MetaInfoTest {
         HasValue<String> res = src.named("test").nvl(0, 0).map(Object::toString, Integer::valueOf);
         assertNull(src.getValue());
         assertEquals("0", res.getValue());
-        assertEquals("test", res.findMetaName());
+        assertEquals("test", res.getMetaName());
 
         src.setValue(11);
         assertEquals(new Integer(11), src.getValue());
         assertEquals("11", res.getValue());
-        assertEquals("test", res.findMetaName());
+        assertEquals("test", res.getMetaName());
 
         res.setValue("215");
         assertEquals(new Integer(215), src.getValue());
         assertEquals("215", res.getValue());
-        assertEquals("test", res.findMetaName());
+        assertEquals("test", res.getMetaName());
     }
 
     @Test
@@ -218,7 +218,7 @@ public class MetaInfoTest {
         GetValue<String> res = src.named("test").filter("ok"::equals);
 
         assertEquals("U", src.getValue());
-        assertEquals("test", res.findMetaName());
+        assertEquals("test", res.getMetaName());
 
         try {
             res.getValue();
@@ -230,7 +230,7 @@ public class MetaInfoTest {
         src.update("ok");
         assertEquals("ok", src.getValue());
         assertEquals("ok", res.getValue());
-        assertEquals("test", res.findMetaName());
+        assertEquals("test", res.getMetaName());
     }
 
     @Test
@@ -239,7 +239,7 @@ public class MetaInfoTest {
         HasValue<String> res = src.named("test").filter("ok"::equals, "ok"::equals);
 
         assertEquals("U", src.getValue());
-        assertEquals("test", res.findMetaName());
+        assertEquals("test", res.getMetaName());
 
         try {
             res.getValue();
@@ -251,11 +251,11 @@ public class MetaInfoTest {
         res.setValue("ok");
         assertEquals("ok", src.getValue());
         assertEquals("ok", res.getValue());
-        assertEquals("test", res.findMetaName());
+        assertEquals("test", res.getMetaName());
 
         res.setValue("not");
         assertEquals("ok", src.getValue());
         assertEquals("ok", res.getValue());
-        assertEquals("test", res.findMetaName());
+        assertEquals("test", res.getMetaName());
     }
 }

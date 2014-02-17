@@ -1,7 +1,5 @@
 package com.github.linfro.core.value;
 
-import com.github.linfro.core.common.MetaInfoHolder;
-
 import java.util.function.Function;
 
 import static com.github.linfro.core.common.ObjectUtil.notNull;
@@ -11,7 +9,7 @@ import static com.github.linfro.core.common.ObjectUtil.notNull;
  * @version 2014-01-05
  * @since 1.0.0
  */
-public class HasTransformedValue<F, T> extends AbstractHasWrapperValue<F, T> implements MetaInfoHolder {
+public class HasTransformedValue<F, T> extends AbstractHasWrapperValue<F, T> {
     protected final Function<F, T> outFunc;
     protected final Function<T, F> inFunc;
 

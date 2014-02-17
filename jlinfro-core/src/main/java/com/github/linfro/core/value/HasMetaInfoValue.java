@@ -1,7 +1,5 @@
 package com.github.linfro.core.value;
 
-import com.github.linfro.core.common.MetaInfoHolder;
-
 import static com.github.linfro.core.common.ObjectUtil.notNull;
 
 /**
@@ -9,7 +7,7 @@ import static com.github.linfro.core.common.ObjectUtil.notNull;
  * @version 2014-02-13
  * @since 1.0.0
  */
-public class HasMetaInfoValue<T> extends AbstractHasWrapperValue<T, T> implements MetaInfoHolder {
+public class HasMetaInfoValue<T> extends AbstractHasWrapperValue<T, T> {
     protected final String metaInfoKey;
     protected final Object metaInfoValue;
 

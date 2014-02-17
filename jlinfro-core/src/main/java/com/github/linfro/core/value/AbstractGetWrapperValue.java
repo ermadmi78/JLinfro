@@ -1,7 +1,5 @@
 package com.github.linfro.core.value;
 
-import com.github.linfro.core.common.MetaInfoHolder;
-
 import static com.github.linfro.core.common.ObjectUtil.notNull;
 
 /**
@@ -9,7 +7,7 @@ import static com.github.linfro.core.common.ObjectUtil.notNull;
  * @version 2014-02-13
  * @since 1.0.0
  */
-public abstract class AbstractGetWrapperValue<F, T> extends AbstractGetValue<T> implements MetaInfoHolder {
+public abstract class AbstractGetWrapperValue<F, T> extends AbstractGetValue<T> {
     protected final GetValue<F> from;
     protected final ValueChangeListener<F> fromListener = new ValueChangeListener<F>() {
         @Override
@@ -28,7 +26,7 @@ public abstract class AbstractGetWrapperValue<F, T> extends AbstractGetValue<T> 
 
     @Override
     public Object getMetaInfo(String key) {
-        return from.findMetaInfo(key);
+        return from.getMetaInfo(key);
     }
 
     @Override

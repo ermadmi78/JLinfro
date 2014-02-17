@@ -1,7 +1,5 @@
 package com.github.linfro.core.value;
 
-import com.github.linfro.core.common.MetaInfoHolder;
-
 import java.util.function.Predicate;
 
 import static com.github.linfro.core.common.ObjectUtil.notNull;
@@ -11,7 +9,7 @@ import static com.github.linfro.core.common.ObjectUtil.notNull;
  * @version 2014-02-08
  * @since 1.0.0
  */
-public class HasFilteredValue<T> extends AbstractHasWrapperValue<T, T> implements MetaInfoHolder {
+public class HasFilteredValue<T> extends AbstractHasWrapperValue<T, T> {
     protected final Predicate<? super T> outPredicate;
     protected final Predicate<? super T> inPredicate;
 
