@@ -1,6 +1,5 @@
 package com.github.linfro.core.dsl;
 
-import com.github.linfro.core.value.FilterException;
 import com.github.linfro.core.value.Getter;
 import com.github.linfro.core.value.ValueChangeListener;
 
@@ -22,10 +21,8 @@ public class ConsumerListener<A> implements ValueChangeListener<A> {
 
     @Override
     public void valueChanged(Getter<? extends A> getter) {
-        try {
+        if (getter.isValueValid()) {
             target.accept(getter.getValue());
-        } catch (FilterException e) {
-            // Incoming value doesn't match some filter conditions - do nothing
         }
     }
 }

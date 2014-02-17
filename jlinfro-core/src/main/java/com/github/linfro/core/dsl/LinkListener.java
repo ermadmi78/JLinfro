@@ -1,6 +1,5 @@
 package com.github.linfro.core.dsl;
 
-import com.github.linfro.core.value.FilterException;
 import com.github.linfro.core.value.Getter;
 import com.github.linfro.core.value.HasValue;
 import com.github.linfro.core.value.ValueChangeListener;
@@ -30,26 +29,18 @@ public class LinkListener<A> implements ValueChangeListener<A> {
         }
 
         try {
-            A incoming = getter.getValue();
+            if (getter.isValueValid()) {
+                A incoming = getter.getValue();
 
-            boolean update = true;
-            if (context.isStrong()) {
-                try {
-                    if (context.getEquality().areEquals(incoming, targetValue.getValue())) {
-                        update = false;
-                    }
-                } catch (FilterException e) {
-                    // Target value doesn't match some filter conditions -
-                    // we don't know are incoming and target values equals or not.
-                    // So we have to update target value.
+                boolean update = true;
+                if (context.isStrong() && targetValue.isValueValid()) {
+                    update = !context.getEquality().areEquals(incoming, targetValue.getValue());
+                }
+
+                if (update) {
+                    targetValue.setValue(incoming);
                 }
             }
-
-            if (update) {
-                targetValue.setValue(incoming);
-            }
-        } catch (FilterException e) {
-            // Incoming value doesn't match some filter conditions - do nothing
         } finally {
             lock.unlock();
         }

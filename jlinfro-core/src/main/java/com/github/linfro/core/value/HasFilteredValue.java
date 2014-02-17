@@ -13,6 +13,9 @@ public class HasFilteredValue<T> extends AbstractHasWrapperValue<T, T> {
     protected final Predicate<? super T> outPredicate;
     protected final Predicate<? super T> inPredicate;
 
+    private boolean result = false;
+    private boolean calculated = false;
+
     public HasFilteredValue(HasValue<T> from, Predicate<? super T> outPredicate, Predicate<? super T> inPredicate) {
         super(from);
         this.outPredicate = notNull(outPredicate);
@@ -20,14 +23,22 @@ public class HasFilteredValue<T> extends AbstractHasWrapperValue<T, T> {
     }
 
     @Override
-    public T getValue() throws FilterException {
+    public T getValue() {
         if (disposed) {
             throw new IllegalStateException("Value is disposed");
         }
 
-        T result = from.getValue();
-        if (!outPredicate.test(result)) {
-            throw new FilterException();
+        return from.getValue();
+    }
+
+    @Override
+    public boolean isValueValid() {
+        if (!calculated) {
+            result = false;
+            if (super.isValueValid()) {
+                result = outPredicate.test(getValue());
+            }
+            calculated = true;
         }
 
         return result;
@@ -42,5 +53,19 @@ public class HasFilteredValue<T> extends AbstractHasWrapperValue<T, T> {
         if (inPredicate.test(value)) {
             from.setValue(value);
         }
+    }
+
+    @Override
+    public void fireValueChanged() {
+        result = false;
+        calculated = false;
+        super.fireValueChanged();
+    }
+
+    @Override
+    public void dispose() {
+        super.dispose();
+        result = false;
+        calculated = false;
     }
 }

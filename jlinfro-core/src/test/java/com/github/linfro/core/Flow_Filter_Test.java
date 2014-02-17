@@ -1,12 +1,12 @@
 package com.github.linfro.core;
 
 import com.github.linfro.core.common.Disposable;
+import com.github.linfro.core.value.GetValue;
 import com.github.linfro.core.value.HasValue;
 import com.github.linfro.core.value.TestGetValue;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.*;
 
 /**
  * @author Dmitry Ermakov
@@ -248,5 +248,57 @@ public class Flow_Filter_Test {
 
         assertEquals("M", srcVal.getValue());
         assertEquals("Y", dstValue.getValue());
+    }
+
+    @Test
+    public void testFilteredUnsafeMappingFlow() throws Exception {
+        HasValue<Integer> srcVal = Flow.newHasValue(0);
+        HasValue<String> dstVal = Flow.newHasValue();
+
+        assertEquals(new Integer(0), srcVal.getValue());
+        assertNull(dstVal.getValue());
+
+        srcVal.flow().filter((i) -> i != null).map(Object::toString).force().to(dstVal);
+
+        assertEquals(new Integer(0), srcVal.getValue());
+        assertEquals("0", dstVal.getValue());
+
+        srcVal.setValue(222);
+
+        assertEquals(new Integer(222), srcVal.getValue());
+        assertEquals("222", dstVal.getValue());
+
+        srcVal.setValue(null);
+
+        assertNull(srcVal.getValue());
+        assertEquals("222", dstVal.getValue());
+    }
+
+    @Test
+    public void testFilteredUnsafeMappingWrapper() throws Exception {
+        HasValue<Integer> srcVal = Flow.newHasValue(0);
+        GetValue<String> wrapVal = srcVal.filter((i) -> i != null).map(Object::toString);
+
+        assertEquals(new Integer(0), srcVal.getValue());
+        assertTrue(wrapVal.isValueValid());
+        assertEquals("0", wrapVal.getValue());
+
+        srcVal.setValue(222);
+
+        assertEquals(new Integer(222), srcVal.getValue());
+        assertTrue(wrapVal.isValueValid());
+        assertEquals("222", wrapVal.getValue());
+
+        srcVal.setValue(null);
+
+        assertNull(srcVal.getValue());
+        assertFalse(wrapVal.isValueValid());
+
+        try {
+            wrapVal.getValue();
+            fail("Wrapper value must throw NullPointerException");
+        } catch (NullPointerException e) {
+            // Ok
+        }
     }
 }

@@ -220,17 +220,16 @@ public class MetaInfoTest {
         assertEquals("U", src.getValue());
         assertEquals("test", res.getMetaName());
 
-        try {
-            res.getValue();
-            fail("Filtered value must throw exception");
-        } catch (FilterException e) {
-            //Ok
-        }
+        assertFalse(res.isValueValid());
+        assertEquals("U", res.getValue());
 
         src.update("ok");
+
         assertEquals("ok", src.getValue());
-        assertEquals("ok", res.getValue());
         assertEquals("test", res.getMetaName());
+
+        assertTrue(res.isValueValid());
+        assertEquals("ok", res.getValue());
     }
 
     @Test
@@ -240,21 +239,18 @@ public class MetaInfoTest {
 
         assertEquals("U", src.getValue());
         assertEquals("test", res.getMetaName());
-
-        try {
-            res.getValue();
-            fail("Filtered value must throw exception");
-        } catch (FilterException e) {
-            //Ok
-        }
+        assertFalse(res.isValueValid());
+        assertEquals("U", res.getValue());
 
         res.setValue("ok");
         assertEquals("ok", src.getValue());
+        assertTrue(res.isValueValid());
         assertEquals("ok", res.getValue());
         assertEquals("test", res.getMetaName());
 
         res.setValue("not");
         assertEquals("ok", src.getValue());
+        assertTrue(res.isValueValid());
         assertEquals("ok", res.getValue());
         assertEquals("test", res.getMetaName());
     }

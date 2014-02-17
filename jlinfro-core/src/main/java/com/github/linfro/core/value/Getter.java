@@ -10,6 +10,10 @@ public interface Getter<T> {
 
     public T getValue();
 
+    public default boolean isValueValid() {
+        return true;
+    }
+
     public default Object getMetaInfo(String key) {
         return null;
     }

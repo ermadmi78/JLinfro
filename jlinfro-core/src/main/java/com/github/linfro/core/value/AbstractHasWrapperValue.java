@@ -25,7 +25,20 @@ public abstract class AbstractHasWrapperValue<F, T> extends AbstractHasValue<T> 
     }
 
     @Override
+    public boolean isValueValid() {
+        if (disposed) {
+            throw new IllegalStateException("Value is disposed");
+        }
+
+        return from.isValueValid();
+    }
+
+    @Override
     public Object getMetaInfo(String key) {
+        if (disposed) {
+            throw new IllegalStateException("Value is disposed");
+        }
+
         return from.getMetaInfo(key);
     }
 

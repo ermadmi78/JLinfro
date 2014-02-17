@@ -53,4 +53,32 @@ public class Flow_Consumer_Test {
         strVal.setValue("go");
         assertEquals("test", consumer.value);
     }
+
+    @Test
+    public void testFilteredConsumer() throws Exception {
+        HasValue<String> strVal = Flow.newHasValue("init");
+        TestConsumer consumer = new TestConsumer();
+
+        assertEquals("init", strVal.getValue());
+        assertNull(consumer.value);
+
+        Disposable link = strVal.flow().filter((s) -> !"init".equals(s)).force().to(consumer::consume);
+
+        assertEquals("init", strVal.getValue());
+        assertNull(consumer.value);
+
+        strVal.setValue("ok");
+        assertEquals("ok", strVal.getValue());
+        assertEquals("ok", consumer.value);
+
+        strVal.setValue("init");
+        assertEquals("init", strVal.getValue());
+        assertEquals("ok", consumer.value);
+
+        link.dispose();
+
+        strVal.setValue("disposed");
+        assertEquals("disposed", strVal.getValue());
+        assertEquals("ok", consumer.value);
+    }
 }
