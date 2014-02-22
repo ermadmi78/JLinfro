@@ -1,0 +1,58 @@
+package com.github.linfro.core.value;
+
+import com.github.linfro.core.common.AutoDisposable;
+import com.github.linfro.core.common.NullSafeFunction;
+import com.github.linfro.core.common.NvlFunction;
+
+import java.util.List;
+import java.util.function.Function;
+import java.util.function.Predicate;
+
+/**
+ * @author Dmitry Ermakov
+ * @version 2014-02-22
+ * @since 1.0.0
+ */
+public interface GetValueDSL<T> extends GetterDSL, AutoDisposable {
+    public GetValue<T> getMainValue();
+
+    @Override
+    public default boolean isAutoDispose() {
+        return false;
+    }
+
+    public default void dispose() {
+        // Do nothing
+    }
+
+    public default <M> GetValue<M> map(Function<T, M> function) {
+        return new GetTransformedValue<>(getMainValue(), function);
+    }
+
+    public default <M> GetValue<M> mapNotNull(Function<T, M> function) {
+        return new GetTransformedValue<>(getMainValue(), new NullSafeFunction<>(function));
+    }
+
+    public default GetValue<T> nvl(T nullValue) {
+        return new GetTransformedValue<>(getMainValue(), new NvlFunction<T>(nullValue));
+    }
+
+    public default GetValue<T> filter(Predicate<? super T> predicate) {
+        return new GetFilteredValue<>(getMainValue(), predicate);
+    }
+
+    // Meta info support
+
+    public default GetValue<T> putMetaInfo(String metaInfoKey, Object metaInfoValue) {
+        return new GetMetaInfoValue<>(getMainValue(), metaInfoKey, metaInfoValue);
+    }
+
+    public default GetValue<T> named(String name) {
+        return putMetaInfo(META_NAME, name);
+    }
+
+    @SuppressWarnings("unchecked")
+    public default GetValue<List<T>> union(GetValue... args) {
+        return new GetUnionValue<>(getMainValue(), args);
+    }
+}
