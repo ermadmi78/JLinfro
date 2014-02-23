@@ -2,14 +2,14 @@
     <parent>
         <groupId>com.github.linfro</groupId>
         <artifactId>jlinfro-parent</artifactId>
-        <version>0.0.9-SNAPSHOT</version>
+        <version>0.0.9</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.github.linfro</groupId>
     <artifactId>jlinfro-swing-sample</artifactId>
     <packaging>jar</packaging>
-    <version>0.0.9-SNAPSHOT</version>
+    <version>0.0.9</version>
 
     <name>JLinfro Swing Sample</name>
     <description>Sample application for Swing implementation of JLinfro framework</description>
