@@ -18,13 +18,8 @@ import java.util.function.Predicate;
  * @since 1.0.0
  */
 public interface GetValueDSL<T> extends GetValueHolder<T>, GetterDSL, AutoDisposable {
-    @Override
-    public default boolean isAutoDispose() {
-        return false;
-    }
-
-    public default void dispose() {
-        // Do nothing
+    public default GetValueFlow<T> flow() {
+        return Flow.from(this);
     }
 
     public default <M> GetValue<M> map(Function<T, M> function) {
@@ -56,5 +51,17 @@ public interface GetValueDSL<T> extends GetValueHolder<T>, GetterDSL, AutoDispos
     @SuppressWarnings("unchecked")
     public default GetValue<List<T>> union(GetValue... args) {
         return new GetUnionValue<>(getContentValue(), args);
+    }
+
+    // Auto dispose
+
+    @Override
+    public default boolean isAutoDispose() {
+        return false;
+    }
+
+    @Override
+    public default void dispose() {
+        // Do nothing
     }
 }

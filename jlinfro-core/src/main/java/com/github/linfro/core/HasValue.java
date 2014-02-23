@@ -5,7 +5,7 @@ package com.github.linfro.core;
  * @version 2014-01-04
  * @since 1.0.0
  */
-public interface HasValue<T> extends GetValue<T>, HasValueHolder<T>, HasValueDSL<T> {
+public interface HasValue<T> extends GetValue<T>, HasValueDSL<T> {
     @Override
     public T getValue();
 
@@ -20,10 +20,5 @@ public interface HasValue<T> extends GetValue<T>, HasValueHolder<T>, HasValueDSL
     @Override
     public default HasValue<T> getContentValue() {
         return this;
-    }
-
-    @Override
-    public default HasValueFlow<T> flow() {
-        return Flow.from(this);
     }
 }

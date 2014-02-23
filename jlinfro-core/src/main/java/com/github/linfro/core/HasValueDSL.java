@@ -15,6 +15,11 @@ import java.util.function.Predicate;
  * @since 1.0.0
  */
 public interface HasValueDSL<T> extends HasValueHolder<T>, GetValueDSL<T> {
+    @Override
+    public default HasValueFlow<T> flow() {
+        return Flow.from(this);
+    }
+
     public default <M> HasValue<M> map(Function<T, M> outFunc, Function<M, T> inFunc) {
         return new HasTransformedValue<>(getContentValue(), outFunc, inFunc);
     }
