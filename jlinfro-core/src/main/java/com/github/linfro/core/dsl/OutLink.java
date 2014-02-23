@@ -47,9 +47,15 @@ public class OutLink<A> implements Disposable {
             return;
         }
 
-        disposed = true;
-
         from.removeChangeListener(fromListener);
-        context.dispose();
+
+        if (from.isAutoDispose()) {
+            from.dispose();
+        }
+        if (to.isAutoDispose()) {
+            to.dispose();
+        }
+
+        disposed = true;
     }
 }

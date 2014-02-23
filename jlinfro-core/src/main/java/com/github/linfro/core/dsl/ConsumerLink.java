@@ -47,9 +47,12 @@ public class ConsumerLink<A> implements Disposable {
             return;
         }
 
-        disposed = true;
-
         from.removeChangeListener(fromListener);
-        context.dispose();
+
+        if (from.isAutoDispose()) {
+            from.dispose();
+        }
+
+        disposed = true;
     }
 }

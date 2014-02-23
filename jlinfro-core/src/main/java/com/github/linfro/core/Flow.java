@@ -1,6 +1,5 @@
 package com.github.linfro.core;
 
-import com.github.linfro.core.common.AutoDisposable;
 import com.github.linfro.core.common.Disposable;
 import com.github.linfro.core.common.Equality;
 import com.github.linfro.core.dsl.ConsumerLink;
@@ -27,14 +26,6 @@ public abstract class Flow<DSL, F, SRC extends GetValue<F>> {
     private Flow(SRC from, Context context) {
         this.from = notNull(from);
         this.context = notNull(context);
-        autoDispose(this.from);
-    }
-
-    protected final <A> A autoDispose(A obj) {
-        if ((obj instanceof AutoDisposable) && ((AutoDisposable) obj).isAutoDispose()) {
-            context.addToDispose(obj);
-        }
-        return obj;
     }
 
     protected abstract DSL nextDSL();
@@ -115,11 +106,11 @@ public abstract class Flow<DSL, F, SRC extends GetValue<F>> {
     }
 
     public Disposable to(HasValueHolder<F> to) {
-        return createLink(autoDispose(notNull(to).getContentValue()));
+        return createLink(notNull(to).getContentValue());
     }
 
     public Disposable to(Consumer<? super F> consumer) {
-        return new ConsumerLink<>(from, autoDispose(consumer), context);
+        return new ConsumerLink<>(from, consumer, context);
     }
 
     //******************************************************************************************************************

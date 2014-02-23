@@ -47,12 +47,18 @@ public class InOutLink<A> implements Disposable {
             return;
         }
 
-        disposed = true;
-
         from.removeChangeListener(fromListener);
         if (context.isSync()) {
             to.removeChangeListener(toListener);
         }
-        context.dispose();
+
+        if (from.isAutoDispose()) {
+            from.dispose();
+        }
+        if (to.isAutoDispose()) {
+            to.dispose();
+        }
+
+        disposed = true;
     }
 }

@@ -1,6 +1,6 @@
 package com.github.linfro.core;
 
-import com.github.linfro.core.common.AutoDisposable;
+import com.github.linfro.core.common.Disposable;
 import com.github.linfro.core.common.NullSafeFunction;
 import com.github.linfro.core.common.NvlFunction;
 import com.github.linfro.core.value.GetFilteredValue;
@@ -17,7 +17,7 @@ import java.util.function.Predicate;
  * @version 2014-02-22
  * @since 1.0.0
  */
-public interface GetValueDSL<T> extends GetValueHolder<T>, GetterDSL, AutoDisposable {
+public interface GetValueDSL<T> extends GetValueHolder<T>, GetterDSL, Disposable {
     public default GetValueFlow<T> flow() {
         return Flow.from(this);
     }
@@ -55,7 +55,6 @@ public interface GetValueDSL<T> extends GetValueHolder<T>, GetterDSL, AutoDispos
 
     // Auto dispose
 
-    @Override
     public default boolean isAutoDispose() {
         return false;
     }
