@@ -5,7 +5,7 @@ package com.github.linfro.core;
  * @version 2014-01-04
  * @since 1.0.0
  */
-public interface GetValue<T> extends Getter<T>, GetValueDSL<T> {
+public interface GetValue<T> extends Getter<T>, GetValueHolder<T>, GetValueDSL<T> {
     @Override
     public T getValue();
 

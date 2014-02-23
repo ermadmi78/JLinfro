@@ -17,9 +17,7 @@ import java.util.function.Predicate;
  * @version 2014-02-22
  * @since 1.0.0
  */
-public interface GetValueDSL<T> extends GetterDSL, AutoDisposable {
-    public GetValue<T> getContentValue();
-
+public interface GetValueDSL<T> extends GetValueHolder<T>, GetterDSL, AutoDisposable {
     @Override
     public default boolean isAutoDispose() {
         return false;
