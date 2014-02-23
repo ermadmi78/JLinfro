@@ -3,6 +3,7 @@ package com.github.linfro.core.value;
 import com.github.linfro.core.Getter;
 import com.github.linfro.core.HasValue;
 import com.github.linfro.core.ValueChangeListener;
+import com.github.linfro.core.dsl.HasValueHolder;
 
 import static com.github.linfro.core.common.ObjectUtil.notNull;
 
@@ -23,8 +24,8 @@ public abstract class AbstractHasWrapperValue<F, T> extends AbstractHasValue<T> 
     protected boolean autoDispose = true;
     protected boolean disposed = false;
 
-    protected AbstractHasWrapperValue(HasValue<F> from) {
-        this.from = notNull(from);
+    protected AbstractHasWrapperValue(HasValueHolder<F> from) {
+        this.from = notNull(notNull(from).getContentValue());
         this.from.addChangeListener(fromListener);
     }
 

@@ -1,6 +1,6 @@
 package com.github.linfro.core.value;
 
-import com.github.linfro.core.HasValue;
+import com.github.linfro.core.dsl.HasValueHolder;
 
 import static com.github.linfro.core.common.ObjectUtil.notNull;
 
@@ -13,7 +13,7 @@ public class HasMetaInfoValue<T> extends AbstractHasWrapperValue<T, T> {
     protected final String metaInfoKey;
     protected final Object metaInfoValue;
 
-    public HasMetaInfoValue(HasValue<T> from, String metaInfoKey, Object metaInfoValue) {
+    public HasMetaInfoValue(HasValueHolder<T> from, String metaInfoKey, Object metaInfoValue) {
         super(from);
         this.metaInfoKey = notNull(metaInfoKey);
         this.metaInfoValue = metaInfoValue;

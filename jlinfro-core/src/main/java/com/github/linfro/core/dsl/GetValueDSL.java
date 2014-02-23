@@ -24,25 +24,25 @@ public interface GetValueDSL<T> extends GetValueHolder<T>, GetterDSL, Disposable
     }
 
     public default <M> GetValue<M> map(Function<T, M> function) {
-        return new GetTransformedValue<>(getContentValue(), function);
+        return new GetTransformedValue<>(this, function);
     }
 
     public default <M> GetValue<M> mapNotNull(Function<T, M> function) {
-        return new GetTransformedValue<>(getContentValue(), new NullSafeFunction<>(function));
+        return new GetTransformedValue<>(this, new NullSafeFunction<>(function));
     }
 
     public default GetValue<T> nvl(T nullValue) {
-        return new GetTransformedValue<>(getContentValue(), new NvlFunction<T>(nullValue));
+        return new GetTransformedValue<>(this, new NvlFunction<T>(nullValue));
     }
 
     public default GetValue<T> filter(Predicate<? super T> predicate) {
-        return new GetFilteredValue<>(getContentValue(), predicate);
+        return new GetFilteredValue<>(this, predicate);
     }
 
     // Meta info support
 
     public default GetValue<T> putMetaInfo(String metaInfoKey, Object metaInfoValue) {
-        return new GetMetaInfoValue<>(getContentValue(), metaInfoKey, metaInfoValue);
+        return new GetMetaInfoValue<>(this, metaInfoKey, metaInfoValue);
     }
 
     public default GetValue<T> named(String name) {

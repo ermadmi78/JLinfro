@@ -1,6 +1,6 @@
 package com.github.linfro.core.value;
 
-import com.github.linfro.core.GetValue;
+import com.github.linfro.core.dsl.GetValueHolder;
 
 import static com.github.linfro.core.common.ObjectUtil.notNull;
 
@@ -13,7 +13,7 @@ public class GetMetaInfoValue<T> extends AbstractGetWrapperValue<T, T> {
     protected final String metaInfoKey;
     protected final Object metaInfoValue;
 
-    public GetMetaInfoValue(GetValue<T> from, String metaInfoKey, Object metaInfoValue) {
+    public GetMetaInfoValue(GetValueHolder<T> from, String metaInfoKey, Object metaInfoValue) {
         super(from);
         this.metaInfoKey = notNull(metaInfoKey);
         this.metaInfoValue = metaInfoValue;

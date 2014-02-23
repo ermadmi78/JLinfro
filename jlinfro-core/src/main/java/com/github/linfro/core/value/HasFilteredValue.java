@@ -1,6 +1,6 @@
 package com.github.linfro.core.value;
 
-import com.github.linfro.core.HasValue;
+import com.github.linfro.core.dsl.HasValueHolder;
 
 import java.util.function.Predicate;
 
@@ -18,7 +18,7 @@ public class HasFilteredValue<T> extends AbstractHasWrapperValue<T, T> {
     private boolean result = false;
     private boolean calculated = false;
 
-    public HasFilteredValue(HasValue<T> from, Predicate<? super T> outPredicate, Predicate<? super T> inPredicate) {
+    public HasFilteredValue(HasValueHolder<T> from, Predicate<? super T> outPredicate, Predicate<? super T> inPredicate) {
         super(from);
         this.outPredicate = notNull(outPredicate);
         this.inPredicate = notNull(inPredicate);

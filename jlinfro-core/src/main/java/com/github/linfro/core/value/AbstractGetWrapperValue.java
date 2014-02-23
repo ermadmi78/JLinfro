@@ -3,6 +3,7 @@ package com.github.linfro.core.value;
 import com.github.linfro.core.GetValue;
 import com.github.linfro.core.Getter;
 import com.github.linfro.core.ValueChangeListener;
+import com.github.linfro.core.dsl.GetValueHolder;
 
 import static com.github.linfro.core.common.ObjectUtil.notNull;
 
@@ -23,8 +24,8 @@ public abstract class AbstractGetWrapperValue<F, T> extends AbstractGetValue<T> 
     protected boolean autoDispose = true;
     protected boolean disposed = false;
 
-    protected AbstractGetWrapperValue(GetValue<F> from) {
-        this.from = notNull(from);
+    protected AbstractGetWrapperValue(GetValueHolder<F> from) {
+        this.from = notNull(notNull(from).getContentValue());
         this.from.addChangeListener(fromListener);
     }
 
