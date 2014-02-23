@@ -1,8 +1,8 @@
 package com.github.linfro.core.value;
 
-import com.github.linfro.core.Aggregator;
 import com.github.linfro.core.GetAggregateValue;
 import com.github.linfro.core.HasValue;
+import com.github.linfro.core.common.Aggregator;
 
 import java.util.Iterator;
 import java.util.LinkedList;

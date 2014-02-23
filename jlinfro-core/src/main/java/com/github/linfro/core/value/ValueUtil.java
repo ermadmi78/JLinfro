@@ -1,6 +1,6 @@
 package com.github.linfro.core.value;
 
-import com.github.linfro.core.Aggregator;
+import com.github.linfro.core.common.Aggregator;
 
 import static com.github.linfro.core.common.ObjectUtil.nvl;
 

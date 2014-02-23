@@ -1,5 +1,6 @@
 package com.github.linfro.core;
 
+import com.github.linfro.core.common.Aggregator;
 import com.github.linfro.core.value.DefaultGetAggregateValue;
 import com.github.linfro.core.value.DefaultHasValue;
 import com.github.linfro.core.value.ValueUtil;
