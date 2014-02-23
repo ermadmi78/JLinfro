@@ -1,6 +1,8 @@
 package com.github.linfro.core.value;
 
 import com.github.linfro.core.Flow;
+import com.github.linfro.core.GetValue;
+import com.github.linfro.core.HasValue;
 import org.junit.Test;
 
 import static org.junit.Assert.*;

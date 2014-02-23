@@ -1,8 +1,8 @@
 package com.github.linfro.core.dsl;
 
+import com.github.linfro.core.GetValue;
+import com.github.linfro.core.ValueChangeListener;
 import com.github.linfro.core.common.Disposable;
-import com.github.linfro.core.value.GetValue;
-import com.github.linfro.core.value.ValueChangeListener;
 
 import java.util.function.Consumer;
 

@@ -1,7 +1,6 @@
 package com.github.linfro.core;
 
 import com.github.linfro.core.common.Disposable;
-import com.github.linfro.core.value.HasValue;
 import com.github.linfro.core.value.TestGetValue;
 import org.junit.Test;
 

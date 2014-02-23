@@ -1,5 +1,7 @@
 package com.github.linfro.core.value;
 
+import com.github.linfro.core.HasValue;
+
 import java.util.function.Predicate;
 
 import static com.github.linfro.core.common.ObjectUtil.notNull;

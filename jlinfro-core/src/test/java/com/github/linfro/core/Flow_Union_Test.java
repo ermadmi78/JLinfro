@@ -2,7 +2,6 @@ package com.github.linfro.core;
 
 import com.github.linfro.core.common.Disposable;
 import com.github.linfro.core.common.ObjectUtil;
-import com.github.linfro.core.value.HasValue;
 import com.github.linfro.core.value.TestGetValue;
 import com.github.linfro.core.value.TestListener;
 import org.junit.Test;

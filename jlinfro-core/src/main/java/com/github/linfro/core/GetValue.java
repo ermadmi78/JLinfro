@@ -1,7 +1,4 @@
-package com.github.linfro.core.value;
-
-import com.github.linfro.core.Flow;
-import com.github.linfro.core.IOutFlow;
+package com.github.linfro.core;
 
 /**
  * @author Dmitry Ermakov

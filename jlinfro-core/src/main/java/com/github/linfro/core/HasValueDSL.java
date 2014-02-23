@@ -1,7 +1,10 @@
-package com.github.linfro.core.value;
+package com.github.linfro.core;
 
 import com.github.linfro.core.common.NullSafeFunction;
 import com.github.linfro.core.common.NvlFunction;
+import com.github.linfro.core.value.HasFilteredValue;
+import com.github.linfro.core.value.HasMetaInfoValue;
+import com.github.linfro.core.value.HasTransformedValue;
 
 import java.util.function.Function;
 import java.util.function.Predicate;

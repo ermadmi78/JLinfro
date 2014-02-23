@@ -1,5 +1,9 @@
 package com.github.linfro.core.value;
 
+import com.github.linfro.core.GetValue;
+import com.github.linfro.core.Getter;
+import com.github.linfro.core.ValueChangeListener;
+
 import static com.github.linfro.core.common.ObjectUtil.notNull;
 
 /**

@@ -1,8 +1,8 @@
 package com.github.linfro.core.dsl;
 
-import com.github.linfro.core.value.Getter;
-import com.github.linfro.core.value.HasValue;
-import com.github.linfro.core.value.ValueChangeListener;
+import com.github.linfro.core.Getter;
+import com.github.linfro.core.HasValue;
+import com.github.linfro.core.ValueChangeListener;
 
 import static com.github.linfro.core.common.ObjectUtil.notNull;
 

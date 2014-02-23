@@ -1,5 +1,7 @@
 package com.github.linfro.core.value;
 
+import com.github.linfro.core.GetValue;
+
 import static com.github.linfro.core.common.ObjectUtil.notNull;
 
 /**

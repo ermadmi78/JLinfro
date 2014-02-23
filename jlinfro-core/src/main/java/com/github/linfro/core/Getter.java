@@ -1,4 +1,4 @@
-package com.github.linfro.core.value;
+package com.github.linfro.core;
 
 /**
  * @author Dmitry Ermakov
