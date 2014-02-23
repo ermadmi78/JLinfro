@@ -3,6 +3,7 @@ package com.github.linfro.core.value;
 import com.github.linfro.core.GetValue;
 import com.github.linfro.core.Getter;
 import com.github.linfro.core.ValueChangeListener;
+import com.github.linfro.core.dsl.GetValueHolder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,19 +32,19 @@ public class GetUnionValue<T> extends AbstractGetValue<List<T>> {
     private Getter<? extends T> lastGetter;
 
     @SafeVarargs
-    public GetUnionValue(GetValue<? extends T> firstArg, GetValue<? extends T>... otherArgs) {
-        notNull(firstArg);
+    public GetUnionValue(GetValueHolder<? extends T> firstArg, GetValueHolder<? extends T>... otherArgs) {
+        GetValue<? extends T> firstValue = notNull(notNull(firstArg).getContentValue());
 
         this.args = new ArrayList<>(otherArgs == null ? 1 : otherArgs.length + 1);
-        this.args.add(firstArg);
-        firstArg.addChangeListener(argListener);
-        this.lastGetter = firstArg;
+        this.args.add(firstValue);
+        firstValue.addChangeListener(argListener);
+        this.lastGetter = firstValue;
 
         if (otherArgs != null) {
-            for (GetValue<? extends T> arg : otherArgs) {
-                notNull(arg);
-                this.args.add(arg);
-                arg.addChangeListener(argListener);
+            for (GetValueHolder<? extends T> arg : otherArgs) {
+                GetValue<? extends T> nextValue = notNull(notNull(arg).getContentValue());
+                this.args.add(nextValue);
+                nextValue.addChangeListener(argListener);
             }
         }
     }

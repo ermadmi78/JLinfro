@@ -50,8 +50,8 @@ public interface GetValueDSL<T> extends GetValueHolder<T>, GetterDSL, Disposable
     }
 
     @SuppressWarnings("unchecked")
-    public default GetValue<List<T>> union(GetValue... args) {
-        return new GetUnionValue<>(getContentValue(), args);
+    public default GetValue<List<T>> union(GetValueHolder... args) {
+        return new GetUnionValue<>(this, args);
     }
 
     // Auto dispose
