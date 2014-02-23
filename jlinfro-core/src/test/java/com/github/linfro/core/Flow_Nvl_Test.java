@@ -14,14 +14,14 @@ import static org.junit.Assert.assertNull;
  */
 public class Flow_Nvl_Test {
     @Test
-    public void testOneWayOutFlowNvl() throws Exception {
+    public void testOneWayGetFlowNvl() throws Exception {
         TestGetValue<Integer> a = TestGetValue.newGetValue();
         HasValue<Integer> b = Flow.newHasValue();
 
         assertNull(a.getValue());
         assertNull(b.getValue());
 
-        Disposable link = a.flow().nvl(0).force().to(b);
+        Disposable link = a.nvl(0).flow().force().to(b);
 
         assertNull(a.getValue());
         assertEquals(new Integer(0), b.getValue());
@@ -44,14 +44,14 @@ public class Flow_Nvl_Test {
     }
 
     @Test
-    public void testOneWayHybridFlowNvl() throws Exception {
+    public void testOneWayHasFlowNvl() throws Exception {
         HasValue<Integer> a = Flow.newHasValue();
         HasValue<Integer> b = Flow.newHasValue();
 
         assertNull(a.getValue());
         assertNull(b.getValue());
 
-        Disposable link = a.flow().nvl(0).force().to(b);
+        Disposable link = a.nvl(0).flow().force().to(b);
 
         assertNull(a.getValue());
         assertEquals(new Integer(0), b.getValue());
@@ -74,55 +74,14 @@ public class Flow_Nvl_Test {
     }
 
     @Test
-    public void testBothWayHybridFlowNvl() throws Exception {
+    public void testBothWayHasFlowNvl() throws Exception {
         HasValue<Integer> a = Flow.newHasValue();
         HasValue<Integer> b = Flow.newHasValue();
 
         assertNull(a.getValue());
         assertNull(b.getValue());
 
-        Disposable link = a.flow().nvl(-1, -2).sync().force().to(b);
-
-        assertNull(a.getValue());
-        assertEquals(new Integer(-1), b.getValue());
-
-        a.setValue(20);
-
-        assertEquals(new Integer(20), a.getValue());
-        assertEquals(new Integer(20), b.getValue());
-
-        a.setValue(null);
-
-        assertNull(a.getValue());
-        assertEquals(new Integer(-1), b.getValue());
-
-        b.setValue(null);
-
-        assertEquals(new Integer(-2), a.getValue());
-        assertNull(b.getValue());
-
-        b.setValue(33);
-
-        assertEquals(new Integer(33), a.getValue());
-        assertEquals(new Integer(33), b.getValue());
-
-        link.dispose();
-        a.setValue(111);
-        b.setValue(222);
-
-        assertEquals(new Integer(111), a.getValue());
-        assertEquals(new Integer(222), b.getValue());
-    }
-
-    @Test
-    public void testBothWayInOutFlowNvl() throws Exception {
-        HasValue<Integer> a = Flow.newHasValue();
-        HasValue<Integer> b = Flow.newHasValue();
-
-        assertNull(a.getValue());
-        assertNull(b.getValue());
-
-        Disposable link = a.flow().sync().nvl(-1, -2).force().to(b);
+        Disposable link = a.nvl(-1, -2).flow().sync().force().to(b);
 
         assertNull(a.getValue());
         assertEquals(new Integer(-1), b.getValue());

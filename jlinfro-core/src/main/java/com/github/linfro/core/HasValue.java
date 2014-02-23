@@ -23,8 +23,7 @@ public interface HasValue<T> extends GetValue<T>, HasValueHolder<T>, HasValueDSL
     }
 
     @Override
-    public default IHybridFlow<T> flow() {
-        //todo return Flow.from(this);
-        return null;
+    public default HasValueFlow<T> flow() {
+        return Flow.from(this);
     }
 }

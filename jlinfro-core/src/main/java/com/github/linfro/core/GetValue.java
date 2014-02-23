@@ -18,8 +18,7 @@ public interface GetValue<T> extends Getter<T>, GetValueHolder<T>, GetValueDSL<T
         return this;
     }
 
-    public default IOutFlow<T> flow() {
-        //todo return Flow.from(this);
-        return null;
+    public default GetValueFlow<T> flow() {
+        return Flow.from(this);
     }
 }

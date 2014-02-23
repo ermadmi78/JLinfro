@@ -85,12 +85,12 @@ public abstract class Flow<DSL, F, SRC extends GetValue<F>> {
         return new DefaultHasValue<>(value);
     }
 
-    public static <F> GetValueFlow<F> from(GetValue<F> from) {
-        return new GetValueFlowImpl<>(from, new Context());
+    public static <F> GetValueFlow<F> from(GetValueHolder<F> from) {
+        return new GetValueFlowImpl<>(notNull(from).getContentValue(), new Context());
     }
 
-    public static <F> HasValueFlow<F> from(HasValue<F> from) {
-        return new HasValueFlowImpl<>(from, new Context());
+    public static <F> HasValueFlow<F> from(HasValueHolder<F> from) {
+        return new HasValueFlowImpl<>(notNull(from).getContentValue(), new Context());
     }
 
     public DSL strong() {
@@ -156,15 +156,15 @@ public abstract class Flow<DSL, F, SRC extends GetValue<F>> {
         return null; //todo;
     }
 
-    public static <X, F> GetValueFlow<F> from(GetValue<X> beanValue, String property) {
+    public static <X, F> GetValueFlow<F> from(GetValueHolder<X> beanValue, String property) {
         return null; //todo
     }
 
-    public static <X, F> HasValueFlow<F> from(HasValue<X> beanValue, String property) {
+    public static <X, F> HasValueFlow<F> from(HasValueHolder<X> beanValue, String property) {
         return null; //todo
     }
 
-    public <X> Disposable to(HasValue<X> beanValue, String property) {
+    public <X> Disposable to(HasValueHolder<X> beanValue, String property) {
         //getClass().getGenericInterfaces()
         return null; //todo
     }

@@ -16,7 +16,7 @@ import static org.junit.Assert.assertNull;
  */
 public class Flow_Union_Test {
     @Test
-    public void testOutFlowUnion() throws Exception {
+    public void testGetFlowUnion() throws Exception {
         TestGetValue<Integer> a = TestGetValue.newGetValue();
         TestGetValue<Integer> b = TestGetValue.newGetValue();
         TestGetValue<Integer> c = TestGetValue.newGetValue();
@@ -26,9 +26,9 @@ public class Flow_Union_Test {
         TestListener listener = new TestListener();
         res.addChangeListener(listener);
 
-        Disposable link = a.flow().union(b, c).map(
+        Disposable link = a.union(b, c).map(
                 (args) -> args.stream().mapToInt(ObjectUtil::nvl).sum()
-        ).to(res);
+        ).flow().to(res);
 
         assertNull(res.getValue());
         assertEquals(0, listener.getCounter());
