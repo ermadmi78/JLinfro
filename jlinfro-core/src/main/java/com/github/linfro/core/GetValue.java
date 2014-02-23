@@ -1,5 +1,7 @@
 package com.github.linfro.core;
 
+import com.github.linfro.core.dsl.GetValueDSL;
+
 /**
  * @author Dmitry Ermakov
  * @version 2014-01-04

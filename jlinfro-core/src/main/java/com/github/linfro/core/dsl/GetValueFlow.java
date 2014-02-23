@@ -1,5 +1,6 @@
-package com.github.linfro.core;
+package com.github.linfro.core.dsl;
 
+import com.github.linfro.core.GetAggregateValue;
 import com.github.linfro.core.common.Disposable;
 import com.github.linfro.core.common.Equality;
 

@@ -1,4 +1,4 @@
-package com.github.linfro.core;
+package com.github.linfro.core.dsl;
 
 /**
  * @author Dmitry Ermakov

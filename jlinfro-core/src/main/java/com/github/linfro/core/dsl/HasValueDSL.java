@@ -1,5 +1,6 @@
-package com.github.linfro.core;
+package com.github.linfro.core.dsl;
 
+import com.github.linfro.core.HasValue;
 import com.github.linfro.core.common.NullSafeFunction;
 import com.github.linfro.core.common.NvlFunction;
 import com.github.linfro.core.value.HasFilteredValue;

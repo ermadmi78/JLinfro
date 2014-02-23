@@ -1,4 +1,4 @@
-package com.github.linfro.core;
+package com.github.linfro.core.dsl;
 
 import com.github.linfro.core.common.Equality;
 

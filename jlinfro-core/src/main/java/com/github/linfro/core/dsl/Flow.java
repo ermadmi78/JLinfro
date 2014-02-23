@@ -1,11 +1,10 @@
-package com.github.linfro.core;
+package com.github.linfro.core.dsl;
 
+import com.github.linfro.core.GetAggregateValue;
+import com.github.linfro.core.GetValue;
+import com.github.linfro.core.HasValue;
 import com.github.linfro.core.common.Disposable;
 import com.github.linfro.core.common.Equality;
-import com.github.linfro.core.dsl.ConsumerLink;
-import com.github.linfro.core.dsl.Context;
-import com.github.linfro.core.dsl.InOutLink;
-import com.github.linfro.core.dsl.OutLink;
 
 import java.util.function.Consumer;
 
