@@ -40,7 +40,7 @@ public abstract class Flow<DSL, F, SRC extends GetValue<F>> {
 
         @Override
         protected Disposable createLink(HasValue<F> to) {
-            return new OutLink<>(from, to, context);
+            return new SimpleLink<>(from, to, context);
         }
     }
 
@@ -56,7 +56,7 @@ public abstract class Flow<DSL, F, SRC extends GetValue<F>> {
 
         @Override
         protected Disposable createLink(HasValue<F> to) {
-            return new InOutLink<>(from, to, context);
+            return new SyncLink<>(from, to, context);
         }
     }
 
