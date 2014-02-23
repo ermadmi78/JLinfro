@@ -18,7 +18,7 @@ public interface HasValue<T> extends GetValue<T>, HasValueDSL<T> {
     public void removeChangeListener(ValueChangeListener<? super T> listener);
 
     @Override
-    public default HasValue<T> getMainValue() {
+    public default HasValue<T> getContentValue() {
         return this;
     }
 

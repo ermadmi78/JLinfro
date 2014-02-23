@@ -18,7 +18,7 @@ import java.util.function.Predicate;
  * @since 1.0.0
  */
 public interface GetValueDSL<T> extends GetterDSL, AutoDisposable {
-    public GetValue<T> getMainValue();
+    public GetValue<T> getContentValue();
 
     @Override
     public default boolean isAutoDispose() {
@@ -30,25 +30,25 @@ public interface GetValueDSL<T> extends GetterDSL, AutoDisposable {
     }
 
     public default <M> GetValue<M> map(Function<T, M> function) {
-        return new GetTransformedValue<>(getMainValue(), function);
+        return new GetTransformedValue<>(getContentValue(), function);
     }
 
     public default <M> GetValue<M> mapNotNull(Function<T, M> function) {
-        return new GetTransformedValue<>(getMainValue(), new NullSafeFunction<>(function));
+        return new GetTransformedValue<>(getContentValue(), new NullSafeFunction<>(function));
     }
 
     public default GetValue<T> nvl(T nullValue) {
-        return new GetTransformedValue<>(getMainValue(), new NvlFunction<T>(nullValue));
+        return new GetTransformedValue<>(getContentValue(), new NvlFunction<T>(nullValue));
     }
 
     public default GetValue<T> filter(Predicate<? super T> predicate) {
-        return new GetFilteredValue<>(getMainValue(), predicate);
+        return new GetFilteredValue<>(getContentValue(), predicate);
     }
 
     // Meta info support
 
     public default GetValue<T> putMetaInfo(String metaInfoKey, Object metaInfoValue) {
-        return new GetMetaInfoValue<>(getMainValue(), metaInfoKey, metaInfoValue);
+        return new GetMetaInfoValue<>(getContentValue(), metaInfoKey, metaInfoValue);
     }
 
     public default GetValue<T> named(String name) {
@@ -57,6 +57,6 @@ public interface GetValueDSL<T> extends GetterDSL, AutoDisposable {
 
     @SuppressWarnings("unchecked")
     public default GetValue<List<T>> union(GetValue... args) {
-        return new GetUnionValue<>(getMainValue(), args);
+        return new GetUnionValue<>(getContentValue(), args);
     }
 }

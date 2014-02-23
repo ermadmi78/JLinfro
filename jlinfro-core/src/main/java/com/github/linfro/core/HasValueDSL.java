@@ -16,46 +16,46 @@ import java.util.function.Predicate;
  */
 public interface HasValueDSL<T> extends GetValueDSL<T> {
     @Override
-    public HasValue<T> getMainValue();
+    public HasValue<T> getContentValue();
 
     public default <M> HasValue<M> map(Function<T, M> outFunc, Function<M, T> inFunc) {
-        return new HasTransformedValue<>(getMainValue(), outFunc, inFunc);
+        return new HasTransformedValue<>(getContentValue(), outFunc, inFunc);
     }
 
     public default <M> HasValue<M> mapNotNull(Function<T, M> outFunc, Function<M, T> inFunc) {
-        return new HasTransformedValue<>(getMainValue(), new NullSafeFunction<T, M>(outFunc), new NullSafeFunction<M, T>(inFunc));
+        return new HasTransformedValue<>(getContentValue(), new NullSafeFunction<T, M>(outFunc), new NullSafeFunction<M, T>(inFunc));
     }
 
     public default HasValue<T> nvl(T outNullValue, T inNullValue) {
-        return new HasTransformedValue<>(getMainValue(), new NvlFunction<T>(outNullValue), new NvlFunction<T>(inNullValue));
+        return new HasTransformedValue<>(getContentValue(), new NvlFunction<T>(outNullValue), new NvlFunction<T>(inNullValue));
     }
 
     public default HasValue<T> filter(Predicate<? super T> outPredicate, Predicate<? super T> inPredicate) {
-        return new HasFilteredValue<>(getMainValue(), outPredicate, inPredicate);
+        return new HasFilteredValue<>(getContentValue(), outPredicate, inPredicate);
     }
 
     public default HasValue<T> biMap(Function<T, T> inOutFunction) {
-        return new HasTransformedValue<>(getMainValue(), inOutFunction, inOutFunction);
+        return new HasTransformedValue<>(getContentValue(), inOutFunction, inOutFunction);
     }
 
     public default HasValue<T> biMapNotNull(Function<T, T> inOutFunction) {
         Function<T, T> nullSafeFunction = new NullSafeFunction<>(inOutFunction);
-        return new HasTransformedValue<>(getMainValue(), nullSafeFunction, nullSafeFunction);
+        return new HasTransformedValue<>(getContentValue(), nullSafeFunction, nullSafeFunction);
     }
 
     public default HasValue<T> biNvl(T inOutNullValue) {
-        return new HasTransformedValue<>(getMainValue(), new NvlFunction<T>(inOutNullValue), new NvlFunction<T>(inOutNullValue));
+        return new HasTransformedValue<>(getContentValue(), new NvlFunction<T>(inOutNullValue), new NvlFunction<T>(inOutNullValue));
     }
 
     public default HasValue<T> biFilter(Predicate<? super T> predicate) {
-        return new HasFilteredValue<>(getMainValue(), predicate, predicate);
+        return new HasFilteredValue<>(getContentValue(), predicate, predicate);
     }
 
     // Meta info support
 
     @Override
     public default HasValue<T> putMetaInfo(String metaInfoKey, Object metaInfoValue) {
-        return new HasMetaInfoValue<>(getMainValue(), metaInfoKey, metaInfoValue);
+        return new HasMetaInfoValue<>(getContentValue(), metaInfoKey, metaInfoValue);
     }
 
     @Override
