@@ -15,6 +15,7 @@ import static org.junit.Assert.assertNull;
  * @since 1.0.0
  */
 public class Flow_Map_Test {
+    /*
     @Test
     public void testOneWayDirectTransform() {
         TestGetValue<String> strVal = TestGetValue.newGetValue();
@@ -356,4 +357,5 @@ public class Flow_Map_Test {
         assertEquals("test", strVal.getValue());
         assertEquals(new Integer(-123), intVal.getValue());
     }
+    */
 }
