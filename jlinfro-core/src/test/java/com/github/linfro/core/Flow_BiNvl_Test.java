@@ -14,8 +14,8 @@ import static org.junit.Assert.assertNull;
 public class Flow_BiNvl_Test {
     @Test
     public void testBiNvl() throws Exception {
-        HasValue<Integer> a = Flow.newHasValue();
-        HasValue<Integer> b = Flow.newHasValue();
+        HasValue<Integer> a = Values.newHasValue();
+        HasValue<Integer> b = Values.newHasValue();
 
         assertNull(a.getValue());
         assertNull(b.getValue());

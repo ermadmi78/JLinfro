@@ -16,7 +16,7 @@ public class Flow_Map_Test {
     @Test
     public void testOneWayMap() {
         TestGetValue<String> strVal = TestGetValue.newGetValue();
-        HasValue<Integer> intVal = Flow.newHasValue();
+        HasValue<Integer> intVal = Values.newHasValue();
 
         Disposable link = strVal.map(
                 (from) -> from == null ? null : Integer.valueOf(from)
@@ -34,8 +34,8 @@ public class Flow_Map_Test {
 
     @Test
     public void testBothWayMap() throws Exception {
-        HasValue<String> strVal = Flow.newHasValue();
-        HasValue<Integer> intVal = Flow.newHasValue();
+        HasValue<String> strVal = Values.newHasValue();
+        HasValue<Integer> intVal = Values.newHasValue();
 
         Disposable link = strVal.map(Integer::valueOf, (to) -> to.toString()).flow().sync().to(intVal);
 
@@ -63,7 +63,7 @@ public class Flow_Map_Test {
     @Test
     public void testNotNullOneWayMapForGetFlow() throws Exception {
         TestGetValue<String> strVal = TestGetValue.newGetValue();
-        HasValue<Integer> intVal = Flow.newHasValue(5);
+        HasValue<Integer> intVal = Values.newHasValue(5);
 
         assertNull(strVal.getValue());
         assertEquals(new Integer(5), intVal.getValue());
@@ -90,8 +90,8 @@ public class Flow_Map_Test {
 
     @Test
     public void testNotNullOneWayMapForHasFlow() throws Exception {
-        HasValue<String> strVal = Flow.newHasValue();
-        HasValue<Integer> intVal = Flow.newHasValue(5);
+        HasValue<String> strVal = Values.newHasValue();
+        HasValue<Integer> intVal = Values.newHasValue(5);
 
         assertNull(strVal.getValue());
         assertEquals(new Integer(5), intVal.getValue());
@@ -118,8 +118,8 @@ public class Flow_Map_Test {
 
     @Test
     public void testNotNullInBothWayMapForHasFlow() throws Exception {
-        HasValue<String> strVal = Flow.newHasValue();
-        HasValue<Integer> intVal = Flow.newHasValue();
+        HasValue<String> strVal = Values.newHasValue();
+        HasValue<Integer> intVal = Values.newHasValue();
 
         assertNull(strVal.getValue());
         assertNull(intVal.getValue());

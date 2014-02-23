@@ -15,7 +15,7 @@ public class Flow_Filter_Test {
     @Test
     public void testGetDirectFilter() throws Exception {
         TestGetValue<String> srcVal = TestGetValue.newGetValue("test");
-        HasValue<String> dstValue = Flow.newHasValue();
+        HasValue<String> dstValue = Values.newHasValue();
 
         assertEquals("test", srcVal.getValue());
         assertNull(dstValue.getValue());
@@ -55,8 +55,8 @@ public class Flow_Filter_Test {
 
     @Test
     public void testHasDirectFilter() throws Exception {
-        HasValue<String> srcVal = Flow.newHasValue("test");
-        HasValue<String> dstValue = Flow.newHasValue();
+        HasValue<String> srcVal = Values.newHasValue("test");
+        HasValue<String> dstValue = Values.newHasValue();
 
         assertEquals("test", srcVal.getValue());
         assertNull(dstValue.getValue());
@@ -96,8 +96,8 @@ public class Flow_Filter_Test {
 
     @Test
     public void testSyncFilter() throws Exception {
-        HasValue<String> srcVal = Flow.newHasValue("srcTest");
-        HasValue<String> dstValue = Flow.newHasValue("ddd");
+        HasValue<String> srcVal = Values.newHasValue("srcTest");
+        HasValue<String> dstValue = Values.newHasValue("ddd");
 
         assertEquals("srcTest", srcVal.getValue());
         assertEquals("ddd", dstValue.getValue());
@@ -173,8 +173,8 @@ public class Flow_Filter_Test {
 
     @Test
     public void testFilteredUnsafeMappingFlow() throws Exception {
-        HasValue<Integer> srcVal = Flow.newHasValue();
-        HasValue<String> dstVal = Flow.newHasValue("test");
+        HasValue<Integer> srcVal = Values.newHasValue();
+        HasValue<String> dstVal = Values.newHasValue("test");
 
         assertNull(srcVal.getValue());
         assertEquals("test", dstVal.getValue());
@@ -197,7 +197,7 @@ public class Flow_Filter_Test {
 
     @Test
     public void testFilteredUnsafeMappingWrapper() throws Exception {
-        HasValue<Integer> srcVal = Flow.newHasValue(0);
+        HasValue<Integer> srcVal = Values.newHasValue(0);
         GetValue<String> wrapVal = srcVal.filter((i) -> i != null).map(Object::toString);
 
         assertEquals(new Integer(0), srcVal.getValue());

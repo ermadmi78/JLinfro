@@ -6,9 +6,6 @@ import com.github.linfro.core.dsl.ConsumerLink;
 import com.github.linfro.core.dsl.Context;
 import com.github.linfro.core.dsl.InOutLink;
 import com.github.linfro.core.dsl.OutLink;
-import com.github.linfro.core.value.DefaultGetAggregateValue;
-import com.github.linfro.core.value.DefaultHasValue;
-import com.github.linfro.core.value.ValueUtil;
 
 import java.util.function.Consumer;
 
@@ -64,18 +61,6 @@ public abstract class Flow<DSL, F, SRC extends GetValue<F>> {
         }
     }
 
-    //******************************************************************************************************************
-    //  Common syntax
-    //******************************************************************************************************************
-
-    public static <A> DefaultHasValue<A> newHasValue() {
-        return new DefaultHasValue<>();
-    }
-
-    public static <A> DefaultHasValue<A> newHasValue(A value) {
-        return new DefaultHasValue<>(value);
-    }
-
     public static <F> GetValueFlow<F> from(GetValueHolder<F> from) {
         return new GetValueFlowImpl<>(notNull(from).getContentValue(), new Context());
     }
@@ -113,50 +98,8 @@ public abstract class Flow<DSL, F, SRC extends GetValue<F>> {
         return new ConsumerLink<>(from, consumer, context);
     }
 
-    //******************************************************************************************************************
-    //  Aggregation syntax
-    //******************************************************************************************************************
-
     public Disposable to(GetAggregateValue<F> aggregateValue) {
         notNull(aggregateValue);
         return to(notNull(aggregateValue.newArgument()));
-    }
-
-    public static <A> DefaultGetAggregateValue<A> newAggregateValue(Aggregator<A> aggregator) {
-        notNull(aggregator);
-        return new DefaultGetAggregateValue<>(aggregator);
-    }
-
-    public static DefaultGetAggregateValue<Boolean> andValue() {
-        return newAggregateValue(ValueUtil.AGGREGATOR_AND);
-    }
-
-    public static DefaultGetAggregateValue<Boolean> orValue() {
-        return newAggregateValue(ValueUtil.AGGREGATOR_OR);
-    }
-
-    //******************************************************************************************************************
-    //  Java Bean syntax
-    //******************************************************************************************************************
-
-    public static <F> HasValueFlow<F> fromProperty(Object bean, String property) {
-        return null; //todo
-    }
-
-    public Disposable toProperty(Object bean, String property) {
-        return null; //todo;
-    }
-
-    public static <X, F> GetValueFlow<F> from(GetValueHolder<X> beanValue, String property) {
-        return null; //todo
-    }
-
-    public static <X, F> HasValueFlow<F> from(HasValueHolder<X> beanValue, String property) {
-        return null; //todo
-    }
-
-    public <X> Disposable to(HasValueHolder<X> beanValue, String property) {
-        //getClass().getGenericInterfaces()
-        return null; //todo
     }
 }

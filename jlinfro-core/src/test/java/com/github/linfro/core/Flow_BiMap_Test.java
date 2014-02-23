@@ -13,8 +13,8 @@ import static org.junit.Assert.*;
 public class Flow_BiMap_Test {
     @Test
     public void testBiMap() throws Exception {
-        HasValue<Boolean> a = Flow.newHasValue();
-        HasValue<Boolean> b = Flow.newHasValue();
+        HasValue<Boolean> a = Values.newHasValue();
+        HasValue<Boolean> b = Values.newHasValue();
 
         assertNull(a.getValue());
         assertNull(b.getValue());

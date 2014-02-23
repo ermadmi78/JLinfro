@@ -16,7 +16,7 @@ public class Flow_Nvl_Test {
     @Test
     public void testOneWayGetFlowNvl() throws Exception {
         TestGetValue<Integer> a = TestGetValue.newGetValue();
-        HasValue<Integer> b = Flow.newHasValue();
+        HasValue<Integer> b = Values.newHasValue();
 
         assertNull(a.getValue());
         assertNull(b.getValue());
@@ -45,8 +45,8 @@ public class Flow_Nvl_Test {
 
     @Test
     public void testOneWayHasFlowNvl() throws Exception {
-        HasValue<Integer> a = Flow.newHasValue();
-        HasValue<Integer> b = Flow.newHasValue();
+        HasValue<Integer> a = Values.newHasValue();
+        HasValue<Integer> b = Values.newHasValue();
 
         assertNull(a.getValue());
         assertNull(b.getValue());
@@ -75,8 +75,8 @@ public class Flow_Nvl_Test {
 
     @Test
     public void testBothWayHasFlowNvl() throws Exception {
-        HasValue<Integer> a = Flow.newHasValue();
-        HasValue<Integer> b = Flow.newHasValue();
+        HasValue<Integer> a = Values.newHasValue();
+        HasValue<Integer> b = Values.newHasValue();
 
         assertNull(a.getValue());
         assertNull(b.getValue());

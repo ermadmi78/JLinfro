@@ -21,7 +21,7 @@ public class Flow_Union_Test {
         TestGetValue<Integer> b = TestGetValue.newGetValue();
         TestGetValue<Integer> c = TestGetValue.newGetValue();
 
-        HasValue<Integer> res = Flow.newHasValue();
+        HasValue<Integer> res = Values.newHasValue();
 
         TestListener listener = new TestListener();
         res.addChangeListener(listener);

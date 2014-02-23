@@ -35,7 +35,7 @@ public class Flow_Consumer_Test {
 
     @Test
     public void testConsumerForHasFlow() throws Exception {
-        HasValue<String> strVal = Flow.newHasValue("init");
+        HasValue<String> strVal = Values.newHasValue("init");
         TestConsumer consumer = new TestConsumer();
 
         assertEquals("init", strVal.getValue());
@@ -55,7 +55,7 @@ public class Flow_Consumer_Test {
 
     @Test
     public void testFilteredConsumer() throws Exception {
-        HasValue<String> strVal = Flow.newHasValue("init");
+        HasValue<String> strVal = Values.newHasValue("init");
         TestConsumer consumer = new TestConsumer();
 
         assertEquals("init", strVal.getValue());

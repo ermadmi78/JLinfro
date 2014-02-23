@@ -14,11 +14,11 @@ import static org.junit.Assert.*;
 public class Flow_CommonSyntax_Test {
     @Test
     public void testNewHasValue() {
-        HasValue<String> strValue = Flow.newHasValue();
+        HasValue<String> strValue = Values.newHasValue();
         assertNotNull(strValue);
         assertNull(strValue.getValue());
 
-        HasValue<Integer> intValue = Flow.newHasValue(500);
+        HasValue<Integer> intValue = Values.newHasValue(500);
         assertNotNull(intValue);
         assertEquals(new Integer(500), intValue.getValue());
     }
@@ -26,9 +26,9 @@ public class Flow_CommonSyntax_Test {
     @Test
     public void testOneWayLink() {
         TestGetValue<String> a = TestGetValue.newGetValue("a");
-        HasValue<String> b = Flow.newHasValue("b");
+        HasValue<String> b = Values.newHasValue("b");
 
-        Disposable link = Flow.from(a).to(b);
+        Disposable link = a.flow().to(b);
         assertNotNull(link);
         assertEquals("a", a.getValue());
         assertEquals("b", b.getValue());
@@ -49,10 +49,10 @@ public class Flow_CommonSyntax_Test {
 
     @Test
     public void testBothWayLink() {
-        HasValue<String> a = Flow.newHasValue("a");
-        HasValue<String> b = Flow.newHasValue("b");
+        HasValue<String> a = Values.newHasValue("a");
+        HasValue<String> b = Values.newHasValue("b");
 
-        Disposable link = Flow.from(a).to(b);
+        Disposable link = a.flow().to(b);
         assertNotNull(link);
         assertEquals("a", a.getValue());
         assertEquals("b", b.getValue());
@@ -73,14 +73,14 @@ public class Flow_CommonSyntax_Test {
 
     @Test
     public void testCallLoop() {
-        HasValue<String> a = Flow.newHasValue("a");
-        HasValue<String> b = Flow.newHasValue("b");
-        HasValue<String> c = Flow.newHasValue("c");
+        HasValue<String> a = Values.newHasValue("a");
+        HasValue<String> b = Values.newHasValue("b");
+        HasValue<String> c = Values.newHasValue("c");
 
         // Make call loop
-        Flow.from(a).to(b);
-        Flow.from(b).to(c);
-        Flow.from(c).to(a);
+        a.flow().to(b);
+        b.flow().to(c);
+        c.flow().to(a);
 
         try {
             a.setValue("loop"); // Start call loop
@@ -96,10 +96,10 @@ public class Flow_CommonSyntax_Test {
 
     @Test
     public void testBothWaySyncLink() {
-        HasValue<String> a = Flow.newHasValue("a");
-        HasValue<String> b = Flow.newHasValue("b");
+        HasValue<String> a = Values.newHasValue("a");
+        HasValue<String> b = Values.newHasValue("b");
 
-        Disposable link = Flow.from(a).sync().to(b);
+        Disposable link = a.flow().sync().to(b);
         assertNotNull(link);
         assertEquals("a", a.getValue());
         assertEquals("b", b.getValue());
@@ -125,9 +125,9 @@ public class Flow_CommonSyntax_Test {
     @Test
     public void testOneWayForceLink() {
         TestGetValue<String> a = TestGetValue.newGetValue("a");
-        HasValue<String> b = Flow.newHasValue("b");
+        HasValue<String> b = Values.newHasValue("b");
 
-        Disposable link = Flow.from(a).force().to(b);
+        Disposable link = a.flow().force().to(b);
         assertEquals("a", a.getValue());
         assertEquals("a", b.getValue());
 
@@ -147,10 +147,10 @@ public class Flow_CommonSyntax_Test {
 
     @Test
     public void testBothWayForceLink() {
-        HasValue<String> a = Flow.newHasValue("a");
-        HasValue<String> b = Flow.newHasValue("b");
+        HasValue<String> a = Values.newHasValue("a");
+        HasValue<String> b = Values.newHasValue("b");
 
-        Disposable link = Flow.from(a).force().to(b);
+        Disposable link = a.flow().force().to(b);
         assertEquals("a", a.getValue());
         assertEquals("a", b.getValue());
 
@@ -174,12 +174,12 @@ public class Flow_CommonSyntax_Test {
         AffectedListener bl = new AffectedListener();
 
         TestGetValue<String> a = TestGetValue.newGetValue("a");
-        HasValue<String> b = Flow.newHasValue("b");
+        HasValue<String> b = Values.newHasValue("b");
 
         a.addChangeListener(al);
         b.addChangeListener(bl);
 
-        Flow.from(a).strong().to(b);
+        a.flow().strong().to(b);
 
         a.update("b");
         assertEquals("b", b.getValue());
@@ -197,13 +197,13 @@ public class Flow_CommonSyntax_Test {
         AffectedListener al = new AffectedListener();
         AffectedListener bl = new AffectedListener();
 
-        HasValue<String> a = Flow.newHasValue("a");
-        HasValue<String> b = Flow.newHasValue("b");
+        HasValue<String> a = Values.newHasValue("a");
+        HasValue<String> b = Values.newHasValue("b");
 
         a.addChangeListener(al);
         b.addChangeListener(bl);
 
-        Flow.from(a).strong().to(b);
+        a.flow().strong().to(b);
 
         a.setValue("b");
         assertEquals("b", b.getValue());
@@ -221,13 +221,13 @@ public class Flow_CommonSyntax_Test {
         AffectedListener al = new AffectedListener();
         AffectedListener bl = new AffectedListener();
 
-        HasValue<String> a = Flow.newHasValue("a");
-        HasValue<String> b = Flow.newHasValue("b");
+        HasValue<String> a = Values.newHasValue("a");
+        HasValue<String> b = Values.newHasValue("b");
 
         a.addChangeListener(al);
         b.addChangeListener(bl);
 
-        Flow.from(a).sync().strong().to(b);
+        a.flow().sync().strong().to(b);
 
         a.setValue("b");
         assertEquals("b", b.getValue());
@@ -255,13 +255,13 @@ public class Flow_CommonSyntax_Test {
         AffectedListener al = new AffectedListener();
         AffectedListener bl = new AffectedListener();
 
-        HasValue<String> a = Flow.newHasValue("a");
-        HasValue<String> b = Flow.newHasValue("b");
+        HasValue<String> a = Values.newHasValue("a");
+        HasValue<String> b = Values.newHasValue("b");
 
         a.addChangeListener(al);
         b.addChangeListener(bl);
 
-        Flow.from(a).sync().strong().force().to(b);
+        a.flow().sync().strong().force().to(b);
 
         assertEquals("a", b.getValue());
         assertFalse(al.testAffectedAndReset());

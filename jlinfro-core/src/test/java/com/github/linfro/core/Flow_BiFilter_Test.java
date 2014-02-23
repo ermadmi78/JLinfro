@@ -14,8 +14,8 @@ import static org.junit.Assert.assertNull;
 public class Flow_BiFilter_Test {
     @Test
     public void testBiFilter() throws Exception {
-        HasValue<String> a = Flow.newHasValue();
-        HasValue<String> b = Flow.newHasValue();
+        HasValue<String> a = Values.newHasValue();
+        HasValue<String> b = Values.newHasValue();
 
         assertNull(a.getValue());
         assertNull(b.getValue());

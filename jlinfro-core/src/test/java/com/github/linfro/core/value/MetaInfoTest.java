@@ -1,8 +1,8 @@
 package com.github.linfro.core.value;
 
-import com.github.linfro.core.Flow;
 import com.github.linfro.core.GetValue;
 import com.github.linfro.core.HasValue;
+import com.github.linfro.core.Values;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -51,7 +51,7 @@ public class MetaInfoTest {
 
     @Test
     public void testHasSimpleNamed() throws Exception {
-        HasValue<String> src = Flow.newHasValue();
+        HasValue<String> src = Values.newHasValue();
         assertNull(src.getMetaName());
         assertNull(src.getValue());
 
@@ -135,7 +135,7 @@ public class MetaInfoTest {
 
     @Test
     public void testHasNamedNamed() throws Exception {
-        HasValue<String> src = Flow.newHasValue();
+        HasValue<String> src = Values.newHasValue();
         assertNull(src.getMetaName());
         assertNull(src.getValue());
 
@@ -197,7 +197,7 @@ public class MetaInfoTest {
 
     @Test
     public void testHasNamedMap() throws Exception {
-        HasValue<Integer> src = Flow.newHasValue();
+        HasValue<Integer> src = Values.newHasValue();
         HasValue<String> res = src.named("test").nvl(0, 0).map(Object::toString, Integer::valueOf);
         assertNull(src.getValue());
         assertEquals("0", res.getValue());
@@ -236,7 +236,7 @@ public class MetaInfoTest {
 
     @Test
     public void testHasNamedFilter() throws Exception {
-        HasValue<String> src = Flow.newHasValue("U");
+        HasValue<String> src = Values.newHasValue("U");
         HasValue<String> res = src.named("test").filter("ok"::equals, "ok"::equals);
 
         assertEquals("U", src.getValue());
