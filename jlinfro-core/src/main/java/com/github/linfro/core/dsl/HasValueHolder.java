@@ -7,7 +7,7 @@ import com.github.linfro.core.HasValue;
  * @version 2014-02-23
  * @since 1.0.0
  */
-public interface HasValueHolder<T> extends GetValueDSL<T> {
+public interface HasValueHolder<T> extends GetValueHolder<T> {
     @Override
     public HasValue<T> getContentValue();
 }
