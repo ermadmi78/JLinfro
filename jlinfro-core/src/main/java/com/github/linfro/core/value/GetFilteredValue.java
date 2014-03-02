@@ -1,5 +1,6 @@
 package com.github.linfro.core.value;
 
+import com.github.linfro.core.GetValue;
 import com.github.linfro.core.dsl.GetValueHolder;
 
 import java.util.function.Predicate;
@@ -11,14 +12,14 @@ import static com.github.linfro.core.common.ObjectUtil.notNull;
  * @version 2014-02-06
  * @since 1.0.0
  */
-public class GetFilteredValue<T> extends AbstractGetWrapperValue<T, T> {
+public class GetFilteredValue<T> extends AbstractWrapperValue<T, T, GetValue<T>> implements GetValue<T> {
     protected final Predicate<? super T> predicate;
 
     private boolean result = false;
     private boolean calculated = false;
 
     public GetFilteredValue(GetValueHolder<T> from, Predicate<? super T> predicate) {
-        super(from);
+        super(notNull(from).getContentValue());
         this.predicate = notNull(predicate);
     }
 

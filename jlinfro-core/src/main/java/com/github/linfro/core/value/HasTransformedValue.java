@@ -1,5 +1,6 @@
 package com.github.linfro.core.value;
 
+import com.github.linfro.core.HasValue;
 import com.github.linfro.core.dsl.HasValueHolder;
 
 import java.util.function.Function;
@@ -11,7 +12,7 @@ import static com.github.linfro.core.common.ObjectUtil.notNull;
  * @version 2014-01-05
  * @since 1.0.0
  */
-public class HasTransformedValue<F, T> extends AbstractHasWrapperValue<F, T> {
+public class HasTransformedValue<F, T> extends AbstractWrapperValue<F, T, HasValue<F>> implements HasValue<T> {
     protected final Function<F, T> outFunc;
     protected final Function<T, F> inFunc;
 
@@ -19,7 +20,7 @@ public class HasTransformedValue<F, T> extends AbstractHasWrapperValue<F, T> {
     private boolean calculated = false;
 
     public HasTransformedValue(HasValueHolder<F> from, Function<F, T> outFunc, Function<T, F> inFunc) {
-        super(from);
+        super(notNull(from).getContentValue());
         this.outFunc = notNull(outFunc);
         this.inFunc = notNull(inFunc);
     }

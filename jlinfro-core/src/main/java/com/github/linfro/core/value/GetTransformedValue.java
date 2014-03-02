@@ -1,5 +1,6 @@
 package com.github.linfro.core.value;
 
+import com.github.linfro.core.GetValue;
 import com.github.linfro.core.dsl.GetValueHolder;
 
 import java.util.function.Function;
@@ -11,14 +12,14 @@ import static com.github.linfro.core.common.ObjectUtil.notNull;
  * @version 2014-01-05
  * @since 1.0.0
  */
-public class GetTransformedValue<F, T> extends AbstractGetWrapperValue<F, T> {
+public class GetTransformedValue<F, T> extends AbstractWrapperValue<F, T, GetValue<F>> implements GetValue<T> {
     protected final Function<F, T> function;
 
     private T result;
     private boolean calculated = false;
 
     public GetTransformedValue(GetValueHolder<F> from, Function<F, T> function) {
-        super(from);
+        super(notNull(from).getContentValue());
         this.function = notNull(function);
     }
 

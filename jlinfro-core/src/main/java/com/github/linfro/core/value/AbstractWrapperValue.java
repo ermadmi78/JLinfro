@@ -1,19 +1,18 @@
 package com.github.linfro.core.value;
 
+import com.github.linfro.core.GetValue;
 import com.github.linfro.core.Getter;
-import com.github.linfro.core.HasValue;
 import com.github.linfro.core.ValueChangeListener;
-import com.github.linfro.core.dsl.HasValueHolder;
 
 import static com.github.linfro.core.common.ObjectUtil.notNull;
 
 /**
  * @author Dmitry Ermakov
- * @version 2014-02-13
+ * @version 2014-03-02
  * @since 1.0.0
  */
-public abstract class AbstractHasWrapperValue<F, T> extends AbstractHasValue<T> {
-    protected final HasValue<F> from;
+public abstract class AbstractWrapperValue<F, T, VAL extends GetValue<F>> extends AbstractGetValue<T> {
+    protected final VAL from;
     protected final ValueChangeListener<F> fromListener = new ValueChangeListener<F>() {
         @Override
         public void valueChanged(Getter<? extends F> getter) {
@@ -24,8 +23,8 @@ public abstract class AbstractHasWrapperValue<F, T> extends AbstractHasValue<T> 
     protected boolean autoDispose = true;
     protected boolean disposed = false;
 
-    protected AbstractHasWrapperValue(HasValueHolder<F> from) {
-        this.from = notNull(notNull(from).getContentValue());
+    protected AbstractWrapperValue(VAL from) {
+        this.from = notNull(from);
         this.from.addChangeListener(fromListener);
     }
 
