@@ -13,14 +13,17 @@ import static com.github.linfro.core.common.ObjectUtil.notNull;
  * @since 1.0.0
  */
 public class SimpleLink<A> implements Disposable {
-    protected final GetValue<A> from;
-    protected final HasValue<A> to;
-    protected final Context context;
+    protected GetValue<A> from;
+    protected HasValue<A> to;
+    protected Context context;
 
     protected final UnsafeLock lock = new UnsafeLock();
-    protected final ValueChangeListener<A> fromListener;
+    protected ValueChangeListener<A> fromListener;
 
-    protected boolean disposed = false;
+    /**
+     * Fake listener for "to" value is used to prevent cascade "to" value dispose
+     */
+    protected final ValueChangeListener<A> toListener = new FakeListener<>();
 
     public SimpleLink(GetValue<A> from, HasValue<A> to, Context context) {
         notNull(context);
@@ -39,23 +42,31 @@ public class SimpleLink<A> implements Disposable {
         }
 
         this.from.addChangeListener(this.fromListener);
+        this.to.addChangeListener(toListener);
     }
 
     @Override
     public void dispose() {
-        if (disposed) {
-            return;
+        if (from != null) {
+            if (fromListener != null) {
+                from.removeChangeListener(fromListener);
+            }
+
+            if (from.canDispose()) {
+                from.dispose();
+            }
         }
 
-        from.removeChangeListener(fromListener);
-
-        if (from.isAutoDispose()) {
-            from.dispose();
-        }
-        if (to.isAutoDispose()) {
-            to.dispose();
+        if (to != null) {
+            to.removeChangeListener(toListener);
+            if (to.canDispose()) {
+                to.dispose();
+            }
         }
 
-        disposed = true;
+        from = null;
+        to = null;
+        context = null;
+        fromListener = null;
     }
 }

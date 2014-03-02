@@ -83,11 +83,6 @@ public class DefaultGetAggregateValue<T> extends AbstractGetValue<T> implements 
         }
 
         @Override
-        public boolean isAutoDispose() {
-            return true;
-        }
-
-        @Override
         public void dispose() {
             if (!disposed) {
                 disposed = true;

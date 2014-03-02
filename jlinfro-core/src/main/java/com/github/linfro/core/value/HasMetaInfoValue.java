@@ -12,7 +12,7 @@ import static com.github.linfro.core.common.ObjectUtil.notNull;
  */
 public class HasMetaInfoValue<T> extends AbstractWrapperValue<T, T, HasValue<T>> implements HasValue<T> {
     protected final String metaInfoKey;
-    protected final Object metaInfoValue;
+    protected Object metaInfoValue;
 
     public HasMetaInfoValue(HasValueHolder<T> from, String metaInfoKey, Object metaInfoValue) {
         super(notNull(from).getContentValue());
@@ -22,7 +22,7 @@ public class HasMetaInfoValue<T> extends AbstractWrapperValue<T, T, HasValue<T>>
 
     @Override
     public T getValue() {
-        if (disposed) {
+        if (from == null) {
             throw new IllegalStateException("Value is disposed");
         }
 
@@ -31,7 +31,7 @@ public class HasMetaInfoValue<T> extends AbstractWrapperValue<T, T, HasValue<T>>
 
     @Override
     public void setValue(T value) {
-        if (disposed) {
+        if (from == null) {
             throw new IllegalStateException("Value is disposed");
         }
 
@@ -40,6 +40,16 @@ public class HasMetaInfoValue<T> extends AbstractWrapperValue<T, T, HasValue<T>>
 
     @Override
     public Object getMetaInfo(String key) {
+        if (from == null) {
+            throw new IllegalStateException("Value is disposed");
+        }
+
         return metaInfoKey.equals(key) ? metaInfoValue : super.getMetaInfo(key);
+    }
+
+    @Override
+    public void dispose() {
+        super.dispose();
+        metaInfoValue = null;
     }
 }

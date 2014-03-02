@@ -14,13 +14,11 @@ import static com.github.linfro.core.common.ObjectUtil.notNull;
  * @since 1.0.0
  */
 public class ConsumerLink<A> implements Disposable {
-    protected final GetValue<A> from;
-    protected final Consumer<? super A> to;
-    protected final Context context;
+    protected GetValue<A> from;
+    protected Consumer<? super A> to;
+    protected Context context;
 
-    protected final ValueChangeListener<A> fromListener;
-
-    protected boolean disposed = false;
+    protected ValueChangeListener<A> fromListener;
 
     public ConsumerLink(GetValue<A> from, Consumer<? super A> to, Context context) {
         notNull(context);
@@ -43,16 +41,19 @@ public class ConsumerLink<A> implements Disposable {
 
     @Override
     public void dispose() {
-        if (disposed) {
-            return;
+        if (from != null) {
+            if (fromListener != null) {
+                from.removeChangeListener(fromListener);
+            }
+
+            if (from.canDispose()) {
+                from.dispose();
+            }
         }
 
-        from.removeChangeListener(fromListener);
-
-        if (from.isAutoDispose()) {
-            from.dispose();
-        }
-
-        disposed = true;
+        from = null;
+        to = null;
+        context = null;
+        fromListener = null;
     }
 }

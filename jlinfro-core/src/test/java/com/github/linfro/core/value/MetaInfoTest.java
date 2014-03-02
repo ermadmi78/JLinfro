@@ -5,6 +5,7 @@ import com.github.linfro.core.HasValue;
 import com.github.linfro.core.Values;
 import org.junit.Test;
 
+import static com.github.linfro.core.value.TestUtil.assertDisposed;
 import static org.junit.Assert.*;
 
 /**
@@ -26,27 +27,23 @@ public class MetaInfoTest {
         TestListener listener = new TestListener();
         res.addChangeListener(listener);
         assertEquals(0, listener.getCounter());
+        assertFalse(res.canDispose());
 
         src.update("val");
         assertEquals("val", src.getValue());
         assertEquals("val", res.getValue());
         assertEquals(1, listener.getCounter());
 
-        if (res.isAutoDispose()) {
-            res.dispose();
-        }
+        res.removeChangeListener(listener);
+        assertTrue(res.canDispose());
+        res.dispose();
 
         src.update("disposed");
         assertEquals("disposed", src.getValue());
-        assertEquals("test", res.getMetaName());
         assertEquals(1, listener.getCounter());
 
-        try {
-            res.getValue();
-            fail("Disposed wrapper must throw exception");
-        } catch (IllegalStateException e) {
-            assertEquals("Value is disposed", e.getMessage());
-        }
+        assertDisposed(res::getMetaName);
+        assertDisposed(res::getValue);
     }
 
     @Test
@@ -62,6 +59,7 @@ public class MetaInfoTest {
         TestListener listener = new TestListener();
         res.addChangeListener(listener);
         assertEquals(0, listener.getCounter());
+        assertFalse(res.canDispose());
 
         src.setValue("val");
         assertEquals("val", src.getValue());
@@ -73,28 +71,17 @@ public class MetaInfoTest {
         assertEquals("new", res.getValue());
         assertEquals(2, listener.getCounter());
 
-        if (res.isAutoDispose()) {
-            res.dispose();
-        }
+        res.removeChangeListener(listener);
+        assertTrue(res.canDispose());
+        res.dispose();
 
         src.setValue("disposed");
         assertEquals("disposed", src.getValue());
-        assertEquals("test", res.getMetaName());
         assertEquals(2, listener.getCounter());
 
-        try {
-            res.getValue();
-            fail("Disposed wrapper must throw exception");
-        } catch (IllegalStateException e) {
-            assertEquals("Value is disposed", e.getMessage());
-        }
-
-        try {
-            res.setValue("Should throw exception");
-            fail("Disposed wrapper must throw exception");
-        } catch (IllegalStateException e) {
-            assertEquals("Value is disposed", e.getMessage());
-        }
+        assertDisposed(res::getMetaName);
+        assertDisposed(res::getValue);
+        assertDisposed(() -> res.setValue("Should throw exception"));
     }
 
     @Test
@@ -110,27 +97,23 @@ public class MetaInfoTest {
         TestListener listener = new TestListener();
         res.addChangeListener(listener);
         assertEquals(0, listener.getCounter());
+        assertFalse(res.canDispose());
 
         src.update("val");
         assertEquals("val", src.getValue());
         assertEquals("val", res.getValue());
         assertEquals(1, listener.getCounter());
 
-        if (res.isAutoDispose()) {
-            res.dispose();
-        }
+        res.removeChangeListener(listener);
+        assertTrue(res.canDispose());
+        res.dispose();
 
         src.update("disposed");
         assertEquals("disposed", src.getValue());
-        assertEquals("second", res.getMetaName());
         assertEquals(1, listener.getCounter());
 
-        try {
-            res.getValue();
-            fail("Disposed wrapper must throw exception");
-        } catch (IllegalStateException e) {
-            assertEquals("Value is disposed", e.getMessage());
-        }
+        assertDisposed(res::getMetaName);
+        assertDisposed(res::getValue);
     }
 
     @Test
@@ -146,6 +129,7 @@ public class MetaInfoTest {
         TestListener listener = new TestListener();
         res.addChangeListener(listener);
         assertEquals(0, listener.getCounter());
+        assertFalse(res.canDispose());
 
         src.setValue("val");
         assertEquals("val", src.getValue());
@@ -157,28 +141,17 @@ public class MetaInfoTest {
         assertEquals("new", res.getValue());
         assertEquals(2, listener.getCounter());
 
-        if (res.isAutoDispose()) {
-            res.dispose();
-        }
+        res.removeChangeListener(listener);
+        assertTrue(res.canDispose());
+        res.dispose();
 
         src.setValue("disposed");
         assertEquals("disposed", src.getValue());
-        assertEquals("second", res.getMetaName());
         assertEquals(2, listener.getCounter());
 
-        try {
-            res.getValue();
-            fail("Disposed wrapper must throw exception");
-        } catch (IllegalStateException e) {
-            assertEquals("Value is disposed", e.getMessage());
-        }
-
-        try {
-            res.setValue("Should throw exception");
-            fail("Disposed wrapper must throw exception");
-        } catch (IllegalStateException e) {
-            assertEquals("Value is disposed", e.getMessage());
-        }
+        assertDisposed(res::getMetaName);
+        assertDisposed(res::getValue);
+        assertDisposed(() -> res.setValue("Should throw exception"));
     }
 
     @Test

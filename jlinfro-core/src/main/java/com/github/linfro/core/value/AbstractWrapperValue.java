@@ -12,16 +12,13 @@ import static com.github.linfro.core.common.ObjectUtil.notNull;
  * @since 1.0.0
  */
 public abstract class AbstractWrapperValue<F, T, VAL extends GetValue<F>> extends AbstractGetValue<T> {
-    protected final VAL from;
+    protected VAL from;
     protected final ValueChangeListener<F> fromListener = new ValueChangeListener<F>() {
         @Override
         public void valueChanged(Getter<? extends F> getter) {
             fireValueChanged();
         }
     };
-
-    protected boolean autoDispose = true;
-    protected boolean disposed = false;
 
     protected AbstractWrapperValue(VAL from) {
         this.from = notNull(from);
@@ -30,7 +27,7 @@ public abstract class AbstractWrapperValue<F, T, VAL extends GetValue<F>> extend
 
     @Override
     public boolean isValueValid() {
-        if (disposed) {
+        if (from == null) {
             throw new IllegalStateException("Value is disposed");
         }
 
@@ -39,7 +36,7 @@ public abstract class AbstractWrapperValue<F, T, VAL extends GetValue<F>> extend
 
     @Override
     public Object getMetaInfo(String key) {
-        if (disposed) {
+        if (from == null) {
             throw new IllegalStateException("Value is disposed");
         }
 
@@ -48,30 +45,28 @@ public abstract class AbstractWrapperValue<F, T, VAL extends GetValue<F>> extend
 
     @Override
     public void fireValueChanged() {
-        if (!disposed) {
+        if (from != null) {
             super.fireValueChanged();
         }
     }
 
     @Override
-    public boolean isAutoDispose() {
-        return autoDispose;
-    }
-
-    public void setAutoDispose(boolean autoDispose) {
-        this.autoDispose = autoDispose;
+    public boolean canDispose() {
+        return listeners.isEmpty();
     }
 
     @Override
     public void dispose() {
-        if (disposed) {
+        listeners.clear();
+
+        if (from == null) {
             return;
         }
 
-        disposed = true;
         from.removeChangeListener(fromListener);
-        if (from.isAutoDispose()) {
+        if (from.canDispose()) {
             from.dispose();
         }
+        from = null;
     }
 }

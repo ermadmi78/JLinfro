@@ -13,15 +13,13 @@ import static com.github.linfro.core.common.ObjectUtil.notNull;
  * @since 1.0.0
  */
 public class SyncLink<A> implements Disposable {
-    protected final HasValue<A> from;
-    protected final HasValue<A> to;
-    protected final Context context;
+    protected HasValue<A> from;
+    protected HasValue<A> to;
+    protected Context context;
 
     protected final UnsafeLock lock = new UnsafeLock();
-    protected final ValueChangeListener<A> fromListener;
-    protected final ValueChangeListener<A> toListener;
-
-    protected boolean disposed = false;
+    protected ValueChangeListener<A> fromListener;
+    protected ValueChangeListener<A> toListener;
 
     public SyncLink(HasValue<A> from, HasValue<A> to, Context context) {
         this.from = notNull(from);
@@ -29,36 +27,43 @@ public class SyncLink<A> implements Disposable {
         this.context = notNull(context);
 
         this.fromListener = new LinkListener<>(this.to, this.context, this.lock);
-        this.toListener = new LinkListener<>(this.from, this.context, this.lock);
+        this.toListener = this.context.isSync() ?
+                new LinkListener<>(this.from, this.context, this.lock) : new FakeListener<>();
 
         if (this.context.isForce()) {
             this.fromListener.valueChanged(this.from);
         }
 
         this.from.addChangeListener(this.fromListener);
-        if (this.context.isSync()) {
-            this.to.addChangeListener(this.toListener);
-        }
+        this.to.addChangeListener(this.toListener);
     }
 
     @Override
     public void dispose() {
-        if (disposed) {
-            return;
+        if (from != null) {
+            if (fromListener != null) {
+                from.removeChangeListener(fromListener);
+            }
+
+            if (from.canDispose()) {
+                from.dispose();
+            }
         }
 
-        from.removeChangeListener(fromListener);
-        if (context.isSync()) {
-            to.removeChangeListener(toListener);
+        if (to != null) {
+            if (toListener != null) {
+                to.removeChangeListener(toListener);
+            }
+
+            if (to.canDispose()) {
+                to.dispose();
+            }
         }
 
-        if (from.isAutoDispose()) {
-            from.dispose();
-        }
-        if (to.isAutoDispose()) {
-            to.dispose();
-        }
-
-        disposed = true;
+        from = null;
+        to = null;
+        context = null;
+        fromListener = null;
+        toListener = null;
     }
 }

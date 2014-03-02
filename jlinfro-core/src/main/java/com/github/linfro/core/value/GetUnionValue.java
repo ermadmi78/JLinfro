@@ -25,9 +25,6 @@ public class GetUnionValue<T> extends AbstractGetValue<List<T>> {
         }
     };
 
-    protected boolean autoDispose = true;
-    protected boolean disposed = false;
-
     private List<T> result;
     private Getter<? extends T> lastGetter;
 
@@ -51,7 +48,7 @@ public class GetUnionValue<T> extends AbstractGetValue<List<T>> {
 
     @Override
     public List<T> getValue() {
-        if (disposed) {
+        if (args.isEmpty()) {
             throw new IllegalStateException("Value is disposed");
         }
 
@@ -69,7 +66,7 @@ public class GetUnionValue<T> extends AbstractGetValue<List<T>> {
 
     @Override
     public boolean isValueValid() {
-        if (disposed) {
+        if (args.isEmpty()) {
             throw new IllegalStateException("Value is disposed");
         }
 
@@ -84,7 +81,7 @@ public class GetUnionValue<T> extends AbstractGetValue<List<T>> {
 
     @Override
     public Object getMetaInfo(String key) {
-        if (disposed) {
+        if (args.isEmpty()) {
             throw new IllegalStateException("Value is disposed");
         }
 
@@ -94,30 +91,23 @@ public class GetUnionValue<T> extends AbstractGetValue<List<T>> {
     @Override
     public void fireValueChanged() {
         result = null;
-        if (!disposed) {
+        if (!args.isEmpty()) {
             super.fireValueChanged();
         }
     }
 
     @Override
-    public boolean isAutoDispose() {
-        return autoDispose;
-    }
-
-    public void setAutoDispose(boolean autoDispose) {
-        this.autoDispose = autoDispose;
+    public boolean canDispose() {
+        return listeners.isEmpty();
     }
 
     @Override
     public void dispose() {
-        if (disposed) {
-            return;
-        }
+        listeners.clear();
 
-        disposed = true;
         for (GetValue<? extends T> arg : args) {
             arg.removeChangeListener(argListener);
-            if (arg.isAutoDispose()) {
+            if (arg.canDispose()) {
                 arg.dispose();
             }
         }

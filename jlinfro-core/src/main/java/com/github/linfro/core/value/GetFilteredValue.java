@@ -13,7 +13,7 @@ import static com.github.linfro.core.common.ObjectUtil.notNull;
  * @since 1.0.0
  */
 public class GetFilteredValue<T> extends AbstractWrapperValue<T, T, GetValue<T>> implements GetValue<T> {
-    protected final Predicate<? super T> predicate;
+    protected Predicate<? super T> predicate;
 
     private boolean result = false;
     private boolean calculated = false;
@@ -25,7 +25,7 @@ public class GetFilteredValue<T> extends AbstractWrapperValue<T, T, GetValue<T>>
 
     @Override
     public T getValue() {
-        if (disposed) {
+        if (from == null) {
             throw new IllegalStateException("Value is disposed");
         }
 
@@ -34,6 +34,10 @@ public class GetFilteredValue<T> extends AbstractWrapperValue<T, T, GetValue<T>>
 
     @Override
     public boolean isValueValid() {
+        if (from == null) {
+            throw new IllegalStateException("Value is disposed");
+        }
+
         if (!calculated) {
             result = false;
             if (super.isValueValid()) {
@@ -57,5 +61,6 @@ public class GetFilteredValue<T> extends AbstractWrapperValue<T, T, GetValue<T>>
         super.dispose();
         result = false;
         calculated = false;
+        predicate = null;
     }
 }

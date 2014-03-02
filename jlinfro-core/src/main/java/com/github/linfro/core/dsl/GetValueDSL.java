@@ -54,10 +54,10 @@ public interface GetValueDSL<T> extends GetValueHolder<T>, GetterDSL, Disposable
         return new GetUnionValue<>(this, args);
     }
 
-    // Auto dispose
+    // Dispose
 
-    public default boolean isAutoDispose() {
-        return false;
+    public default boolean canDispose() {
+        return true;
     }
 
     @Override

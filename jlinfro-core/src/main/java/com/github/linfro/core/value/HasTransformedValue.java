@@ -13,8 +13,8 @@ import static com.github.linfro.core.common.ObjectUtil.notNull;
  * @since 1.0.0
  */
 public class HasTransformedValue<F, T> extends AbstractWrapperValue<F, T, HasValue<F>> implements HasValue<T> {
-    protected final Function<F, T> outFunc;
-    protected final Function<T, F> inFunc;
+    protected Function<F, T> outFunc;
+    protected Function<T, F> inFunc;
 
     private T result;
     private boolean calculated = false;
@@ -27,7 +27,7 @@ public class HasTransformedValue<F, T> extends AbstractWrapperValue<F, T, HasVal
 
     @Override
     public T getValue() {
-        if (disposed) {
+        if (from == null) {
             throw new IllegalStateException("Value is disposed");
         }
 
@@ -41,7 +41,7 @@ public class HasTransformedValue<F, T> extends AbstractWrapperValue<F, T, HasVal
 
     @Override
     public void setValue(T value) {
-        if (disposed) {
+        if (from == null) {
             throw new IllegalStateException("Value is disposed");
         }
 
@@ -60,5 +60,7 @@ public class HasTransformedValue<F, T> extends AbstractWrapperValue<F, T, HasVal
         super.dispose();
         result = null;
         calculated = false;
+        outFunc = null;
+        inFunc = null;
     }
 }
