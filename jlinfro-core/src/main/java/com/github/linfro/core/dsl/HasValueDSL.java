@@ -1,10 +1,13 @@
 package com.github.linfro.core.dsl;
 
 import com.github.linfro.core.HasValue;
+import com.github.linfro.core.common.EqualityNew;
 import com.github.linfro.core.common.NullSafeFunction;
 import com.github.linfro.core.common.NvlFunction;
+import com.github.linfro.core.common.ObjectUtil;
 import com.github.linfro.core.value.HasFilteredValue;
 import com.github.linfro.core.value.HasMetaInfoValue;
+import com.github.linfro.core.value.HasStrongValue;
 import com.github.linfro.core.value.HasTransformedValue;
 
 import java.util.function.Function;
@@ -19,6 +22,16 @@ public interface HasValueDSL<T> extends HasValueHolder<T>, GetValueDSL<T> {
     @Override
     public default HasValueFlow<T> flow() {
         return Flow.from(this);
+    }
+
+    @Override
+    public default HasValue<T> strong() {
+        return strong(ObjectUtil.DEFAULT_NEW_EQUALITY);
+    }
+
+    @Override
+    public default HasValue<T> strong(EqualityNew<? super T> equality) {
+        return new HasStrongValue<>(this, equality);
     }
 
     public default <M> HasValue<M> map(Function<T, M> outFunc, Function<M, T> inFunc) {

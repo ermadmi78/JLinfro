@@ -28,6 +28,10 @@ public final class ObjectUtil {
         }
     };
 
+    public static final EqualityNew<Object> DEFAULT_NEW_EQUALITY = ObjectUtil::eq;
+
+    public static final EqualityNew<Object> IDENTITY_NEW_EQUALITY = (first, second) -> first == second;
+
     public static final Copier DEFAULT_COPIER = new Copier() {
         @Override
         public Object copy(Object obj) {

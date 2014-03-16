@@ -1,13 +1,8 @@
 package com.github.linfro.core.dsl;
 
 import com.github.linfro.core.GetValue;
-import com.github.linfro.core.common.Disposable;
-import com.github.linfro.core.common.NullSafeFunction;
-import com.github.linfro.core.common.NvlFunction;
-import com.github.linfro.core.value.GetFilteredValue;
-import com.github.linfro.core.value.GetMetaInfoValue;
-import com.github.linfro.core.value.GetTransformedValue;
-import com.github.linfro.core.value.GetUnionValue;
+import com.github.linfro.core.common.*;
+import com.github.linfro.core.value.*;
 
 import java.util.List;
 import java.util.function.Function;
@@ -21,6 +16,14 @@ import java.util.function.Predicate;
 public interface GetValueDSL<T> extends GetValueHolder<T>, GetterDSL, Disposable {
     public default GetValueFlow<T> flow() {
         return Flow.from(this);
+    }
+
+    public default GetValue<T> strong() {
+        return strong(ObjectUtil.DEFAULT_NEW_EQUALITY);
+    }
+
+    public default GetValue<T> strong(EqualityNew<? super T> equality) {
+        return new GetStrongValue<>(this, equality);
     }
 
     public default <M> GetValue<M> map(Function<T, M> function) {
