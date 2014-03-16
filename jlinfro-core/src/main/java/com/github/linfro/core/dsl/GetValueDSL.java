@@ -19,10 +19,10 @@ public interface GetValueDSL<T> extends GetValueHolder<T>, GetterDSL, Disposable
     }
 
     public default GetValue<T> strong() {
-        return strong(ObjectUtil.DEFAULT_NEW_EQUALITY);
+        return strong(ObjectUtil.DEFAULT_EQUALITY);
     }
 
-    public default GetValue<T> strong(EqualityNew<? super T> equality) {
+    public default GetValue<T> strong(Equality<? super T> equality) {
         return new GetStrongValue<>(this, equality);
     }
 

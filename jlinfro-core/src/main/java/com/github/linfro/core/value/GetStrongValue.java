@@ -1,7 +1,7 @@
 package com.github.linfro.core.value;
 
 import com.github.linfro.core.GetValue;
-import com.github.linfro.core.common.EqualityNew;
+import com.github.linfro.core.common.Equality;
 import com.github.linfro.core.dsl.GetValueHolder;
 
 import static com.github.linfro.core.common.ObjectUtil.notNull;
@@ -12,12 +12,12 @@ import static com.github.linfro.core.common.ObjectUtil.notNull;
  * @since 1.0.0
  */
 public class GetStrongValue<T> extends AbstractWrapperValue<T, T, GetValue<T>> implements GetValue<T> {
-    protected EqualityNew<? super T> equality;
+    protected Equality<? super T> equality;
 
     private boolean curValueValid = false;
     private T curValue;
 
-    public GetStrongValue(GetValueHolder<T> from, EqualityNew<? super T> equality) {
+    public GetStrongValue(GetValueHolder<T> from, Equality<? super T> equality) {
         super(notNull(from).getContentValue());
         this.equality = notNull(equality);
 

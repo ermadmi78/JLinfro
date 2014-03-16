@@ -6,6 +6,6 @@ package com.github.linfro.core.common;
  * @since 1.0.0
  */
 @FunctionalInterface
-public interface EqualityNew<T> {
+public interface Equality<T> {
     public boolean areEquals(T first, T second);
 }

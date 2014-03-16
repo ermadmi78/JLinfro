@@ -1,7 +1,7 @@
 package com.github.linfro.core.dsl;
 
 import com.github.linfro.core.HasValue;
-import com.github.linfro.core.common.EqualityNew;
+import com.github.linfro.core.common.Equality;
 import com.github.linfro.core.common.NullSafeFunction;
 import com.github.linfro.core.common.NvlFunction;
 import com.github.linfro.core.common.ObjectUtil;
@@ -26,11 +26,11 @@ public interface HasValueDSL<T> extends HasValueHolder<T>, GetValueDSL<T> {
 
     @Override
     public default HasValue<T> strong() {
-        return strong(ObjectUtil.DEFAULT_NEW_EQUALITY);
+        return strong(ObjectUtil.DEFAULT_EQUALITY);
     }
 
     @Override
-    public default HasValue<T> strong(EqualityNew<? super T> equality) {
+    public default HasValue<T> strong(Equality<? super T> equality) {
         return new HasStrongValue<>(this, equality);
     }
 

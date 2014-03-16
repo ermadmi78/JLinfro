@@ -14,9 +14,9 @@ public final class ObjectUtil {
     public static final float DEFAULT_FLOAT_TOLERANCE = 1e-7F;
     public static final double DEFAULT_DOUBLE_TOLERANCE = 1e-7D;
 
-    public static final EqualityNew<Object> DEFAULT_NEW_EQUALITY = ObjectUtil::eq;
+    public static final Equality<Object> DEFAULT_EQUALITY = ObjectUtil::eq;
 
-    public static final EqualityNew<Object> IDENTITY_NEW_EQUALITY = (first, second) -> first == second;
+    public static final Equality<Object> IDENTITY_EQUALITY = (first, second) -> first == second;
 
     public static final Copier DEFAULT_COPIER = new Copier() {
         @Override
