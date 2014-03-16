@@ -4,7 +4,6 @@ import com.github.linfro.core.GetAggregateValue;
 import com.github.linfro.core.GetValue;
 import com.github.linfro.core.HasValue;
 import com.github.linfro.core.common.Disposable;
-import com.github.linfro.core.common.Equality;
 
 import java.util.function.Consumer;
 
@@ -66,17 +65,6 @@ public abstract class Flow<DSL, F, SRC extends GetValue<F>> {
 
     public static <F> HasValueFlow<F> from(HasValueHolder<F> from) {
         return new HasValueFlowImpl<>(notNull(from).getContentValue(), new Context());
-    }
-
-    public DSL strong() {
-        context.setStrong(true);
-        return nextDSL();
-    }
-
-    public DSL strong(Equality equality) {
-        context.setStrong(true);
-        context.setEquality(equality);
-        return nextDSL();
     }
 
     public DSL force() {

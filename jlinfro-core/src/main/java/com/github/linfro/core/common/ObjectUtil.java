@@ -14,20 +14,6 @@ public final class ObjectUtil {
     public static final float DEFAULT_FLOAT_TOLERANCE = 1e-7F;
     public static final double DEFAULT_DOUBLE_TOLERANCE = 1e-7D;
 
-    public static final Equality DEFAULT_EQUALITY = new Equality() {
-        @Override
-        public boolean areEquals(Object obj1, Object obj2) {
-            return eq(obj1, obj2);
-        }
-    };
-
-    public static final Equality IDENTITY_EQUALITY = new Equality() {
-        @Override
-        public boolean areEquals(Object obj1, Object obj2) {
-            return obj1 == obj2;
-        }
-    };
-
     public static final EqualityNew<Object> DEFAULT_NEW_EQUALITY = ObjectUtil::eq;
 
     public static final EqualityNew<Object> IDENTITY_NEW_EQUALITY = (first, second) -> first == second;

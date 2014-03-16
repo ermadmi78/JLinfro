@@ -2,7 +2,6 @@ package com.github.linfro.core.dsl;
 
 import com.github.linfro.core.GetAggregateValue;
 import com.github.linfro.core.common.Disposable;
-import com.github.linfro.core.common.Equality;
 
 import java.util.function.Consumer;
 
@@ -12,10 +11,6 @@ import java.util.function.Consumer;
  * @since 1.0.0
  */
 public interface GetValueFlow<F> {
-    public GetValueFlow<F> strong();
-
-    public GetValueFlow<F> strong(Equality equality);
-
     public GetValueFlow<F> force();
 
     public Disposable to(HasValueHolder<F> to);

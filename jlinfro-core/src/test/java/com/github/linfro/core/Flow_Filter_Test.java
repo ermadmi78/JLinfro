@@ -108,7 +108,7 @@ public class Flow_Filter_Test {
         ).map(
                 (s) -> s == null ? "" : s,
                 (s) -> s == null ? "" : s
-        ).flow().sync().strong().force().to(
+        ).strong().flow().sync().force().to(
                 dstValue.filter(
                         (s) -> !"ddd".equals(s),
                         (s) -> !"ddd".equals(s)

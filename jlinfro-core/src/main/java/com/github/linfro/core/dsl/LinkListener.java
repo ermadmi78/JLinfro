@@ -30,16 +30,7 @@ public class LinkListener<A> implements ValueChangeListener<A> {
 
         try {
             if (getter.isValueValid()) {
-                A incoming = getter.getValue();
-
-                boolean update = true;
-                if (context.isStrong() && targetValue.isValueValid()) {
-                    update = !context.getEquality().areEquals(incoming, targetValue.getValue());
-                }
-
-                if (update) {
-                    targetValue.setValue(incoming);
-                }
+                targetValue.setValue(getter.getValue());
             }
         } finally {
             lock.unlock();
