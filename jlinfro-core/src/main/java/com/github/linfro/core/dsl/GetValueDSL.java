@@ -52,9 +52,54 @@ public interface GetValueDSL<T> extends GetValueHolder<T>, GetterDSL, Disposable
         return putMetaInfo(META_NAME, name);
     }
 
+    public default GetValue<List<T>> union(GetValueHolder<? extends T> arg1) {
+        return new GetUnionValue<T>(this, arg1);
+    }
+
+    public default GetValue<List<T>> union(GetValueHolder<? extends T> arg1,
+                                           GetValueHolder<? extends T> arg2) {
+        return new GetUnionValue<T>(this, arg1, arg2);
+    }
+
+    public default GetValue<List<T>> union(GetValueHolder<? extends T> arg1,
+                                           GetValueHolder<? extends T> arg2,
+                                           GetValueHolder<? extends T> arg3) {
+        return new GetUnionValue<T>(this, arg1, arg2, arg3);
+    }
+
+    public default GetValue<List<T>> union(GetValueHolder<? extends T> arg1,
+                                           GetValueHolder<? extends T> arg2,
+                                           GetValueHolder<? extends T> arg3,
+                                           GetValueHolder<? extends T> arg4) {
+        return new GetUnionValue<T>(this, arg1, arg2, arg3, arg4);
+    }
+
+    public default GetValue<List<T>> union(GetValueHolder<? extends T> arg1,
+                                           GetValueHolder<? extends T> arg2,
+                                           GetValueHolder<? extends T> arg3,
+                                           GetValueHolder<? extends T> arg4,
+                                           GetValueHolder<? extends T> arg5) {
+        return new GetUnionValue<T>(this, arg1, arg2, arg3, arg4, arg5);
+    }
+
     @SuppressWarnings("unchecked")
-    public default GetValue<List<T>> union(GetValueHolder... args) {
-        return new GetUnionValue<>(this, args);
+    public default GetValue<List<T>> union(GetValueHolder<? extends T> arg1,
+                                           GetValueHolder<? extends T> arg2,
+                                           GetValueHolder<? extends T> arg3,
+                                           GetValueHolder<? extends T> arg4,
+                                           GetValueHolder<? extends T> arg5,
+                                           GetValueHolder... otherArgs) {
+        GetValueHolder[] args = new GetValueHolder[5 + (otherArgs == null ? 0 : otherArgs.length)];
+        args[0] = arg1;
+        args[1] = arg2;
+        args[2] = arg3;
+        args[3] = arg4;
+        args[4] = arg5;
+        if ((otherArgs != null) && (otherArgs.length > 0)) {
+            System.arraycopy(otherArgs, 0, args, 5, otherArgs.length);
+        }
+
+        return new GetUnionValue<T>(this, args);
     }
 
     // Dispose
