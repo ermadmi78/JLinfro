@@ -7,6 +7,7 @@ import com.github.linfro.core.value.TestListener;
 import org.junit.Test;
 
 import java.util.List;
+import java.util.Objects;
 
 import static com.github.linfro.core.value.TestUtil.assertDisposed;
 import static org.junit.Assert.*;
@@ -123,15 +124,89 @@ public class Flow_Union_Test {
 
         assertDisposed(union::getValue);
         assertDisposed(union::getMetaName);
+        assertDisposed(union::isValueValid);
 
         assertDisposed(arg0::getValue);
         assertDisposed(arg0::getMetaName);
+        assertDisposed(arg0::isValueValid);
 
         assertDisposed(arg1::getValue);
         assertDisposed(arg1::getMetaName);
+        assertDisposed(arg1::isValueValid);
 
         assertDisposed(arg2::getValue);
         assertDisposed(arg2::getMetaName);
+        assertDisposed(arg2::isValueValid);
+    }
+
+    @Test
+    public void testUnionIsValid() throws Exception {
+        HasValue<String> arg0 = Values.newHasValue("arg0");
+        HasValue<String> arg1 = Values.newHasValue("arg1");
+        HasValue<String> arg2 = Values.newHasValue("arg2");
+
+        GetValue<List<String>> union = arg0.filter(Objects::nonNull).union(
+                arg1.filter(Objects::nonNull),
+                arg2.filter(Objects::nonNull)
+        );
+
+        assertEquals("arg0", arg0.getValue());
+        assertEquals("arg1", arg1.getValue());
+        assertEquals("arg2", arg2.getValue());
+        assertTrue(union.isValueValid());
+        assertList(union.getValue(), "arg0", "arg1", "arg2");
+
+        arg0.setValue(null);
+
+        assertNull(arg0.getValue());
+        assertEquals("arg1", arg1.getValue());
+        assertEquals("arg2", arg2.getValue());
+        assertFalse(union.isValueValid());
+
+        arg0.setValue("arg0");
+        arg1.setValue(null);
+
+        assertEquals("arg0", arg0.getValue());
+        assertNull(arg1.getValue());
+        assertEquals("arg2", arg2.getValue());
+        assertFalse(union.isValueValid());
+
+        arg1.setValue("arg1");
+        arg2.setValue(null);
+
+        assertEquals("arg0", arg0.getValue());
+        assertEquals("arg1", arg1.getValue());
+        assertNull(arg2.getValue());
+        assertFalse(union.isValueValid());
+
+        arg0.setValue(null);
+        arg1.setValue(null);
+
+        assertNull(arg0.getValue());
+        assertNull(arg1.getValue());
+        assertNull(arg2.getValue());
+        assertFalse(union.isValueValid());
+
+        arg0.setValue("a0");
+        arg1.setValue("a1");
+        arg2.setValue("a2");
+
+        assertEquals("a0", arg0.getValue());
+        assertEquals("a1", arg1.getValue());
+        assertEquals("a2", arg2.getValue());
+        assertTrue(union.isValueValid());
+        assertList(union.getValue(), "a0", "a1", "a2");
+        assertTrue(union.canDispose());
+
+        union.dispose();
+
+        assertEquals("a0", arg0.getValue());
+        assertEquals("a1", arg1.getValue());
+        assertEquals("a2", arg2.getValue());
+
+        assertDisposed(union::getValue);
+        assertDisposed(union::getMetaName);
+        assertDisposed(union::isValueValid);
     }
 
     @Test
