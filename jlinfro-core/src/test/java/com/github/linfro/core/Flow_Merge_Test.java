@@ -305,7 +305,7 @@ public class Flow_Merge_Test {
     }
 
     @Test
-    public void testMerge1() throws Exception {
+    public void testMerge2() throws Exception {
         HasValue<String> a = Values.newHasValue();
         HasValue<Integer> b = Values.newHasValue();
         HasValue<Map<String, Object>> res = Values.newHasValue();
