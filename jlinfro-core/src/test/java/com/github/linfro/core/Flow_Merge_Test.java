@@ -304,6 +304,47 @@ public class Flow_Merge_Test {
         assertDisposed(merge::isValueValid);
     }
 
+    @Test
+    public void testMerge1() throws Exception {
+        HasValue<String> a = Values.newHasValue();
+        HasValue<Integer> b = Values.newHasValue();
+        HasValue<Map<String, Object>> res = Values.newHasValue();
+
+        TestListener listener = new TestListener();
+        res.addChangeListener(listener);
+
+        Disposable link = a.merge(b).flow().to(res);
+
+        assertNull(a.getValue());
+        assertNull(b.getValue());
+        assertEquals(0, listener.getCounter());
+        assertNull(res.getValue());
+
+        a.setValue("init");
+
+        assertEquals("init", a.getValue());
+        assertNull(b.getValue());
+        assertEquals(1, listener.getCounter());
+        forKeys("arg0", "arg1").assertMap(res.getValue(), "init", null);
+
+        b.setValue(7);
+
+        assertEquals("init", a.getValue());
+        assertEquals(new Integer(7), b.getValue());
+        assertEquals(2, listener.getCounter());
+        forKeys("arg0", "arg1").assertMap(res.getValue(), "init", 7);
+
+        link.dispose();
+
+        a.setValue("ttt");
+        b.setValue(-1);
+
+        assertEquals("ttt", a.getValue());
+        assertEquals(new Integer(-1), b.getValue());
+        assertEquals(2, listener.getCounter());
+        forKeys("arg0", "arg1").assertMap(res.getValue(), "init", 7);
+    }
+
     private static MapHelper forKeys(String... keys) {
         return new MapHelper(keys);
     }
