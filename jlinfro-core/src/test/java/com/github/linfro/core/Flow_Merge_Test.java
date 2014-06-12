@@ -116,7 +116,7 @@ public class Flow_Merge_Test {
     }
 
     @Test
-    public void testDuplicate1() throws Exception {
+    public void testDuplicateMerge1() throws Exception {
         HasValue<String> a = Values.newHasValue();
         HasValue<String> b = Values.newHasValue();
 
@@ -129,7 +129,7 @@ public class Flow_Merge_Test {
     }
 
     @Test
-    public void testDuplicate2() throws Exception {
+    public void testDuplicateMerge2() throws Exception {
         HasValue<String> a = Values.newHasValue();
         HasValue<String> b = Values.newHasValue();
         HasValue<String> c = Values.newHasValue();
@@ -143,7 +143,7 @@ public class Flow_Merge_Test {
     }
 
     @Test
-    public void testDuplicate3() throws Exception {
+    public void testDuplicateMerge3() throws Exception {
         HasValue<String> a = Values.newHasValue();
         HasValue<String> b = Values.newHasValue();
         HasValue<String> c = Values.newHasValue();
@@ -158,7 +158,7 @@ public class Flow_Merge_Test {
     }
 
     @Test
-    public void testMetaInfo() throws Exception {
+    public void testMergeMetaInfo() throws Exception {
         HasValue<String> a = Values.<String>newHasValue().named("a");
         HasValue<Integer> b = Values.<Integer>newHasValue().named("b");
         HasValue<Long> c = Values.<Long>newHasValue().named("c");
