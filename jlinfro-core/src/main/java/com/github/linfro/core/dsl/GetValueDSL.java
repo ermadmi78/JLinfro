@@ -6,6 +6,7 @@ import com.github.linfro.core.value.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
@@ -105,6 +106,10 @@ public interface GetValueDSL<T> extends GetValueHolder<T>, GetterDSL, Disposable
 
     public default GetValue<Map<String, Object>> merge(GetValueHolder arg1, GetValueHolder... args) {
         return new GetMergeValue(this, arg1, args);
+    }
+
+    public default <T1, M> GetValue<M> join(GetValueHolder<T1> arg1, BiFunction<T, T1, M> function) {
+        return new GetJoin2Value<T, T1, M>(this, arg1, function);
     }
 
     // Dispose
