@@ -5,6 +5,7 @@ import com.github.linfro.core.value.TestListener;
 import org.junit.Test;
 
 import java.util.Map;
+import java.util.Objects;
 
 import static com.github.linfro.core.common.ObjectUtil.notNull;
 import static com.github.linfro.core.common.ObjectUtil.nvl;
@@ -227,6 +228,80 @@ public class Flow_Merge_Test {
         assertDisposed(c::getValue);
         assertDisposed(c::getMetaName);
         assertDisposed(c::isValueValid);
+    }
+
+    @Test
+    public void testMergeIsValid() throws Exception {
+        HasValue<String> a = Values.newHasValue("init");
+        HasValue<Integer> b = Values.newHasValue(7);
+        HasValue<Long> c = Values.newHasValue(8L);
+
+        GetValue<Map<String, Object>> merge = a.filter(Objects::nonNull).merge(
+                b.filter(Objects::nonNull),
+                c.filter(Objects::nonNull)
+        );
+
+        assertEquals("init", a.getValue());
+        assertEquals(new Integer(7), b.getValue());
+        assertEquals(new Long(8L), c.getValue());
+        assertTrue(merge.isValueValid());
+        forKeys("arg0", "arg1", "arg2").assertMap(merge.getValue(), "init", 7, 8L);
+
+        a.setValue(null);
+
+        assertNull(a.getValue());
+        assertEquals(new Integer(7), b.getValue());
+        assertEquals(new Long(8L), c.getValue());
+        assertFalse(merge.isValueValid());
+        forKeys("arg0", "arg1", "arg2").assertMap(merge.getValue(), null, 7, 8L);
+
+        a.setValue("init");
+        b.setValue(null);
+
+        assertEquals("init", a.getValue());
+        assertNull(b.getValue());
+        assertEquals(new Long(8L), c.getValue());
+        assertFalse(merge.isValueValid());
+        forKeys("arg0", "arg1", "arg2").assertMap(merge.getValue(), "init", null, 8L);
+
+        b.setValue(7);
+        c.setValue(null);
+
+        assertEquals("init", a.getValue());
+        assertEquals(new Integer(7), b.getValue());
+        assertNull(c.getValue());
+        assertFalse(merge.isValueValid());
+        forKeys("arg0", "arg1", "arg2").assertMap(merge.getValue(), "init", 7, null);
+
+        a.setValue(null);
+        b.setValue(null);
+
+        assertNull(a.getValue());
+        assertNull(b.getValue());
+        assertNull(c.getValue());
+        assertFalse(merge.isValueValid());
+        forKeys("arg0", "arg1", "arg2").assertMap(merge.getValue(), null, null, null);
+
+        a.setValue("ddd");
+        b.setValue(333);
+        c.setValue(2222L);
+
+        assertEquals("ddd", a.getValue());
+        assertEquals(new Integer(333), b.getValue());
+        assertEquals(new Long(2222L), c.getValue());
+        assertTrue(merge.isValueValid());
+        forKeys("arg0", "arg1", "arg2").assertMap(merge.getValue(), "ddd", 333, 2222L);
+        assertTrue(merge.canDispose());
+
+        merge.dispose();
+
+        assertEquals("ddd", a.getValue());
+        assertEquals(new Integer(333), b.getValue());
+        assertEquals(new Long(2222L), c.getValue());
+
+        assertDisposed(merge::getValue);
+        assertDisposed(merge::getMetaName);
+        assertDisposed(merge::isValueValid);
     }
 
     private static MapHelper forKeys(String... keys) {
