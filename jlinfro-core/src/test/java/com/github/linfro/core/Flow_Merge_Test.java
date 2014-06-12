@@ -4,6 +4,7 @@ import com.github.linfro.core.common.Disposable;
 import com.github.linfro.core.value.TestListener;
 import org.junit.Test;
 
+import java.math.BigInteger;
 import java.util.Map;
 import java.util.Objects;
 
@@ -343,6 +344,77 @@ public class Flow_Merge_Test {
         assertEquals(new Integer(-1), b.getValue());
         assertEquals(2, listener.getCounter());
         forKeys("arg0", "arg1").assertMap(res.getValue(), "init", 7);
+    }
+
+    @Test
+    public void testMerge4() throws Exception {
+        HasValue<String> a = Values.newHasValue();
+        HasValue<Integer> b = Values.newHasValue();
+        HasValue<Long> c = Values.newHasValue();
+        HasValue<BigInteger> d = Values.newHasValue();
+        HasValue<Map<String, Object>> res = Values.newHasValue();
+
+        TestListener listener = new TestListener();
+        res.addChangeListener(listener);
+
+        Disposable link = a.merge(b, c, d).flow().to(res);
+
+        assertNull(a.getValue());
+        assertNull(b.getValue());
+        assertNull(c.getValue());
+        assertNull(d.getValue());
+        assertEquals(0, listener.getCounter());
+        assertNull(res.getValue());
+
+        a.setValue("init");
+
+        assertEquals("init", a.getValue());
+        assertNull(b.getValue());
+        assertNull(c.getValue());
+        assertNull(d.getValue());
+        assertEquals(1, listener.getCounter());
+        forKeys("arg0", "arg1", "arg2", "arg3").assertMap(res.getValue(), "init", null, null, null);
+
+        b.setValue(7);
+
+        assertEquals("init", a.getValue());
+        assertEquals(new Integer(7), b.getValue());
+        assertNull(c.getValue());
+        assertNull(d.getValue());
+        assertEquals(2, listener.getCounter());
+        forKeys("arg0", "arg1", "arg2", "arg3").assertMap(res.getValue(), "init", 7, null, null);
+
+        c.setValue(11L);
+
+        assertEquals("init", a.getValue());
+        assertEquals(new Integer(7), b.getValue());
+        assertEquals(new Long(11L), c.getValue());
+        assertNull(d.getValue());
+        assertEquals(3, listener.getCounter());
+        forKeys("arg0", "arg1", "arg2", "arg3").assertMap(res.getValue(), "init", 7, 11L, null);
+
+        d.setValue(BigInteger.TEN);
+
+        assertEquals("init", a.getValue());
+        assertEquals(new Integer(7), b.getValue());
+        assertEquals(new Long(11L), c.getValue());
+        assertEquals(BigInteger.TEN, d.getValue());
+        assertEquals(4, listener.getCounter());
+        forKeys("arg0", "arg1", "arg2", "arg3").assertMap(res.getValue(), "init", 7, 11L, BigInteger.TEN);
+
+        link.dispose();
+
+        a.setValue("ttt");
+        b.setValue(-1);
+        c.setValue(-345L);
+        d.setValue(BigInteger.ZERO);
+
+        assertEquals("ttt", a.getValue());
+        assertEquals(new Integer(-1), b.getValue());
+        assertEquals(4, listener.getCounter());
+        assertEquals(new Long(-345L), c.getValue());
+        assertEquals(BigInteger.ZERO, d.getValue());
+        forKeys("arg0", "arg1", "arg2", "arg3").assertMap(res.getValue(), "init", 7, 11L, BigInteger.TEN);
     }
 
     private static MapHelper forKeys(String... keys) {
