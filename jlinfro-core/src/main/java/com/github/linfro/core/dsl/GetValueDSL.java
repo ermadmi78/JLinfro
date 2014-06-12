@@ -5,6 +5,7 @@ import com.github.linfro.core.common.*;
 import com.github.linfro.core.value.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
@@ -100,6 +101,10 @@ public interface GetValueDSL<T> extends GetValueHolder<T>, GetterDSL, Disposable
         }
 
         return new GetUnionValue<T>(this, args);
+    }
+
+    public default GetValue<Map<String, Object>> merge(GetValueHolder arg1, GetValueHolder... args) {
+        return new GetMergeValue(this, arg1, args);
     }
 
     // Dispose
