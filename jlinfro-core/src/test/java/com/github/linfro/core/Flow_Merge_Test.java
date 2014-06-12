@@ -6,6 +6,7 @@ import org.junit.Test;
 
 import static com.github.linfro.core.common.ObjectUtil.nvl;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 /**
  * @author Dmitry Ermakov
@@ -60,5 +61,47 @@ public class Flow_Merge_Test {
         c.setValue(3L);
         assertEquals("str_12_356", res.getValue());
         assertEquals(4, listener.getCounter());
+    }
+
+    @Test
+    public void testDuplicate1() throws Exception {
+        HasValue<String> a = Values.newHasValue();
+        HasValue<String> b = Values.newHasValue();
+
+        try {
+            a.named("test").merge(b.named("test"));
+            fail("Merge must throw exception");
+        } catch (IllegalArgumentException e) {
+            assertEquals("Argument key duplicate found: test", e.getMessage());
+        }
+    }
+
+    @Test
+    public void testDuplicate2() throws Exception {
+        HasValue<String> a = Values.newHasValue();
+        HasValue<String> b = Values.newHasValue();
+        HasValue<String> c = Values.newHasValue();
+
+        try {
+            a.merge(b.named("test"), c.named("test"));
+            fail("Merge must throw exception");
+        } catch (IllegalArgumentException e) {
+            assertEquals("Argument key duplicate found: test", e.getMessage());
+        }
+    }
+
+    @Test
+    public void testDuplicate3() throws Exception {
+        HasValue<String> a = Values.newHasValue();
+        HasValue<String> b = Values.newHasValue();
+        HasValue<String> c = Values.newHasValue();
+        HasValue<String> d = Values.newHasValue();
+
+        try {
+            a.merge(b.named("test"), c, d.named("test"));
+            fail("Merge must throw exception");
+        } catch (IllegalArgumentException e) {
+            assertEquals("Argument key duplicate found: test", e.getMessage());
+        }
     }
 }
